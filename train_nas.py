@@ -41,7 +41,8 @@ from timm.scheduler import create_scheduler
 from timm.utils import ApexScaler, NativeScaler
 
 from src import *
-
+from src.cir_vit import CirLinear
+from src.utils.utils import KLLossSoft
 try:
     from apex import amp
     from apex.parallel import DistributedDataParallel as ApexDDP
@@ -285,6 +286,28 @@ parser.add_argument('--torchscript', dest='torchscript', action='store_true',
                     help='convert model torchscript for inference')
 parser.add_argument('--log-wandb', action='store_true', default=False,
                     help='log training and validation metrics to wandb')
+# KD
+parser.add_argument('--use-kd', action='store_true', default=False,
+                    help='whether to use kd')
+parser.add_argument('--kd-alpha', default=1.0, type=float,
+                    help='KD alpha, soft loss portion (default: 1.0)')
+parser.add_argument('--teacher', default='resnet101', type=str, metavar='MODEL',
+                    help='Name of teacher model (default: "countception"')
+parser.add_argument('--teacher-checkpoint', default='', type=str, metavar='PATH',
+                    help='Initialize teacher model from this checkpoint (default: none)')
+# CIR
+parser.add_argument('--lasso-alpha', default=0, type=float,
+                    help='alpha for lasso loss')
+parser.add_argument('--fix_blocksize',type=int, default=-1,
+                    help='whether to use dual skip for resnet blocks')
+parser.add_argument('--finetune', action='store_true', default=False,
+                    help='whether to use dual skip for resnet blocks')
+parser.add_argument('--log_name', default='none', type=str,
+                    help='act sparsification pattern')
+parser.add_argument('--tau', default=1.0, type=float,
+                    help='alpha for lasso loss')
+parser.add_argument('--blocksize', default=1, type=int,
+                    help='avg block size')
 
 def _parse_args():
     # Do we have a config file to parse?
@@ -302,11 +325,33 @@ def _parse_args():
     args_text = yaml.safe_dump(args.__dict__, default_flow_style=False)
     return args, args_text
 
+def create_teacher_model(args):
+    teacher = create_model(
+        args.teacher,
+        pretrained=False,
+        num_classes=args.num_classes,
+        drop_rate=0.,
+        drop_connect_rate=0.,
+        drop_block_rate=0.,
+        global_pool=args.gp,
+        bn_tf=args.bn_tf,
+        bn_momentum=args.bn_momentum,
+        bn_eps=args.bn_eps,
+        # checkpoint_path=args.teacher_checkpoint,
+        # checkpoint_path="",
+    )
+    if args.teacher_checkpoint != "":
+        load_checkpoint(teacher, args.teacher_checkpoint, strict=True)
+    teacher = teacher.eval()
+    return teacher
 
 def main():
     setup_default_logging()
     args, args_text = _parse_args()
-    
+    handler = RotatingFileHandler(args.log_name+'.log', maxBytes=10*1024*1024, backupCount=5)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    _logger.addHandler(handler)
     if args.log_wandb:
         if has_wandb:
             wandb.init(project=args.experiment, config=args)
@@ -350,7 +395,11 @@ def main():
                         "Install NVIDA apex or upgrade to PyTorch 1.6")
 
     random_seed(args.seed, args.rank)
-
+    teacher = None
+    if args.use_kd:
+        teacher = create_teacher_model(args)
+        teacher.cuda()
+    
     model = create_model(
         args.model,
         pretrained=args.pretrained,
@@ -363,8 +412,23 @@ def main():
         bn_tf=args.bn_tf,
         bn_momentum=args.bn_momentum,
         bn_eps=args.bn_eps,
-        scriptable=args.torchscript,
-        checkpoint_path=args.initial_checkpoint)
+        scriptable=args.torchscript)
+    
+    def _set_module(model, submodule_key, module):
+        tokens = submodule_key.split('.')
+        sub_tokens = tokens[:-1]
+        cur_mod = model
+        for s in sub_tokens:
+            cur_mod = getattr(cur_mod, s)
+        setattr(cur_mod, tokens[-1], module)
+
+    for name,layer in model.named_modules():
+        if isinstance(layer, nn.Linear):
+            hasBias = layer.bias is not None
+            _set_module(model,name,CirLinear(layer.in_features,layer.out_features,args.fix_blocksize,hasBias))
+    # print("OK1")
+    load_checkpoint(model, args.initial_checkpoint,strict=False)
+    
     if args.num_classes is None:
         assert hasattr(model, 'num_classes'), 'Model must have `num_classes` attr if not set on cmd line/config.'
         args.num_classes = model.num_classes  # FIXME handle model default vs config num_classes more elegantly
@@ -558,8 +622,19 @@ def main():
         train_loss_fn = LabelSmoothingCrossEntropy(smoothing=args.smoothing).cuda()
     else:
         train_loss_fn = nn.CrossEntropyLoss().cuda()
+    train_loss_fn_kd = None
+    if args.use_kd:    
+        train_loss_fn_kd = KLLossSoft().cuda()
+    
     validate_loss_fn = nn.CrossEntropyLoss().cuda()
-
+    
+    if args.use_kd:
+        _logger.info("Verifying teacher model")
+        validate(teacher, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
+        
+    if args.initial_checkpoint != "":
+        _logger.info("Verifying initial model")
+        validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
     # setup checkpoint saver and eval metric tracking
     eval_metric = args.eval_metric
     best_metric = None
@@ -592,7 +667,7 @@ def main():
             train_metrics = train_one_epoch(
                 epoch, model, loader_train, optimizer, train_loss_fn, args,
                 lr_scheduler=lr_scheduler, saver=saver, output_dir=output_dir,
-                amp_autocast=amp_autocast, loss_scaler=loss_scaler, model_ema=model_ema, mixup_fn=mixup_fn)
+                amp_autocast=amp_autocast, loss_scaler=loss_scaler, model_ema=model_ema, mixup_fn=mixup_fn,teacher=teacher,loss_fn_kd=train_loss_fn_kd)
 
             if args.distributed and args.dist_bn in ('broadcast', 'reduce'):
                 if args.local_rank == 0:
@@ -632,7 +707,7 @@ def main():
 def train_one_epoch(
         epoch, model, loader, optimizer, loss_fn, args,
         lr_scheduler=None, saver=None, output_dir=None, amp_autocast=suppress,
-        loss_scaler=None, model_ema=None, mixup_fn=None):
+        loss_scaler=None, model_ema=None, mixup_fn=None,teacher=None,loss_fn_kd=None):
     if args.mixup_off_epoch and epoch >= args.mixup_off_epoch:
         if args.prefetcher and loader.mixup_enabled:
             loader.mixup_enabled = False
@@ -661,8 +736,48 @@ def train_one_epoch(
 
         with amp_autocast():
             output = model(input)
-            loss = loss_fn(output, target)
-
+            if args.use_kd:
+                target_t = teacher(input)
+                loss = loss_fn_kd(output, target_t)
+            else:
+                loss = loss_fn(output, target)
+        
+        reg_loss = 0
+        def cal_rot(n,m,d1,d2,b):
+            # print("m,n,d1,d2,b:",m,n,d1,d2,b)
+            min_rot = 1e8
+            d_min = int(min(d2/b,d1/b))
+            for ri in range(1,(d_min)+1):
+                for ro in range(1,(d_min)+1):
+                    d=int(ri*ro)
+                    m_p=int(n/b/d)
+                    if m*d_min<n:
+                        if d!=d_min:
+                            continue
+                        m_p=m
+                    if d>d_min or m_p>m:
+                        continue
+                    tmp=m*d1*(ri-1)/(m_p*b*d)+m*d2*(ro-1)/(m_p*b*d)
+                    if tmp<min_rot:
+                        min_rot=tmp
+                        # print("ri,ro,d,m_p",ri,ro,d,m_p)
+            # print(min_rot)
+            return min_rot
+        
+        def comm(HW,C,K,b):
+            # print("H,W,C,K,b:",H,W,C,K,b)
+            N=8192
+            return torch.tensor(cal_rot(N,HW,C,K,b)+0.0935*(HW*C*K)/(N*b))
+        
+        if args.fix_blocksize==-1 and args.fintune is False:
+            for layer in model.modules():
+                if isinstance(layer, CirLinear):
+                    alphas = layer.get_alpha_after()
+                    for i,alpha in enumerate(alphas):
+                        reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,2**i)
+            loss += args.lasso_alpha*reg_loss
+            # _logger.info("lasso_loss:"+str(args.lasso_alpha*reg_loss))
+    
         if not args.distributed:
             losses_m.update(loss.item(), input.size(0))
 
@@ -729,7 +844,29 @@ def train_one_epoch(
 
         end = time.time()
         # end for
-
+    total_blocks = 0
+    total_layers = 0
+    if args.fix_blocksize==-1 and args.fintune is False:
+        for layer in model.modules():
+            if isinstance(layer, CirLinear):
+                total_blocks +=1
+                total_layers +=1
+        for layer in model.modules():
+            if isinstance(layer, CirLinear):
+                _logger.info(layer.alphas.requires_grad)
+                alphas=layer.get_alpha_after()
+                idx = torch.argmax(alphas)
+                total_blocks += (2 **idx)-1
+                _logger.info("alphas:"+str(alphas))
+                # print("alphas:",alphas)
+                # print("tau:",layer.tau)
+                
+                if epoch > 2 and layer.tau > 1e-5:
+                    layer.set_tau(layer.tau*args.tau)
+                    _logger.info("tau:"+str(layer.tau))
+        _logger.info("avg block size:"+str(total_blocks/total_layers))            
+        if total_blocks/total_layers < args.blocksize and epoch > 5 and epoch%2==0:
+            args.lasso_alpha*=1.1
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()
 

@@ -1,4 +1,4 @@
-dataset: cifar100
+dataset: torch/cifar100
 num_classes: 100
 img_size: 32
 mean:
