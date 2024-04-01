@@ -743,6 +743,7 @@ def train_one_epoch(
                 loss = loss_fn(output, target)
         
         reg_loss = 0
+        # cal_rot and comm are used to compute latency of each layer, each block size
         def cal_rot(n,m,d1,d2,b):
             # print("m,n,d1,d2,b:",m,n,d1,d2,b)
             min_rot = 1e8
@@ -768,7 +769,7 @@ def train_one_epoch(
             # print("H,W,C,K,b:",H,W,C,K,b)
             N=8192
             return torch.tensor(cal_rot(N,HW,C,K,b)+0.0935*(HW*C*K)/(N*b))
-        
+        # add lasso loss 
         if args.fix_blocksize==-1 and args.finetune is False:
             for layer in model.modules():
                 if isinstance(layer, CirLinear):
@@ -846,7 +847,8 @@ def train_one_epoch(
         # end for
     total_blocks = 0
     total_layers = 0
-    # 
+    
+    # update lasso_alpha and tau each epoch
     if args.fix_blocksize==-1 and args.finetune is False:
         for layer in model.modules():
             if isinstance(layer, CirLinear):

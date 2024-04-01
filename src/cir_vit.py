@@ -9,15 +9,21 @@ class CirLinear(nn.Module):
         super(CirLinear,self).__init__()
         self.in_features = in_features
         self.out_features = out_features
+        # fix_block_size represents uniform block size
         self.fix_block_size = fix_block_size
+        # hard is used for finetune
         self.hard = False
         self.tau = 1.0
+        # d1 = input.shape[0] used for compute the latency
         self.d1 = None
+        # search_space = [2,4,8,16] or [16], block size=1 always exists
         self.search_space = []
-        search=2
+        search=16
+        
         while search<=16 and in_features %search ==0 and out_features %search ==0:
             self.search_space.append(search)
             search *= 2
+        # weight for each block size
         self.alphas = nn.Parameter(torch.ones(len(self.search_space)+1), requires_grad=True)
         self.weight = nn.Parameter(torch.zeros(out_features,in_features))
         self.bias = None
@@ -35,7 +41,7 @@ class CirLinear(nn.Module):
             bound = 1 / math.sqrt(fan_in) if fan_in > 0 else 0
             init.uniform_(self.bias, -bound, bound)
             
-    # fix_block_size表示uniform block size, hard表示nas后固定路径
+    # weight = \sum alpha[i]*W[i], alpha need to be softmaxed
     def trans_to_cir(self,device):
         search_space = self.search_space
         if self.fix_block_size!=-1:
@@ -76,6 +82,7 @@ class CirLinear(nn.Module):
             weight=weight+alphas_after[idx+1]*w
         return weight
     
+    # get the alpha after softmax, if hard, fix the block size
     def get_alpha_after(self):
         logits = self.alphas
         dim=-1
