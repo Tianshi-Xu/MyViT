@@ -1,0 +1,14 @@
+2024-04-01 14:00:34,538 - train - INFO - Training with a single process on 1 GPUs.
+2024-04-01 14:00:56,341 - train - INFO - Model vit_7_4_32 created, param count:3717016
+2024-04-01 14:00:56,374 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-01 14:00:56,384 - train - INFO - Scheduled epochs: 160
+2024-04-01 14:00:59,216 - train - INFO - Verifying teacher model
+2024-04-01 14:01:00,720 - train - INFO - Test: [   0/39]  Time: 1.502 (1.502)  Loss:  0.3433 (0.3433)  Acc@1: 93.7500 (93.7500)  Acc@5: 100.0000 (100.0000)
+2024-04-01 14:01:01,661 - train - INFO - Test: [  39/39]  Time: 0.082 (0.061)  Loss:  0.3740 (0.3449)  Acc@1: 93.7500 (93.5400)  Acc@5: 100.0000 (99.7600)
+2024-04-01 14:01:01,662 - train - INFO - Verifying initial model
+2024-04-01 14:01:10,235 - train - INFO - Test: [   0/39]  Time: 8.572 (8.572)  Loss:  2.2363 (2.2363)  Acc@1: 21.4844 (21.4844)  Acc@5: 59.7656 (59.7656)
+2024-04-01 14:07:07,582 - train - INFO - Test: [  39/39]  Time: 9.287 (9.148)  Loss:  2.1855 (2.2366)  Acc@1: 31.2500 (20.7700)  Acc@5: 62.5000 (59.5000)
+2024-04-01 14:07:19,352 - train - INFO - Train: 0 [   0/195 (  0%)]  Loss:  2.341462 (2.3415)  Time: 11.753s,   21.78/s  (11.753s,   21.78/s)  LR: 1.000e-05  Data: 0.821 (0.821)
+2024-04-01 14:16:20,766 - train - INFO - Train: 0 [  50/195 ( 26%)]  Loss:  2.333050 (2.3355)  Time: 11.113s,   23.04/s  (10.846s,   23.60/s)  LR: 1.000e-05  Data: 0.007 (0.033)
+2024-04-01 14:25:22,038 - train - INFO - Train: 0 [ 100/195 ( 52%)]  Loss:  2.319899 (2.3290)  Time: 9.703s,   26.38/s  (10.836s,   23.63/s)  LR: 1.000e-05  Data: 0.023 (0.023)
+2024-04-01 14:34:23,908 - train - INFO - Train: 0 [ 150/195 ( 77%)]  Loss:  2.305429 (2.3240)  Time: 10.699s,   23.93/s  (10.836s,   23.62/s)  LR: 1.000e-05  Data: 0.030 (0.020)

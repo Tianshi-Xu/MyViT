@@ -47,7 +47,7 @@ class CirLinear(nn.Module):
             # print(alphas_after)
         else:
             alphas_after = self.get_alpha_after()
-        weight=(alphas_after[0]*self.weight)
+        weight=(alphas_after[0]*self.weight).to(device)
         for idx,block_size in enumerate(search_space):
             if torch.abs(alphas_after[idx+1]) <1e-6:
                 continue
@@ -74,7 +74,6 @@ class CirLinear(nn.Module):
             # print(w[0,0,:,:])
             w = w.permute(0,2,1,3).reshape(self.out_features,self.in_features)
             weight=weight+alphas_after[idx+1]*w
-            
         return weight
     
     def get_alpha_after(self):

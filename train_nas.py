@@ -713,7 +713,7 @@ def train_one_epoch(
             loader.mixup_enabled = False
         elif mixup_fn is not None:
             mixup_fn.mixup_enabled = False
-
+    
     second_order = hasattr(optimizer, 'is_second_order') and optimizer.is_second_order
     batch_time_m = AverageMeter()
     data_time_m = AverageMeter()
@@ -769,7 +769,7 @@ def train_one_epoch(
             N=8192
             return torch.tensor(cal_rot(N,HW,C,K,b)+0.0935*(HW*C*K)/(N*b))
         
-        if args.fix_blocksize==-1 and args.fintune is False:
+        if args.fix_blocksize==-1 and args.finetune is False:
             for layer in model.modules():
                 if isinstance(layer, CirLinear):
                     alphas = layer.get_alpha_after()
@@ -846,7 +846,8 @@ def train_one_epoch(
         # end for
     total_blocks = 0
     total_layers = 0
-    if args.fix_blocksize==-1 and args.fintune is False:
+    # 
+    if args.fix_blocksize==-1 and args.finetune is False:
         for layer in model.modules():
             if isinstance(layer, CirLinear):
                 total_blocks +=1
@@ -862,7 +863,7 @@ def train_one_epoch(
                 # print("tau:",layer.tau)
                 
                 if epoch > 2 and layer.tau > 1e-5:
-                    layer.set_tau(layer.tau*args.tau)
+                    layer.tau=(layer.tau*args.tau)
                     _logger.info("tau:"+str(layer.tau))
         _logger.info("avg block size:"+str(total_blocks/total_layers))            
         if total_blocks/total_layers < args.blocksize and epoch > 5 and epoch%2==0:
