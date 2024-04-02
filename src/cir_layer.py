@@ -148,7 +148,7 @@ class CirConv2d(nn.Module):
             tmp = self.weight.view(q,block_size, p, block_size, self.kernel_size,self.kernel_size)
             tmp = tmp.permute(0,2,1,3,4,5)
             w = torch.zeros(q,p,block_size,block_size,self.kernel_size,self.kernel_size).to(device)
-            print(tmp[0,0,:,:,0,0])
+            # print(tmp[0,0,:,:,0,0])
             tmp_compress = torch.zeros(q,p,block_size,self.kernel_size,self.kernel_size).to(device)
             for i in range(block_size):
                 diagonal = torch.diagonal(tmp, offset=i, dim1=2, dim2=3)
@@ -160,7 +160,7 @@ class CirConv2d(nn.Module):
                 tmp_compress[:,:,i,:,:] = mean_of_diagonal
             for i in range(block_size):
                 w[:,:,:,i,:,:] = tmp_compress.roll(shifts=i, dims=2)
-            print(w[0,0,:,:,0,0])
+            # print(w[0,0,:,:,0,0])
             w = w.permute(0,2,1,3,4,5)
             w = w.reshape(q*block_size,p*block_size,self.kernel_size,self.kernel_size)
             weight=weight+alphas_after[idx]*w
@@ -175,7 +175,7 @@ class CirConv2d(nn.Module):
         return F.softmax(logits/self.tau, dim=dim)
     
     def forward(self, x):
-        weight=self.trans_to_cir()
+        weight=self.trans_to_cir(x.device)
         x = F.conv2d(x,weight,None,self.stride,self.padding)
         return x
 
@@ -184,6 +184,71 @@ class CirConv2d(nn.Module):
     
     def extra_repr(self) -> str:
         return f'in_features={self.in_features}, out_features={self.out_features}, kernel_size={self.kernel_size}, fix_block_size={self.fix_block_size}, search_space={self.search_space}'
+
+class CirBatchNorm2d(nn.BatchNorm2d):
+    def __init__(self, num_features, eps=1e-5, momentum=0.1, affine=True, track_running_stats=True,block_size=-1):
+        super(CirBatchNorm2d, self).__init__(num_features, eps=eps, momentum=momentum, affine=affine, track_running_stats=track_running_stats)
+        self.block_size = block_size
+    
+    def forward(self, input):
+        self._check_input_dim(input)
+        # print("numfeatures:",self.num_features)
+        # print("block_size:",self.block_size)
+        if self.block_size==-1:
+            tmp = self.weight
+        else:
+            tmp = self.weight.reshape(self.num_features//self.block_size,self.block_size)
+            tmp = tmp.mean(dim=1,keepdim=True)
+            tmp = tmp.repeat(1,self.block_size)
+            tmp = tmp.reshape(-1)
+        # exponential_average_factor is set to self.momentum
+        # (when it is available) only so that it gets updated
+        # in ONNX graph when this node is exported to ONNX.
+        if self.momentum is None:
+            exponential_average_factor = 0.0
+        else:
+            exponential_average_factor = self.momentum
+
+        if self.training and self.track_running_stats:
+            # TODO: if statement only here to tell the jit to skip emitting this when it is None
+            if self.num_batches_tracked is not None:  # type: ignore[has-type]
+                self.num_batches_tracked.add_(1)  # type: ignore[has-type]
+                if self.momentum is None:  # use cumulative moving average
+                    exponential_average_factor = 1.0 / float(self.num_batches_tracked)
+                else:  # use exponential moving average
+                    exponential_average_factor = self.momentum
+
+        r"""
+        Decide whether the mini-batch stats should be used for normalization rather than the buffers.
+        Mini-batch stats are used in training mode, and in eval mode when buffers are None.
+        """
+        if self.training:
+            bn_training = True
+        else:
+            bn_training = (self.running_mean is None) and (self.running_var is None)
+
+        r"""
+        Buffers are only updated if they are to be tracked and we are in training mode. Thus they only need to be
+        passed when the update should occur (i.e. in training mode when they are tracked), or when buffer stats are
+        used for normalization (i.e. in eval mode when buffers are not None).
+        """
+        return F.batch_norm(
+            input,
+            # If buffers are not to be tracked, ensure that they won't be updated
+            self.running_mean
+            if not self.training or self.track_running_stats
+            else None,
+            self.running_var if not self.training or self.track_running_stats else None,
+            tmp,
+            self.bias,
+            bn_training,
+            exponential_average_factor,
+            self.eps,
+        )
+
+    def extra_repr(self) -> str:
+        return f'num_features={self.num_features}, eps={self.eps}, momentum={self.momentum}, affine={self.affine}, track_running_stats={self.track_running_stats}, block_size={self.block_size}'
+
 
     
 if __name__ == '__main__':
