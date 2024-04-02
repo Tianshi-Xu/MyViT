@@ -135,7 +135,7 @@ class CirConv2d(nn.Module):
             else:
                 alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
         else:
-            alphas_after = self.get_alpha_after()
+            alphas_after = self.get_alphas_after()
         # weight=torch.zeros(self.out_features,self.in_feat*ures, self.kernel_size,self.kernel_size).cuda()
         weight=alphas_after[0]*self.weight
         for idx,block_size in enumerate(search_space):
@@ -166,7 +166,7 @@ class CirConv2d(nn.Module):
             weight=weight+alphas_after[idx]*w
         return weight
     
-    def get_alpha_after(self):
+    def get_alphas_after(self):
         logits = self.alphas
         dim=-1
         if self.hard:
@@ -255,7 +255,7 @@ if __name__ == '__main__':
     circonv = CirConv2d(4,4,1,1,feature_size=4)
     x = torch.randn(1,4,4,4)
     circonv.alphas.data = torch.tensor([0.0,0.0,1000000.0])
-    print(circonv.get_alpha_after())
+    print(circonv.get_alphas_after())
     print(circonv.get_final_block_size())
     print(circonv)
     y = circonv(x)

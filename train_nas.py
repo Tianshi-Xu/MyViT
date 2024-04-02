@@ -41,7 +41,7 @@ from timm.scheduler import create_scheduler
 from timm.utils import ApexScaler, NativeScaler
 
 from src import *
-from src.cir_layer import CirLinear
+from src.cir_layer import CirLinear,CirConv2d,CirBatchNorm2d
 from src.utils.utils import KLLossSoft
 try:
     from apex import amp
@@ -369,7 +369,8 @@ def fix_model_by_budget(model, budget):
                 _logger.info("max_alpha:"+str(info[2]))
                 idx = torch.argmax(info[1])
                 layer = info[0]
-                total_blocks += layer.search_space[idx]
+                total_blocks += layer.search_space[idx]-1
+                layer.fix_block_size = layer.search_space[idx]
                 layer.hard=True
             else:
                 break
@@ -381,6 +382,7 @@ def fix_model_by_budget(model, budget):
                     layer.alphas[0] =1e10
                     for idx in range(1,layer.alphas.size(0)):
                         layer.alphas[idx] = 0
+                    layer.fix_block_size = layer.search_space[0]
                     layer.hard=True
         block_sizes=[]
         for layer in model.modules():
@@ -681,7 +683,8 @@ def main():
     if args.use_kd:
         _logger.info("Verifying teacher model")
         validate(teacher, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
-        
+    if args.finetune and args.fix_blocksize==-1:
+        fix_model_by_budget(model, args.blocksize)
     if args.initial_checkpoint != "":
         _logger.info("Verifying initial model")
         validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
@@ -710,8 +713,6 @@ def main():
     with open(os.path.join(output_dir, 'model.txt'), 'w') as f:
             f.write(str(model))
     try:
-        if args.finetune and args.fix_blocksize==-1:
-            fix_model_by_budget(model, args.blocksize)
         for epoch in range(start_epoch, num_epochs):
             if args.distributed and hasattr(loader_train.sampler, 'set_epoch'):
                 loader_train.sampler.set_epoch(epoch)
