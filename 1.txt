@@ -1,72 +1,19 @@
-tensor([[[ 1.,  2.,  3.],
-         [ 4.,  5.,  6.],
-         [ 7.,  8.,  9.]],
-
-        [[10., 11., 12.],
-         [13., 14., 15.],
-         [16., 17., 18.]],
-
-        [[19., 20., 21.],
-         [22., 23., 24.],
-         [25., 26., 27.]],
-
-        [[28., 29., 30.],
-         [31., 32., 33.],
-         [34., 35., 36.]]])
-----------
-tensor([[[28., 29., 30.],
-         [31., 32., 33.],
-         [34., 35., 36.]],
-
-        [[ 1.,  2.,  3.],
-         [ 4.,  5.,  6.],
-         [ 7.,  8.,  9.]],
-
-        [[10., 11., 12.],
-         [13., 14., 15.],
-         [16., 17., 18.]],
-
-        [[19., 20., 21.],
-         [22., 23., 24.],
-         [25., 26., 27.]]])
-tensor([[[ 0.,  0.,  0.,  0.],
-         [ 0.,  1.,  2.,  0.],
-         [ 0.,  3.,  4.,  0.],
-         [ 0.,  0.,  0.,  0.]],
-
-        [[ 0.,  0.,  0.,  0.],
-         [ 0.,  5.,  6.,  0.],
-         [ 0.,  7.,  8.,  0.],
-         [ 0.,  0.,  0.,  0.]],
-
-        [[ 0.,  0.,  0.,  0.],
-         [ 0.,  9., 10.,  0.],
-         [ 0., 11., 12.,  0.],
-         [ 0.,  0.,  0.,  0.]],
-
-        [[ 0.,  0.,  0.,  0.],
-         [ 0., 13., 14.,  0.],
-         [ 0., 15., 16.,  0.],
-         [ 0.,  0.,  0.,  0.]]])
-tensor([[[3536., 3400.],
-         [3128., 2992.]],
-
-        [[2672., 2536.],
-         [2264., 2128.]],
-
-        [[2384., 2248.],
-         [1976., 1840.]],
-
-        [[2672., 2536.],
-         [2264., 2128.]]], grad_fn=<SqueezeBackward1>)
-result: tensor([[[3536., 3400.],
-         [3128., 2992.]],
-
-        [[2672., 2536.],
-         [2264., 2128.]],
-
-        [[2384., 2248.],
-         [1976., 1840.]],
-
-        [[2672., 2536.],
-         [2264., 2128.]]])
+dict_keys(['epoch', 'arch', 'state_dict', 'optimizer', 'version', 'args', 'amp_scaler', 'metric'])
+tiny_cir_nas_mobilenetv2
+old key, old value: features.2.conv.0.alphas tensor([1.1260, 0.8740], device='cuda:0')
+old key, old value: features.2.conv.6.alphas tensor([1.0842, 0.9158], device='cuda:0')
+old key, old value: features.3.conv.0.alphas tensor([1.0460, 0.9540], device='cuda:0')
+old key, old value: features.3.conv.6.alphas tensor([1.0375, 0.9625], device='cuda:0')
+old key, old value: features.4.conv.0.alphas tensor([1.0978, 0.9022], device='cuda:0')
+old key, old value: features.4.conv.6.alphas tensor([1.5181, 0.4859, 0.3123, 1.2815], device='cuda:0')
+old key, old value: features.5.conv.0.alphas tensor([0.9823, 1.0177], device='cuda:0')
+old key, old value: features.5.conv.6.alphas tensor([0.9858, 1.0142], device='cuda:0')
+old key, old value: features.6.conv.0.alphas tensor([0.9892, 1.0108], device='cuda:0')
+old key, old value: features.6.conv.6.alphas tensor([0.9779, 1.0220], device='cuda:0')
+old key, old value: features.7.conv.0.alphas tensor([1.4772, 0.4324, 0.3289, 1.2397], device='cuda:0')
+old key, old value: features.8.conv.0.alphas tensor([ 1.3841,  0.6302, -0.4947,  1.6113], device='cuda:0')
+old key, old value: features.8.conv.6.alphas tensor([ 1.4557,  0.4584, -0.4112,  1.6897], device='cuda:0')
+old key, old value: features.9.conv.0.alphas tensor([ 1.3935,  0.5934, -0.5246,  1.6147], device='cuda:0')
+old key, old value: features.9.conv.6.alphas tensor([ 1.3710,  0.6673, -0.4342,  1.6192], device='cuda:0')
+old key, old value: features.10.conv.0.alphas tensor([ 1.4093,  0.5994, -0.4586,  1.6189], device='cuda:0')
+old key, old value: features.10.conv.6.alphas tensor([ 1.3524,  0.8305, -0.4998,  1.5969], device='cuda:0')

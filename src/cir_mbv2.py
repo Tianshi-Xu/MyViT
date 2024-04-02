@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torch
 import math
 from .cir_layer import CirConv2d,CirBatchNorm2d
 try:

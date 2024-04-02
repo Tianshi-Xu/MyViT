@@ -25,8 +25,8 @@ cutmix: 1.0
 reprob: 0.25
 remode: pixel
 amp: True
-batch_size: 128
-lr: 55e-5
+batch_size: 512
+lr: 75e-5
 min_lr: 1e-5
 sched: cosine
 weight_decay: 6e-2
@@ -36,7 +36,7 @@ warmup_epochs: 10
 warmup_lr: 0.00001
 opt: adamw
 smoothing: 0.1
-workers: 8
+workers: 4
 use_kd: true
 kd_alpha: 4
 seed: 3407
@@ -45,9 +45,9 @@ finetune: False
 lasso_alpha: 0
 tau: 1.0
 blocksize: 1
-fix_blocksize: 8
-log_name: vit_c100_fixb8_2
-teacher: vit_7_4_32_c100
-teacher_checkpoint: /home/xts/code/njeans/Compact-Transformers/output/train/20240331-114924-vit_7_4_32_c100-32/model_best.pth.tar
+fix_blocksize: 2
+log_name: mbv2_c100_fixb2
+teacher: c100_mobilenetv2
+teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c100.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
-initial_checkpoint: /home/xts/code/njeans/Compact-Transformers/output/train/20240331-114924-vit_7_4_32_c100-32/model_best.pth.tar
+initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c100.pth.tar
