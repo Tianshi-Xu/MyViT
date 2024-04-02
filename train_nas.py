@@ -41,7 +41,7 @@ from timm.scheduler import create_scheduler
 from timm.utils import ApexScaler, NativeScaler
 
 from src import *
-from src.cir_vit import CirLinear
+from src.cir_layer import CirLinear
 from src.utils.utils import KLLossSoft
 try:
     from apex import amp
@@ -421,7 +421,7 @@ def main():
         for s in sub_tokens:
             cur_mod = getattr(cur_mod, s)
         setattr(cur_mod, tokens[-1], module)
-
+    # 替换linear层为cirLinear
     for name,layer in model.named_modules():
         if isinstance(layer, nn.Linear):
             hasBias = layer.bias is not None
@@ -775,7 +775,7 @@ def train_one_epoch(
                 if isinstance(layer, CirLinear):
                     alphas = layer.get_alpha_after()
                     for i,alpha in enumerate(alphas):
-                        reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,2**i)
+                        reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[i])
             loss += args.lasso_alpha*reg_loss
             # _logger.info("lasso_loss:"+str(args.lasso_alpha*reg_loss))
     
@@ -859,7 +859,7 @@ def train_one_epoch(
                 _logger.info(layer.alphas.requires_grad)
                 alphas=layer.get_alpha_after()
                 idx = torch.argmax(alphas)
-                total_blocks += (2 **idx)-1
+                total_blocks += layer.search_space[idx]-1
                 _logger.info("alphas:"+str(alphas))
                 # print("alphas:",alphas)
                 # print("tau:",layer.tau)
@@ -870,6 +870,7 @@ def train_one_epoch(
         _logger.info("avg block size:"+str(total_blocks/total_layers))            
         if total_blocks/total_layers < args.blocksize and epoch > 5 and epoch%2==0:
             args.lasso_alpha*=1.1
+            _logger.info("lasso_alpha:"+str(args.lasso_alpha))
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()
 
