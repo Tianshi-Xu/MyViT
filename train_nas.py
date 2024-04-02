@@ -345,6 +345,53 @@ def create_teacher_model(args):
     teacher = teacher.eval()
     return teacher
 
+def fix_model_by_budget(model, budget):
+    _logger.info("budget:"+str(budget))
+    with torch.no_grad():
+        total_blocks = 0
+        total_layers = 0
+        layer_info = []
+        for layer in model.modules():
+            if isinstance(layer, CirConv2d):
+                total_blocks +=1
+                total_layers +=1
+                _logger.info(layer.alphas.requires_grad)
+                alphas=layer.get_alphas_after()
+                max_alpha = torch.max(alphas)
+
+                layer_info.append((layer, alphas, max_alpha))
+                _logger.info("alphas:"+str(alphas))
+        _logger.info("total_layers:"+str(total_layers))
+        
+        layer_info.sort(key=lambda x: x[2], reverse=True)
+        for info in layer_info:
+            if total_blocks // total_layers < budget:
+                _logger.info("max_alpha:"+str(info[2]))
+                idx = torch.argmax(info[1])
+                layer = info[0]
+                total_blocks += layer.search_space[idx]
+                layer.hard=True
+            else:
+                break
+        _logger.info("avg block size:"+str(total_blocks//total_layers))     
+        
+        for layer in model.modules():
+            if isinstance(layer, CirConv2d):
+                if not layer.hard:
+                    layer.alphas[0] =1e10
+                    for idx in range(1,layer.alphas.size(0)):
+                        layer.alphas[idx] = 0
+                    layer.hard=True
+        block_sizes=[]
+        for layer in model.modules():
+            if isinstance(layer, CirConv2d):
+                block_sizes.append(layer.get_final_block_size())
+            elif isinstance(layer,CirBatchNorm2d):
+                layer.block_size = block_sizes[-1]
+                _logger.info(str(layer))
+        _logger.info("block_size:"+str(block_sizes))
+
+
 def main():
     setup_default_logging()
     args, args_text = _parse_args()
@@ -663,6 +710,8 @@ def main():
     with open(os.path.join(output_dir, 'model.txt'), 'w') as f:
             f.write(str(model))
     try:
+        if args.finetune and args.fix_blocksize==-1:
+            fix_model_by_budget(model, args.blocksize)
         for epoch in range(start_epoch, num_epochs):
             if args.distributed and hasattr(loader_train.sampler, 'set_epoch'):
                 loader_train.sampler.set_epoch(epoch)
