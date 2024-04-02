@@ -18,7 +18,7 @@ class CirLinear(nn.Module):
         self.d1 = None
         # search_space = [2,4,8,16] or [16], block size=1 always exists
         self.search_space = [1]
-        search=16
+        search=2
         
         while search<=16 and in_features %search ==0 and out_features %search ==0:
             self.search_space.append(search)
@@ -46,8 +46,8 @@ class CirLinear(nn.Module):
         search_space = self.search_space
         # if fix_block_size, directly use the block size
         if self.fix_block_size!=-1:
-            if 2**len(search_space) < self.fix_block_size:
-                alphas_after=torch.tensor([1 if i==len(search_space) else 0 for i in range(self.alphas.shape[-1])]).to(device)
+            if search_space[-1] < self.fix_block_size:
+                alphas_after=torch.tensor([1 if i==int(math.log2(search_space[-1])) else 0 for i in range(self.alphas.shape[-1])]).to(device)
             else:
                 alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
         else:
