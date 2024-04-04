@@ -17,4 +17,4 @@
 # fix block size
 # CUDA_VISIBLE_DEVICES=4 python train_nas.py -c configs/datasets/MBV2/cifar100_nas.yml --model c100_nas_mobilenetv2 /home/xts/code/dataset/cifar100/
 # finetune tiny mbv2
-CUDA_VISIBLE_DEVICES=5 python train_nas.py -c configs/datasets/MBV2/tiny_finetune.yml --model tiny_nas_mobilenetv2 /home/xts/code/dataset/tiny-imagenet-200/
+CUDA_VISIBLE_DEVICES=1 python train_nas.py -c configs/datasets/MBV2/tiny_nas.yml --model tiny_nas_mobilenetv2 /home/xts/code/dataset/tiny-imagenet-200/
