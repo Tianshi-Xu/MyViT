@@ -30,7 +30,7 @@ lr: 55e-5
 min_lr: 1e-5
 sched: cosine
 weight_decay: 6e-2
-epochs: 300
+epochs: 150
 cooldown_epochs: 10
 warmup_epochs: 10
 warmup_lr: 0.00001
@@ -46,16 +46,16 @@ checkpoint_hist: 5
 # lasso_alpha 1e-5 for CIFAR /1e-4 for TinyImageNet
 # tau 0.99 is good
 finetune: False
-lasso_alpha: 0
-tau: 1
-blocksize: 1
-fix_blocksize: 4
-log_name: vit_c10_fixb4
+lasso_alpha: 1e-5
+tau: 0.99
+blocksize: 8
+fix_blocksize: -1
+log_name: vit_c10_normal
 teacher: vit_7_4_32
 teacher_checkpoint: /home/xts/code/njeans/Compact-Transformers/output/train/20240331-114246-vit_7_4_32-32/model_best.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
-# initial_checkpoint: /home/xts/code/njeans/Compact-Transformers/output/train/20240331-114246-vit_7_4_32-32/model_best.pth.tar
+initial_checkpoint: /home/xts/code/njeans/Compact-Transformers/output/train/20240331-114246-vit_7_4_32-32/model_best.pth.tar
 # b8
 # resume: "/home/xts/code/njeans/Compact-Transformers/output/train/20240331-152914-vit_7_4_32-32/model_best.pth.tar"
 # b4
-resume: "/home/xts/code/njeans/Compact-Transformers/output/train/20240331-153214-vit_7_4_32-32/model_best.pth.tar"
+# resume: "/home/xts/code/njeans/Compact-Transformers/output/train/20240331-153214-vit_7_4_32-32/model_best.pth.tar"

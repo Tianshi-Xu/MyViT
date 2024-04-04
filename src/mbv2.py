@@ -155,3 +155,8 @@ def tiny_mobilenetv2(**kwargs):
 def c100_mobilenetv2(**kwargs):
     model=mobilenet(100,32,1)
     return model
+
+@register_model
+def c10_mobilenetv2(**kwargs):
+    model=mobilenet(10,32,1)
+    return model

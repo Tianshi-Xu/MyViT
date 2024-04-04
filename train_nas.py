@@ -921,7 +921,7 @@ def train_one_epoch(
                     layer.tau=(layer.tau*args.tau)
                     _logger.info("tau:"+str(layer.tau))
         _logger.info("avg block size:"+str(total_blocks/total_layers))            
-        if total_blocks/total_layers < args.blocksize and epoch > 5 and epoch%2==0:
+        if total_blocks/total_layers < args.blocksize and epoch > 5 and epoch%3==0:
             args.lasso_alpha*=1.1
             _logger.info("lasso_alpha:"+str(args.lasso_alpha))
     if hasattr(optimizer, 'sync_lookahead'):
