@@ -23,6 +23,7 @@ class CirLinear(nn.Module):
         while search<=16 and in_features %search ==0 and out_features %search ==0:
             self.search_space.append(search)
             search *= 2
+        
         # weight for each block size
         self.alphas = nn.Parameter(torch.ones(len(self.search_space)), requires_grad=True)
         self.weight = nn.Parameter(torch.zeros(out_features,in_features))
@@ -51,7 +52,7 @@ class CirLinear(nn.Module):
             else:
                 alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
         else:
-            alphas_after = self.get_alpha_after()
+            alphas_after = self.get_alphas_after()
         weight=(alphas_after[0]*self.weight).to(device)
         for idx,block_size in enumerate(search_space):
             if idx==0:
@@ -83,7 +84,7 @@ class CirLinear(nn.Module):
         return weight
     
     # get the alpha after softmax, if hard, fix the block size
-    def get_alpha_after(self):
+    def get_alphas_after(self):
         logits = self.alphas
         dim=-1
         if self.hard:

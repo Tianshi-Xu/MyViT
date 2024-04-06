@@ -352,7 +352,7 @@ def fix_model_by_budget(model, budget):
         total_layers = 0
         layer_info = []
         for layer in model.modules():
-            if isinstance(layer, CirConv2d):
+            if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
                 total_blocks +=1
                 total_layers +=1
                 _logger.info(layer.alphas.requires_grad)
@@ -377,7 +377,7 @@ def fix_model_by_budget(model, budget):
         _logger.info("avg block size:"+str(total_blocks//total_layers))     
         
         for layer in model.modules():
-            if isinstance(layer, CirConv2d):
+            if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
                 if not layer.hard:
                     layer.alphas[0] =1e10
                     for idx in range(1,layer.alphas.size(0)):
@@ -826,7 +826,7 @@ def train_one_epoch(
         if args.fix_blocksize==-1 and args.finetune is False:
             for layer in model.modules():
                 if isinstance(layer, CirLinear):
-                    alphas = layer.get_alpha_after()
+                    alphas = layer.get_alphas_after()
                     for i,alpha in enumerate(alphas):
                         reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[i])
             loss += args.lasso_alpha*reg_loss
@@ -910,7 +910,7 @@ def train_one_epoch(
         for layer in model.modules():
             if isinstance(layer, CirLinear):
                 _logger.info(layer.alphas.requires_grad)
-                alphas=layer.get_alpha_after()
+                alphas=layer.get_alphas_after()
                 idx = torch.argmax(alphas)
                 total_blocks += layer.search_space[idx]-1
                 _logger.info("alphas:"+str(alphas))
