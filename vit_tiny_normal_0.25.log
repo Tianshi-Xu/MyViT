@@ -1,0 +1,4 @@
+2024-04-06 20:31:19,469 - train - INFO - Training with a single process on 1 GPUs.
+2024-04-06 20:31:28,360 - train - INFO - Model vit_9_12_64 created, param count:2766144
+2024-04-06 20:31:28,374 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-06 20:31:28,375 - train - INFO - Scheduled epochs: 160

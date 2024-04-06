@@ -159,3 +159,8 @@ def tiny_nas_mobilenetv2(fix_block_size=-1,**kwargs):
 def c100_nas_mobilenetv2(fix_block_size=-1,**kwargs):
     model=cir_nas_mobilenet(100,32,1,fix_block_size=fix_block_size)
     return model
+
+@register_model
+def c10_nas_mobilenetv2(fix_block_size=-1,**kwargs):
+    model=cir_nas_mobilenet(10,32,1,fix_block_size=fix_block_size)
+    return model

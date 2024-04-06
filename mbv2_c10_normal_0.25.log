@@ -1,0 +1,13 @@
+2024-04-06 20:28:12,592 - train - INFO - Training with a single process on 1 GPUs.
+2024-04-06 20:28:14,982 - train - INFO - Model c10_nas_mobilenetv2 created, param count:2236843
+2024-04-06 20:28:15,006 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-06 20:28:15,006 - train - INFO - Scheduled epochs: 160
+2024-04-06 20:28:16,556 - train - INFO - Verifying teacher model
+2024-04-06 20:28:19,391 - train - INFO - Test: [   0/39]  Time: 2.835 (2.835)  Loss:  0.3931 (0.3931)  Acc@1: 94.1406 (94.1406)  Acc@5: 100.0000 (100.0000)
+2024-04-06 20:28:20,615 - train - INFO - Test: [  39/39]  Time: 0.671 (0.101)  Loss:  0.4514 (0.3957)  Acc@1: 93.7500 (94.7100)  Acc@5: 100.0000 (99.8500)
+2024-04-06 20:28:20,615 - train - INFO - Verifying initial model
+2024-04-06 20:28:21,658 - train - INFO - Test: [   0/39]  Time: 1.041 (1.041)  Loss:  3.0508 (3.0508)  Acc@1:  8.9844 ( 8.9844)  Acc@5: 50.3906 (50.3906)
+2024-04-06 20:28:50,900 - train - INFO - Test: [  39/39]  Time: 0.742 (0.757)  Loss:  2.7676 (3.0267)  Acc@1: 18.7500 (10.0000)  Acc@5: 75.0000 (50.0000)
+2024-04-06 20:28:55,108 - train - INFO - Train: 0 [   0/195 (  0%)]  Loss:  2.103306 (2.1033)  Time: 4.203s,   60.92/s  (4.203s,   60.92/s)  LR: 1.000e-05  Data: 0.701 (0.701)
+2024-04-06 20:29:52,031 - train - INFO - Train: 0 [  50/195 ( 26%)]  Loss:  2.023772 (2.1345)  Time: 1.169s,  218.91/s  (1.198s,  213.61/s)  LR: 1.000e-05  Data: 0.011 (0.025)
+2024-04-06 20:30:47,843 - train - INFO - Train: 0 [ 100/195 ( 52%)]  Loss:  2.041591 (2.0846)  Time: 1.090s,  234.81/s  (1.158s,  221.12/s)  LR: 1.000e-05  Data: 0.011 (0.018)
