@@ -31,10 +31,12 @@ class PruneConv2d(nn.Module):
                 for i in range(int(math.floor(K/C))):
                     diag = torch.diagonal(self.mask[i*C:(i+1)*C,:,:,:],diag_idx,0,1)
                     diag.zero_()
-                    diag2 = torch.diagonal(self.mask[i*C:(i+1)*C,:,:,:],-diag_idx,0,1)
+                    diag2 = torch.diagonal(self.mask[i*C:(i+1)*C,:,:,:],-C+diag_idx,0,1)
                     diag2.zero_()
-                    diag_idx-=1
+                diag_idx-=1
                 current_ratio = 1-torch.sum(self.mask).item()/torch.numel(self.mask)
+            print(self)
+            print("current_ratio",current_ratio)
         else:
             diag_idx=K-1
             while current_ratio<self.prune_ratio: 
@@ -45,7 +47,9 @@ class PruneConv2d(nn.Module):
                     diag2.zero_()
                 diag_idx-=1
                 current_ratio = 1-torch.sum(self.mask).item()/torch.numel(self.mask)
-        print("current_ratio",current_ratio)
+            print(self)
+            print("current_ratio",current_ratio)
+        self.prune_ratio = current_ratio
     
     def forward(self, x):
         weight=self.weight*self.mask.to(x.device)
@@ -57,6 +61,6 @@ class PruneConv2d(nn.Module):
 
 
 if __name__ == '__main__':
-    conv = PruneConv2d(96, 16, 1, 1,0.5)
-    x = torch.randn(1,96,32,32)
+    conv = PruneConv2d(16, 96, 1, 1,0.5)
+    x = torch.randn(1,16,32,32)
     y = conv(x)

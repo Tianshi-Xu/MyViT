@@ -25,6 +25,7 @@ class CirLinear(nn.Module):
         while search<=16 and in_features %search ==0 and out_features %search ==0:
             self.search_space.append(search)
             search *= 2
+        
         # weight for each block size
         self.alphas = nn.Parameter(torch.ones(len(self.search_space)), requires_grad=True)
         self.weight = nn.Parameter(torch.zeros(out_features,in_features))
