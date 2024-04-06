@@ -47,9 +47,9 @@ finetune: False
 lasso_alpha: 0
 tau: 1.0
 blocksize: 1
-fix_blocksize: 2
-log_name: mbv2_tiny_fixb2
+fix_blocksize: 8
+log_name: mbv2_tiny_fixb8
 teacher: tiny_mobilenetv2
-teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c100.pth.tar
+teacher_checkpoint: /home/xts/code/njeans/MyViT/output/train/20240402-233708-tiny_mobilenetv2-64/model_best.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
-initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c100.pth.tar
+initial_checkpoint: /home/xts/code/njeans/MyViT/output/train/20240402-233708-tiny_mobilenetv2-64/model_best.pth.tar

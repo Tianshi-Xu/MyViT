@@ -4,16 +4,16 @@ train_split: train
 val_split: valid
 img_size: 64
 mean:
-    - 0.480
-    - 0.448
-    - 0.397
+    - 0.485
+    - 0.456
+    - 0.406
 std:
-    - 0.272
-    - 0.265
-    - 0.274
-crop_pct: 0.9
+    - 0.229
+    - 0.224
+    - 0.225
+crop_pct: 1.0
 scale:
-    - 0.08
+    - 0.8
     - 1.0
 interpolation: bicubic
 train_interpolation: random
@@ -27,17 +27,17 @@ cutmix: 1.0
 reprob: 0.25
 remode: pixel
 amp: True
-batch_size: 256
-lr: 0.0005
-min_lr: 0.00001
+batch_size: 128
+lr: 55e-5
+min_lr: 1e-5
 sched: cosine
-weight_decay: 5e-2
+weight_decay: 6e-2
 epochs: 300
 cooldown_epochs: 10
-warmup_epochs: 10
+warmup_epochs: 25
 warmup_lr: 0.00001
 opt: adamw
 smoothing: 0.1
-workers: 8
+workers: 4
 seed: 3407
 checkpoint_hist: 3
