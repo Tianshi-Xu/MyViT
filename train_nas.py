@@ -825,7 +825,7 @@ def train_one_epoch(
         # add lasso loss 
         if args.fix_blocksize==-1 and args.finetune is False:
             for layer in model.modules():
-                if isinstance(layer, CirLinear):
+                if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
                     alphas = layer.get_alphas_after()
                     for i,alpha in enumerate(alphas):
                         reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[i])
@@ -909,7 +909,7 @@ def train_one_epoch(
                 total_blocks +=1
                 total_layers +=1
         for layer in model.modules():
-            if isinstance(layer, CirLinear):
+            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
                 _logger.info(layer.alphas.requires_grad)
                 alphas=layer.get_alphas_after()
                 idx = torch.argmax(alphas)

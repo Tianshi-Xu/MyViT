@@ -167,6 +167,7 @@ class CirConv2d(nn.Module):
         self.kernel_size = kernel_size
         self.stride = stride
         self.feature_size = feature_size
+        self.d1 = feature_size * feature_size
         self.fix_block_size = fix_block_size
         # print("finetune:",self.finetune)
         self.padding = kernel_size//2
