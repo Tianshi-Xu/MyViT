@@ -926,10 +926,10 @@ def train_one_epoch(
                     
         _logger.info("avg block size:"+str(total_blocks/total_layers))     
         _logger.info("current latency ratio:"+str(current_latency/origin_latency))       
-        if current_latency/origin_latency < args.budget and epoch > 5 and epoch%2==0:
+        if current_latency/origin_latency > args.budget and epoch > 5 and epoch%2==0:
             args.lasso_alpha*=1.1
             _logger.info("lasso_alpha:"+str(args.lasso_alpha))
-        elif current_latency/origin_latency > args.budget and epoch > 5 and epoch%2==0:
+        elif current_latency/origin_latency < args.budget and epoch > 5 and epoch%2==0:
             args.lasso_alpha/=1.1
             _logger.info("lasso_alpha:"+str(args.lasso_alpha))
     if hasattr(optimizer, 'sync_lookahead'):

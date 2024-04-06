@@ -1165,3 +1165,876 @@
 2024-04-06 20:59:57,532 - train - INFO - Test: [  39/39]  Time: 0.047 (0.055)  Loss:  0.9434 (1.2908)  Acc@1: 75.0000 (67.1900)  Acc@5: 100.0000 (90.4600)
 2024-04-06 20:59:58,967 - train - INFO - Train: 10 [   0/195 (  0%)]  Loss:  3.529084 (3.5291)  Time: 1.357s,  188.66/s  (1.357s,  188.66/s)  LR: 5.441e-04  Data: 0.204 (0.204)
 2024-04-06 21:00:46,622 - train - INFO - Train: 10 [  50/195 ( 26%)]  Loss:  3.407576 (3.0820)  Time: 1.041s,  245.81/s  (0.961s,  266.39/s)  LR: 5.441e-04  Data: 0.006 (0.014)
+2024-04-06 21:01:42,319 - train - INFO - Train: 10 [ 100/195 ( 52%)]  Loss:  3.623449 (3.0964)  Time: 1.210s,  211.61/s  (1.037s,  246.94/s)  LR: 5.441e-04  Data: 0.039 (0.011)
+2024-04-06 21:02:37,132 - train - INFO - Train: 10 [ 150/195 ( 77%)]  Loss:  3.111924 (3.1048)  Time: 1.077s,  237.78/s  (1.056s,  242.33/s)  LR: 5.441e-04  Data: 0.007 (0.011)
+2024-04-06 21:03:21,033 - train - INFO - Train: 10 [ 194/195 (100%)]  Loss:  3.530607 (3.1032)  Time: 1.258s,  203.48/s  (1.043s,  245.41/s)  LR: 5.441e-04  Data: 0.000 (0.011)
+2024-04-06 21:03:21,033 - train - INFO - True
+2024-04-06 21:03:21,037 - train - INFO - alphas:tensor([0.2549, 0.2296, 0.1649, 0.1739, 0.1767], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,102 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,102 - train - INFO - True
+2024-04-06 21:03:21,104 - train - INFO - alphas:tensor([0.2735, 0.2084, 0.1593, 0.1748, 0.1840], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,154 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,155 - train - INFO - True
+2024-04-06 21:03:21,156 - train - INFO - alphas:tensor([0.3692, 0.2447, 0.1222, 0.1300, 0.1339], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,206 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,206 - train - INFO - True
+2024-04-06 21:03:21,208 - train - INFO - alphas:tensor([0.3897, 0.2123, 0.1273, 0.1333, 0.1373], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,258 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,258 - train - INFO - True
+2024-04-06 21:03:21,259 - train - INFO - alphas:tensor([0.3234, 0.2364, 0.1396, 0.1484, 0.1523], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,309 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,309 - train - INFO - True
+2024-04-06 21:03:21,310 - train - INFO - alphas:tensor([0.3678, 0.2166, 0.1347, 0.1388, 0.1421], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,360 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,360 - train - INFO - True
+2024-04-06 21:03:21,361 - train - INFO - alphas:tensor([0.3980, 0.2263, 0.1204, 0.1259, 0.1294], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,411 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,411 - train - INFO - True
+2024-04-06 21:03:21,412 - train - INFO - alphas:tensor([0.3961, 0.2235, 0.1263, 0.1255, 0.1285], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,462 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,462 - train - INFO - True
+2024-04-06 21:03:21,465 - train - INFO - alphas:tensor([0.3590, 0.2264, 0.1304, 0.1398, 0.1444], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,507 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,507 - train - INFO - True
+2024-04-06 21:03:21,509 - train - INFO - alphas:tensor([0.4117, 0.2014, 0.1244, 0.1300, 0.1324], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,541 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,542 - train - INFO - True
+2024-04-06 21:03:21,543 - train - INFO - alphas:tensor([0.4098, 0.2178, 0.1199, 0.1253, 0.1271], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,573 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,573 - train - INFO - True
+2024-04-06 21:03:21,575 - train - INFO - alphas:tensor([0.3982, 0.2149, 0.1302, 0.1280, 0.1288], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,607 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,607 - train - INFO - True
+2024-04-06 21:03:21,609 - train - INFO - alphas:tensor([0.3584, 0.2303, 0.1276, 0.1391, 0.1446], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,691 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,691 - train - INFO - True
+2024-04-06 21:03:21,693 - train - INFO - alphas:tensor([0.4065, 0.2039, 0.1263, 0.1304, 0.1328], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,745 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,745 - train - INFO - True
+2024-04-06 21:03:21,747 - train - INFO - alphas:tensor([0.4299, 0.2110, 0.1170, 0.1205, 0.1215], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,797 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,797 - train - INFO - True
+2024-04-06 21:03:21,798 - train - INFO - alphas:tensor([0.4060, 0.2062, 0.1321, 0.1272, 0.1286], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,848 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,849 - train - INFO - True
+2024-04-06 21:03:21,850 - train - INFO - alphas:tensor([0.3441, 0.2310, 0.1307, 0.1440, 0.1503], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,900 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,900 - train - INFO - True
+2024-04-06 21:03:21,902 - train - INFO - alphas:tensor([0.3895, 0.2095, 0.1287, 0.1341, 0.1381], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:21,952 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:21,952 - train - INFO - True
+2024-04-06 21:03:21,953 - train - INFO - alphas:tensor([0.4564, 0.1980, 0.1150, 0.1145, 0.1160], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,003 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,003 - train - INFO - True
+2024-04-06 21:03:22,004 - train - INFO - alphas:tensor([0.4251, 0.1939, 0.1307, 0.1244, 0.1259], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,054 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,054 - train - INFO - True
+2024-04-06 21:03:22,056 - train - INFO - alphas:tensor([0.3375, 0.2315, 0.1329, 0.1467, 0.1514], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,106 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,106 - train - INFO - True
+2024-04-06 21:03:22,107 - train - INFO - alphas:tensor([0.3717, 0.2221, 0.1323, 0.1362, 0.1377], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,157 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,157 - train - INFO - True
+2024-04-06 21:03:22,159 - train - INFO - alphas:tensor([0.4538, 0.1983, 0.1141, 0.1164, 0.1173], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,209 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,209 - train - INFO - True
+2024-04-06 21:03:22,211 - train - INFO - alphas:tensor([0.4215, 0.1984, 0.1241, 0.1285, 0.1275], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,261 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,261 - train - INFO - True
+2024-04-06 21:03:22,263 - train - INFO - alphas:tensor([0.3275, 0.2353, 0.1362, 0.1478, 0.1532], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,313 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,313 - train - INFO - True
+2024-04-06 21:03:22,314 - train - INFO - alphas:tensor([0.3354, 0.2380, 0.1405, 0.1425, 0.1436], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,364 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,364 - train - INFO - True
+2024-04-06 21:03:22,366 - train - INFO - alphas:tensor([0.4303, 0.1998, 0.1178, 0.1238, 0.1283], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,416 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,417 - train - INFO - True
+2024-04-06 21:03:22,419 - train - INFO - alphas:tensor([0.3829, 0.2249, 0.1274, 0.1316, 0.1331], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,476 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,476 - train - INFO - True
+2024-04-06 21:03:22,478 - train - INFO - alphas:tensor([0.4928, 0.2417, 0.2656], device='cuda:0', grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:03:22,484 - train - INFO - tau:0.92274469442792
+2024-04-06 21:03:22,484 - train - INFO - avg block size:1.0
+2024-04-06 21:03:22,485 - train - INFO - current latency ratio:tensor(1.)
+2024-04-06 21:03:22,485 - train - INFO - lasso_alpha:7.513148009015777e-06
+2024-04-06 21:03:22,705 - train - INFO - Test: [   0/39]  Time: 0.218 (0.218)  Loss:  1.1855 (1.1855)  Acc@1: 71.4844 (71.4844)  Acc@5: 92.1875 (92.1875)
+2024-04-06 21:03:27,014 - train - INFO - Test: [  39/39]  Time: 0.382 (0.113)  Loss:  0.7788 (1.2427)  Acc@1: 81.2500 (68.3000)  Acc@5: 100.0000 (91.0900)
+2024-04-06 21:03:28,248 - train - INFO - Train: 11 [   0/195 (  0%)]  Loss:  2.504255 (2.5043)  Time: 1.156s,  221.36/s  (1.156s,  221.36/s)  LR: 5.429e-04  Data: 0.196 (0.196)
+2024-04-06 21:04:20,569 - train - INFO - Train: 11 [  50/195 ( 26%)]  Loss:  3.170623 (3.1023)  Time: 1.155s,  221.64/s  (1.049s,  244.15/s)  LR: 5.429e-04  Data: 0.005 (0.014)
+2024-04-06 21:05:12,490 - train - INFO - Train: 11 [ 100/195 ( 52%)]  Loss:  3.548094 (3.0596)  Time: 0.972s,  263.40/s  (1.044s,  245.32/s)  LR: 5.429e-04  Data: 0.013 (0.012)
+2024-04-06 21:06:05,814 - train - INFO - Train: 11 [ 150/195 ( 77%)]  Loss:  3.648212 (3.0231)  Time: 1.138s,  224.98/s  (1.051s,  243.56/s)  LR: 5.429e-04  Data: 0.007 (0.012)
+2024-04-06 21:06:51,160 - train - INFO - Train: 11 [ 194/195 (100%)]  Loss:  2.492238 (3.0163)  Time: 1.177s,  217.44/s  (1.046s,  244.64/s)  LR: 5.429e-04  Data: 0.000 (0.012)
+2024-04-06 21:06:51,161 - train - INFO - True
+2024-04-06 21:06:51,162 - train - INFO - alphas:tensor([0.2570, 0.2285, 0.1640, 0.1737, 0.1768], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,198 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,198 - train - INFO - True
+2024-04-06 21:06:51,199 - train - INFO - alphas:tensor([0.2803, 0.2049, 0.1558, 0.1739, 0.1851], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,231 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,231 - train - INFO - True
+2024-04-06 21:06:51,232 - train - INFO - alphas:tensor([0.3887, 0.2364, 0.1176, 0.1265, 0.1308], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,262 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,262 - train - INFO - True
+2024-04-06 21:06:51,262 - train - INFO - alphas:tensor([0.4123, 0.2017, 0.1226, 0.1294, 0.1341], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,292 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,292 - train - INFO - True
+2024-04-06 21:06:51,293 - train - INFO - alphas:tensor([0.3334, 0.2316, 0.1371, 0.1468, 0.1511], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,330 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,330 - train - INFO - True
+2024-04-06 21:06:51,331 - train - INFO - alphas:tensor([0.3876, 0.2090, 0.1299, 0.1351, 0.1384], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,365 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,365 - train - INFO - True
+2024-04-06 21:06:51,365 - train - INFO - alphas:tensor([0.4309, 0.2120, 0.1135, 0.1198, 0.1237], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,397 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,397 - train - INFO - True
+2024-04-06 21:06:51,397 - train - INFO - alphas:tensor([0.4288, 0.2118, 0.1189, 0.1186, 0.1218], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,427 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,427 - train - INFO - True
+2024-04-06 21:06:51,428 - train - INFO - alphas:tensor([0.3744, 0.2174, 0.1271, 0.1379, 0.1431], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,460 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,460 - train - INFO - True
+2024-04-06 21:06:51,461 - train - INFO - alphas:tensor([0.4372, 0.1909, 0.1188, 0.1251, 0.1280], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,497 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,497 - train - INFO - True
+2024-04-06 21:06:51,498 - train - INFO - alphas:tensor([0.4456, 0.2031, 0.1122, 0.1185, 0.1206], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,531 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,531 - train - INFO - True
+2024-04-06 21:06:51,532 - train - INFO - alphas:tensor([0.4324, 0.2038, 0.1219, 0.1204, 0.1215], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,562 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,562 - train - INFO - True
+2024-04-06 21:06:51,563 - train - INFO - alphas:tensor([0.3783, 0.2204, 0.1230, 0.1360, 0.1424], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,600 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,600 - train - INFO - True
+2024-04-06 21:06:51,600 - train - INFO - alphas:tensor([0.4354, 0.1926, 0.1198, 0.1247, 0.1275], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,635 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,635 - train - INFO - True
+2024-04-06 21:06:51,636 - train - INFO - alphas:tensor([0.4685, 0.1952, 0.1087, 0.1131, 0.1145], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,667 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,667 - train - INFO - True
+2024-04-06 21:06:51,670 - train - INFO - alphas:tensor([0.4429, 0.1953, 0.1229, 0.1186, 0.1203], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,702 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,702 - train - INFO - True
+2024-04-06 21:06:51,703 - train - INFO - alphas:tensor([0.3642, 0.2221, 0.1257, 0.1405, 0.1476], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,740 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,740 - train - INFO - True
+2024-04-06 21:06:51,742 - train - INFO - alphas:tensor([0.4182, 0.1994, 0.1220, 0.1279, 0.1324], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,775 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,775 - train - INFO - True
+2024-04-06 21:06:51,776 - train - INFO - alphas:tensor([0.5016, 0.1792, 0.1056, 0.1059, 0.1077], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,807 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,807 - train - INFO - True
+2024-04-06 21:06:51,808 - train - INFO - alphas:tensor([0.4701, 0.1797, 0.1198, 0.1144, 0.1160], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,845 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,845 - train - INFO - True
+2024-04-06 21:06:51,846 - train - INFO - alphas:tensor([0.3563, 0.2241, 0.1281, 0.1431, 0.1485], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,881 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,881 - train - INFO - True
+2024-04-06 21:06:51,882 - train - INFO - alphas:tensor([0.3989, 0.2119, 0.1260, 0.1307, 0.1325], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,914 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,914 - train - INFO - True
+2024-04-06 21:06:51,916 - train - INFO - alphas:tensor([0.4937, 0.1799, 0.1063, 0.1093, 0.1108], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,950 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,950 - train - INFO - True
+2024-04-06 21:06:51,950 - train - INFO - alphas:tensor([0.4581, 0.1846, 0.1160, 0.1211, 0.1202], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:51,985 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:51,985 - train - INFO - True
+2024-04-06 21:06:51,986 - train - INFO - alphas:tensor([0.3468, 0.2284, 0.1310, 0.1438, 0.1500], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:52,018 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:52,018 - train - INFO - True
+2024-04-06 21:06:52,019 - train - INFO - alphas:tensor([0.3573, 0.2327, 0.1344, 0.1371, 0.1385], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:52,049 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:52,049 - train - INFO - True
+2024-04-06 21:06:52,050 - train - INFO - alphas:tensor([0.4647, 0.1836, 0.1113, 0.1178, 0.1227], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:52,082 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:52,082 - train - INFO - True
+2024-04-06 21:06:52,084 - train - INFO - alphas:tensor([0.4126, 0.2120, 0.1212, 0.1261, 0.1280], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:52,119 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:52,119 - train - INFO - True
+2024-04-06 21:06:52,120 - train - INFO - alphas:tensor([0.5059, 0.2337, 0.2604], device='cuda:0', grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:06:52,125 - train - INFO - tau:0.9135172474836407
+2024-04-06 21:06:52,125 - train - INFO - avg block size:1.0
+2024-04-06 21:06:52,125 - train - INFO - current latency ratio:tensor(1.)
+2024-04-06 21:06:52,400 - train - INFO - Test: [   0/39]  Time: 0.272 (0.272)  Loss:  1.1914 (1.1914)  Acc@1: 70.7031 (70.7031)  Acc@5: 91.4062 (91.4062)
+2024-04-06 21:06:55,874 - train - INFO - Test: [  39/39]  Time: 0.041 (0.094)  Loss:  0.9312 (1.1975)  Acc@1: 81.2500 (69.4800)  Acc@5: 93.7500 (91.5300)
+2024-04-06 21:06:57,272 - train - INFO - Train: 12 [   0/195 (  0%)]  Loss:  3.513550 (3.5135)  Time: 1.323s,  193.54/s  (1.323s,  193.54/s)  LR: 5.415e-04  Data: 0.196 (0.196)
+2024-04-06 21:07:47,480 - train - INFO - Train: 12 [  50/195 ( 26%)]  Loss:  3.311237 (3.0409)  Time: 0.968s,  264.35/s  (1.010s,  253.37/s)  LR: 5.415e-04  Data: 0.007 (0.013)
+2024-04-06 21:08:39,368 - train - INFO - Train: 12 [ 100/195 ( 52%)]  Loss:  2.462237 (2.9868)  Time: 0.845s,  303.13/s  (1.024s,  250.02/s)  LR: 5.415e-04  Data: 0.006 (0.012)
+2024-04-06 21:09:31,163 - train - INFO - Train: 12 [ 150/195 ( 77%)]  Loss:  3.179904 (2.9644)  Time: 0.982s,  260.59/s  (1.028s,  249.06/s)  LR: 5.415e-04  Data: 0.012 (0.011)
+2024-04-06 21:10:16,074 - train - INFO - Train: 12 [ 194/195 (100%)]  Loss:  3.376820 (2.9753)  Time: 1.154s,  221.79/s  (1.026s,  249.45/s)  LR: 5.415e-04  Data: 0.000 (0.011)
+2024-04-06 21:10:16,074 - train - INFO - True
+2024-04-06 21:10:16,077 - train - INFO - alphas:tensor([0.2578, 0.2270, 0.1639, 0.1739, 0.1773], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,114 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,115 - train - INFO - True
+2024-04-06 21:10:16,116 - train - INFO - alphas:tensor([0.2871, 0.2015, 0.1528, 0.1729, 0.1857], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,149 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,149 - train - INFO - True
+2024-04-06 21:10:16,151 - train - INFO - alphas:tensor([0.4083, 0.2280, 0.1133, 0.1228, 0.1276], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,182 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,182 - train - INFO - True
+2024-04-06 21:10:16,195 - train - INFO - alphas:tensor([0.4351, 0.1909, 0.1179, 0.1254, 0.1307], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,231 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,231 - train - INFO - True
+2024-04-06 21:10:16,232 - train - INFO - alphas:tensor([0.3407, 0.2258, 0.1358, 0.1464, 0.1514], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,266 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,267 - train - INFO - True
+2024-04-06 21:10:16,267 - train - INFO - alphas:tensor([0.4038, 0.2027, 0.1262, 0.1318, 0.1356], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,297 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,297 - train - INFO - True
+2024-04-06 21:10:16,298 - train - INFO - alphas:tensor([0.4612, 0.1983, 0.1076, 0.1143, 0.1186], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,335 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,335 - train - INFO - True
+2024-04-06 21:10:16,336 - train - INFO - alphas:tensor([0.4600, 0.2001, 0.1120, 0.1122, 0.1157], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,370 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,370 - train - INFO - True
+2024-04-06 21:10:16,384 - train - INFO - alphas:tensor([0.3874, 0.2094, 0.1243, 0.1365, 0.1425], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,414 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,415 - train - INFO - True
+2024-04-06 21:10:16,427 - train - INFO - alphas:tensor([0.4591, 0.1820, 0.1140, 0.1208, 0.1241], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,464 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,464 - train - INFO - True
+2024-04-06 21:10:16,465 - train - INFO - alphas:tensor([0.4779, 0.1891, 0.1056, 0.1125, 0.1148], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,499 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,499 - train - INFO - True
+2024-04-06 21:10:16,501 - train - INFO - alphas:tensor([0.4645, 0.1925, 0.1145, 0.1136, 0.1150], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,531 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,531 - train - INFO - True
+2024-04-06 21:10:16,532 - train - INFO - alphas:tensor([0.3935, 0.2117, 0.1199, 0.1339, 0.1411], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,569 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,569 - train - INFO - True
+2024-04-06 21:10:16,570 - train - INFO - alphas:tensor([0.4607, 0.1820, 0.1145, 0.1198, 0.1230], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,604 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,604 - train - INFO - True
+2024-04-06 21:10:16,605 - train - INFO - alphas:tensor([0.5038, 0.1803, 0.1014, 0.1064, 0.1080], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,635 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,635 - train - INFO - True
+2024-04-06 21:10:16,637 - train - INFO - alphas:tensor([0.4794, 0.1832, 0.1144, 0.1105, 0.1125], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,673 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,673 - train - INFO - True
+2024-04-06 21:10:16,674 - train - INFO - alphas:tensor([0.3805, 0.2143, 0.1219, 0.1377, 0.1456], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,710 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,710 - train - INFO - True
+2024-04-06 21:10:16,711 - train - INFO - alphas:tensor([0.4447, 0.1884, 0.1164, 0.1228, 0.1277], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,742 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,742 - train - INFO - True
+2024-04-06 21:10:16,743 - train - INFO - alphas:tensor([0.5385, 0.1632, 0.0982, 0.0990, 0.1011], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,773 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,773 - train - INFO - True
+2024-04-06 21:10:16,773 - train - INFO - alphas:tensor([0.5082, 0.1660, 0.1112, 0.1064, 0.1082], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,809 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,809 - train - INFO - True
+2024-04-06 21:10:16,810 - train - INFO - alphas:tensor([0.3732, 0.2161, 0.1242, 0.1402, 0.1463], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,843 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,843 - train - INFO - True
+2024-04-06 21:10:16,844 - train - INFO - alphas:tensor([0.4229, 0.2020, 0.1210, 0.1260, 0.1281], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,875 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,875 - train - INFO - True
+2024-04-06 21:10:16,889 - train - INFO - alphas:tensor([0.5258, 0.1656, 0.0998, 0.1035, 0.1053], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,919 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,919 - train - INFO - True
+2024-04-06 21:10:16,931 - train - INFO - alphas:tensor([0.4878, 0.1726, 0.1097, 0.1153, 0.1147], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:16,968 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:16,968 - train - INFO - True
+2024-04-06 21:10:16,969 - train - INFO - alphas:tensor([0.3623, 0.2203, 0.1273, 0.1415, 0.1486], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:17,003 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:17,003 - train - INFO - True
+2024-04-06 21:10:17,005 - train - INFO - alphas:tensor([0.3774, 0.2265, 0.1293, 0.1326, 0.1342], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:17,035 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:17,035 - train - INFO - True
+2024-04-06 21:10:17,044 - train - INFO - alphas:tensor([0.4939, 0.1698, 0.1057, 0.1127, 0.1179], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:17,075 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:17,075 - train - INFO - True
+2024-04-06 21:10:17,076 - train - INFO - alphas:tensor([0.4405, 0.1992, 0.1158, 0.1212, 0.1233], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:17,113 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:17,113 - train - INFO - True
+2024-04-06 21:10:17,117 - train - INFO - alphas:tensor([0.5171, 0.2268, 0.2561], device='cuda:0', grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:10:17,122 - train - INFO - tau:0.9043820750088043
+2024-04-06 21:10:17,122 - train - INFO - avg block size:1.0
+2024-04-06 21:10:17,123 - train - INFO - current latency ratio:tensor(1.)
+2024-04-06 21:10:17,123 - train - INFO - lasso_alpha:6.8301345536507055e-06
+2024-04-06 21:10:17,309 - train - INFO - Test: [   0/39]  Time: 0.184 (0.184)  Loss:  1.2217 (1.2217)  Acc@1: 68.3594 (68.3594)  Acc@5: 91.4062 (91.4062)
+2024-04-06 21:10:20,796 - train - INFO - Test: [  39/39]  Time: 0.060 (0.092)  Loss:  0.9102 (1.1824)  Acc@1: 81.2500 (69.7700)  Acc@5: 87.5000 (91.7100)
+2024-04-06 21:10:22,268 - train - INFO - Train: 13 [   0/195 (  0%)]  Loss:  2.487329 (2.4873)  Time: 1.385s,  184.80/s  (1.385s,  184.80/s)  LR: 5.401e-04  Data: 0.203 (0.203)
+2024-04-06 21:11:12,223 - train - INFO - Train: 13 [  50/195 ( 26%)]  Loss:  2.333380 (2.9654)  Time: 0.915s,  279.76/s  (1.007s,  254.31/s)  LR: 5.401e-04  Data: 0.016 (0.014)
+2024-04-06 21:12:03,202 - train - INFO - Train: 13 [ 100/195 ( 52%)]  Loss:  2.375171 (2.9848)  Time: 1.057s,  242.16/s  (1.013s,  252.71/s)  LR: 5.401e-04  Data: 0.011 (0.012)
+2024-04-06 21:12:53,948 - train - INFO - Train: 13 [ 150/195 ( 77%)]  Loss:  3.288318 (2.9882)  Time: 0.860s,  297.56/s  (1.014s,  252.55/s)  LR: 5.401e-04  Data: 0.009 (0.011)
+2024-04-06 21:13:40,270 - train - INFO - Train: 13 [ 194/195 (100%)]  Loss:  2.800996 (2.9675)  Time: 1.169s,  219.05/s  (1.022s,  250.38/s)  LR: 5.401e-04  Data: 0.000 (0.011)
+2024-04-06 21:13:40,271 - train - INFO - True
+2024-04-06 21:13:40,275 - train - INFO - alphas:tensor([0.2580, 0.2248, 0.1639, 0.1748, 0.1784], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,351 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,351 - train - INFO - True
+2024-04-06 21:13:40,352 - train - INFO - alphas:tensor([0.2931, 0.1987, 0.1502, 0.1718, 0.1862], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,406 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,406 - train - INFO - True
+2024-04-06 21:13:40,407 - train - INFO - alphas:tensor([0.4257, 0.2192, 0.1098, 0.1200, 0.1252], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,457 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,457 - train - INFO - True
+2024-04-06 21:13:40,470 - train - INFO - alphas:tensor([0.4540, 0.1822, 0.1138, 0.1220, 0.1280], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,520 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,520 - train - INFO - True
+2024-04-06 21:13:40,522 - train - INFO - alphas:tensor([0.3500, 0.2207, 0.1337, 0.1450, 0.1505], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,572 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,572 - train - INFO - True
+2024-04-06 21:13:40,574 - train - INFO - alphas:tensor([0.4199, 0.1962, 0.1225, 0.1285, 0.1328], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,624 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,624 - train - INFO - True
+2024-04-06 21:13:40,626 - train - INFO - alphas:tensor([0.4879, 0.1854, 0.1025, 0.1098, 0.1144], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,676 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,676 - train - INFO - True
+2024-04-06 21:13:40,678 - train - INFO - alphas:tensor([0.4863, 0.1889, 0.1066, 0.1073, 0.1110], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,728 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,728 - train - INFO - True
+2024-04-06 21:13:40,740 - train - INFO - alphas:tensor([0.3982, 0.2016, 0.1224, 0.1355, 0.1423], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,791 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,791 - train - INFO - True
+2024-04-06 21:13:40,792 - train - INFO - alphas:tensor([0.4765, 0.1748, 0.1103, 0.1173, 0.1211], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,842 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,842 - train - INFO - True
+2024-04-06 21:13:40,843 - train - INFO - alphas:tensor([0.5067, 0.1759, 0.0999, 0.1075, 0.1100], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,893 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,893 - train - INFO - True
+2024-04-06 21:13:40,894 - train - INFO - alphas:tensor([0.4921, 0.1820, 0.1084, 0.1080, 0.1095], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,945 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,945 - train - INFO - True
+2024-04-06 21:13:40,947 - train - INFO - alphas:tensor([0.4074, 0.2034, 0.1172, 0.1320, 0.1400], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:40,997 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:40,997 - train - INFO - True
+2024-04-06 21:13:41,008 - train - INFO - alphas:tensor([0.4828, 0.1731, 0.1097, 0.1153, 0.1190], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,058 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,058 - train - INFO - True
+2024-04-06 21:13:41,060 - train - INFO - alphas:tensor([0.5340, 0.1675, 0.0953, 0.1008, 0.1025], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,110 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,110 - train - INFO - True
+2024-04-06 21:13:41,111 - train - INFO - alphas:tensor([0.5109, 0.1717, 0.1073, 0.1039, 0.1061], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,159 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,159 - train - INFO - True
+2024-04-06 21:13:41,160 - train - INFO - alphas:tensor([0.3957, 0.2062, 0.1187, 0.1354, 0.1440], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,201 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,202 - train - INFO - True
+2024-04-06 21:13:41,202 - train - INFO - alphas:tensor([0.4671, 0.1788, 0.1117, 0.1187, 0.1237], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,239 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,239 - train - INFO - True
+2024-04-06 21:13:41,239 - train - INFO - alphas:tensor([0.5690, 0.1501, 0.0921, 0.0933, 0.0955], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,272 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,272 - train - INFO - True
+2024-04-06 21:13:41,273 - train - INFO - alphas:tensor([0.5400, 0.1548, 0.1037, 0.0997, 0.1019], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,303 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,303 - train - INFO - True
+2024-04-06 21:13:41,304 - train - INFO - alphas:tensor([0.3875, 0.2079, 0.1212, 0.1384, 0.1449], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,342 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,343 - train - INFO - True
+2024-04-06 21:13:41,343 - train - INFO - alphas:tensor([0.4451, 0.1926, 0.1162, 0.1218, 0.1242], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,377 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,377 - train - INFO - True
+2024-04-06 21:13:41,378 - train - INFO - alphas:tensor([0.5529, 0.1532, 0.0947, 0.0986, 0.1007], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,408 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,408 - train - INFO - True
+2024-04-06 21:13:41,409 - train - INFO - alphas:tensor([0.5128, 0.1629, 0.1042, 0.1102, 0.1100], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,439 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,439 - train - INFO - True
+2024-04-06 21:13:41,440 - train - INFO - alphas:tensor([0.3777, 0.2118, 0.1241, 0.1393, 0.1470], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,474 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,474 - train - INFO - True
+2024-04-06 21:13:41,475 - train - INFO - alphas:tensor([0.3961, 0.2199, 0.1247, 0.1287, 0.1305], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,510 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,510 - train - INFO - True
+2024-04-06 21:13:41,511 - train - INFO - alphas:tensor([0.5184, 0.1581, 0.1011, 0.1084, 0.1139], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,542 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,543 - train - INFO - True
+2024-04-06 21:13:41,543 - train - INFO - alphas:tensor([0.4645, 0.1877, 0.1112, 0.1171, 0.1195], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,573 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,573 - train - INFO - True
+2024-04-06 21:13:41,574 - train - INFO - alphas:tensor([0.5264, 0.2211, 0.2525], device='cuda:0', grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:13:41,578 - train - INFO - tau:0.8953382542587163
+2024-04-06 21:13:41,579 - train - INFO - avg block size:1.0
+2024-04-06 21:13:41,579 - train - INFO - current latency ratio:tensor(1.)
+2024-04-06 21:13:41,828 - train - INFO - Test: [   0/39]  Time: 0.247 (0.247)  Loss:  1.1045 (1.1045)  Acc@1: 73.0469 (73.0469)  Acc@5: 94.1406 (94.1406)
+2024-04-06 21:13:45,379 - train - INFO - Test: [  39/39]  Time: 0.045 (0.095)  Loss:  0.9893 (1.1573)  Acc@1: 81.2500 (70.3900)  Acc@5: 87.5000 (92.0900)
+2024-04-06 21:13:46,852 - train - INFO - Train: 14 [   0/195 (  0%)]  Loss:  2.415440 (2.4154)  Time: 1.394s,  183.60/s  (1.394s,  183.60/s)  LR: 5.385e-04  Data: 0.198 (0.198)
+2024-04-06 21:14:38,143 - train - INFO - Train: 14 [  50/195 ( 26%)]  Loss:  2.282787 (2.8748)  Time: 1.160s,  220.73/s  (1.033s,  247.82/s)  LR: 5.385e-04  Data: 0.007 (0.015)
+2024-04-06 21:15:30,617 - train - INFO - Train: 14 [ 100/195 ( 52%)]  Loss:  3.333006 (2.8667)  Time: 0.881s,  290.70/s  (1.041s,  245.88/s)  LR: 5.385e-04  Data: 0.008 (0.012)
+2024-04-06 21:16:23,127 - train - INFO - Train: 14 [ 150/195 ( 77%)]  Loss:  3.067064 (2.9136)  Time: 0.913s,  280.48/s  (1.044s,  245.18/s)  LR: 5.385e-04  Data: 0.012 (0.012)
+2024-04-06 21:17:08,725 - train - INFO - Train: 14 [ 194/195 (100%)]  Loss:  3.102899 (2.9235)  Time: 1.198s,  213.63/s  (1.042s,  245.60/s)  LR: 5.385e-04  Data: 0.000 (0.011)
+2024-04-06 21:17:08,725 - train - INFO - True
+2024-04-06 21:17:08,729 - train - INFO - alphas:tensor([0.2585, 0.2234, 0.1637, 0.1752, 0.1792], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:08,802 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:08,802 - train - INFO - True
+2024-04-06 21:17:08,804 - train - INFO - alphas:tensor([0.2986, 0.1950, 0.1484, 0.1710, 0.1869], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:08,856 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:08,856 - train - INFO - True
+2024-04-06 21:17:08,858 - train - INFO - alphas:tensor([0.4406, 0.2113, 0.1072, 0.1178, 0.1232], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:08,900 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:08,900 - train - INFO - True
+2024-04-06 21:17:08,902 - train - INFO - alphas:tensor([0.4709, 0.1744, 0.1102, 0.1190, 0.1255], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:08,940 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:08,940 - train - INFO - True
+2024-04-06 21:17:08,942 - train - INFO - alphas:tensor([0.3568, 0.2149, 0.1326, 0.1449, 0.1508], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:08,976 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:08,976 - train - INFO - True
+2024-04-06 21:17:08,977 - train - INFO - alphas:tensor([0.4340, 0.1901, 0.1195, 0.1258, 0.1306], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,010 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,010 - train - INFO - True
+2024-04-06 21:17:09,013 - train - INFO - alphas:tensor([0.5116, 0.1750, 0.0979, 0.1052, 0.1102], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,045 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,045 - train - INFO - True
+2024-04-06 21:17:09,046 - train - INFO - alphas:tensor([0.5109, 0.1787, 0.1015, 0.1025, 0.1064], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,084 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,084 - train - INFO - True
+2024-04-06 21:17:09,086 - train - INFO - alphas:tensor([0.4079, 0.1954, 0.1204, 0.1345, 0.1418], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,119 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,119 - train - INFO - True
+2024-04-06 21:17:09,120 - train - INFO - alphas:tensor([0.4928, 0.1681, 0.1067, 0.1141, 0.1183], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,151 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,151 - train - INFO - True
+2024-04-06 21:17:09,152 - train - INFO - alphas:tensor([0.5328, 0.1646, 0.0945, 0.1027, 0.1054], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,182 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,182 - train - INFO - True
+2024-04-06 21:17:09,182 - train - INFO - alphas:tensor([0.5185, 0.1718, 0.1026, 0.1027, 0.1044], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,219 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,219 - train - INFO - True
+2024-04-06 21:17:09,219 - train - INFO - alphas:tensor([0.4202, 0.1955, 0.1146, 0.1305, 0.1392], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,257 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,257 - train - INFO - True
+2024-04-06 21:17:09,258 - train - INFO - alphas:tensor([0.5009, 0.1660, 0.1058, 0.1117, 0.1156], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,293 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,293 - train - INFO - True
+2024-04-06 21:17:09,294 - train - INFO - alphas:tensor([0.5604, 0.1564, 0.0901, 0.0956, 0.0975], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,326 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,326 - train - INFO - True
+2024-04-06 21:17:09,327 - train - INFO - alphas:tensor([0.5401, 0.1614, 0.1005, 0.0980, 0.1001], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,363 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,363 - train - INFO - True
+2024-04-06 21:17:09,364 - train - INFO - alphas:tensor([0.4086, 0.1981, 0.1163, 0.1338, 0.1431], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,398 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,398 - train - INFO - True
+2024-04-06 21:17:09,399 - train - INFO - alphas:tensor([0.4876, 0.1699, 0.1075, 0.1149, 0.1202], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,430 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,430 - train - INFO - True
+2024-04-06 21:17:09,431 - train - INFO - alphas:tensor([0.5955, 0.1388, 0.0867, 0.0883, 0.0907], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,461 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,461 - train - INFO - True
+2024-04-06 21:17:09,462 - train - INFO - alphas:tensor([0.5667, 0.1447, 0.0976, 0.0943, 0.0968], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,495 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,496 - train - INFO - True
+2024-04-06 21:17:09,497 - train - INFO - alphas:tensor([0.4010, 0.2009, 0.1181, 0.1364, 0.1436], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,532 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,532 - train - INFO - True
+2024-04-06 21:17:09,533 - train - INFO - alphas:tensor([0.4650, 0.1841, 0.1120, 0.1182, 0.1208], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,565 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,565 - train - INFO - True
+2024-04-06 21:17:09,566 - train - INFO - alphas:tensor([0.5771, 0.1420, 0.0900, 0.0942, 0.0967], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,596 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,596 - train - INFO - True
+2024-04-06 21:17:09,598 - train - INFO - alphas:tensor([0.5364, 0.1531, 0.0991, 0.1057, 0.1057], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,628 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,628 - train - INFO - True
+2024-04-06 21:17:09,629 - train - INFO - alphas:tensor([0.3898, 0.2035, 0.1217, 0.1382, 0.1468], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,666 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,666 - train - INFO - True
+2024-04-06 21:17:09,668 - train - INFO - alphas:tensor([0.4136, 0.2127, 0.1208, 0.1254, 0.1275], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,701 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,701 - train - INFO - True
+2024-04-06 21:17:09,702 - train - INFO - alphas:tensor([0.5407, 0.1481, 0.0967, 0.1044, 0.1101], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,732 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,732 - train - INFO - True
+2024-04-06 21:17:09,733 - train - INFO - alphas:tensor([0.4868, 0.1774, 0.1067, 0.1132, 0.1159], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,763 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,763 - train - INFO - True
+2024-04-06 21:17:09,764 - train - INFO - alphas:tensor([0.5354, 0.2156, 0.2489], device='cuda:0', grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:17:09,768 - train - INFO - tau:0.8863848717161291
+2024-04-06 21:17:09,769 - train - INFO - avg block size:1.0
+2024-04-06 21:17:09,769 - train - INFO - current latency ratio:tensor(1.)
+2024-04-06 21:17:09,769 - train - INFO - lasso_alpha:6.20921323059155e-06
+2024-04-06 21:17:10,096 - train - INFO - Test: [   0/39]  Time: 0.325 (0.325)  Loss:  1.0771 (1.0771)  Acc@1: 75.0000 (75.0000)  Acc@5: 93.3594 (93.3594)
+2024-04-06 21:17:13,942 - train - INFO - Test: [  39/39]  Time: 0.134 (0.104)  Loss:  0.7642 (1.1377)  Acc@1: 81.2500 (70.8900)  Acc@5: 93.7500 (92.0800)
+2024-04-06 21:17:15,341 - train - INFO - Train: 15 [   0/195 (  0%)]  Loss:  2.858928 (2.8589)  Time: 1.322s,  193.69/s  (1.322s,  193.69/s)  LR: 5.368e-04  Data: 0.196 (0.196)
+2024-04-06 21:18:07,922 - train - INFO - Train: 15 [  50/195 ( 26%)]  Loss:  2.221515 (2.9751)  Time: 1.007s,  254.31/s  (1.057s,  242.22/s)  LR: 5.368e-04  Data: 0.011 (0.014)
+2024-04-06 21:18:59,331 - train - INFO - Train: 15 [ 100/195 ( 52%)]  Loss:  2.517628 (2.9521)  Time: 0.888s,  288.37/s  (1.043s,  245.53/s)  LR: 5.368e-04  Data: 0.006 (0.012)
+2024-04-06 21:19:51,897 - train - INFO - Train: 15 [ 150/195 ( 77%)]  Loss:  3.279201 (2.9157)  Time: 1.128s,  226.88/s  (1.046s,  244.86/s)  LR: 5.368e-04  Data: 0.010 (0.012)
+2024-04-06 21:20:38,768 - train - INFO - Train: 15 [ 194/195 (100%)]  Loss:  3.130829 (2.9227)  Time: 0.918s,  278.79/s  (1.050s,  243.82/s)  LR: 5.368e-04  Data: 0.000 (0.012)
+2024-04-06 21:20:38,770 - train - INFO - True
+2024-04-06 21:20:38,773 - train - INFO - alphas:tensor([0.2591, 0.2221, 0.1635, 0.1755, 0.1798], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:38,849 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:38,849 - train - INFO - True
+2024-04-06 21:20:38,852 - train - INFO - alphas:tensor([0.3038, 0.1920, 0.1462, 0.1704, 0.1875], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:38,905 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:38,905 - train - INFO - True
+2024-04-06 21:20:38,906 - train - INFO - alphas:tensor([0.4549, 0.2038, 0.1045, 0.1155, 0.1214], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:38,949 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:38,950 - train - INFO - True
+2024-04-06 21:20:38,950 - train - INFO - alphas:tensor([0.4859, 0.1669, 0.1072, 0.1165, 0.1235], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:38,988 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:38,988 - train - INFO - True
+2024-04-06 21:20:38,989 - train - INFO - alphas:tensor([0.3650, 0.2106, 0.1307, 0.1437, 0.1500], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,022 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,022 - train - INFO - True
+2024-04-06 21:20:39,023 - train - INFO - alphas:tensor([0.4481, 0.1846, 0.1163, 0.1231, 0.1279], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,054 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,054 - train - INFO - True
+2024-04-06 21:20:39,055 - train - INFO - alphas:tensor([0.5331, 0.1652, 0.0936, 0.1015, 0.1067], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,085 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,085 - train - INFO - True
+2024-04-06 21:20:39,086 - train - INFO - alphas:tensor([0.5321, 0.1701, 0.0970, 0.0984, 0.1025], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,118 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,118 - train - INFO - True
+2024-04-06 21:20:39,119 - train - INFO - alphas:tensor([0.4168, 0.1895, 0.1188, 0.1334, 0.1416], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,154 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,154 - train - INFO - True
+2024-04-06 21:20:39,168 - train - INFO - alphas:tensor([0.5058, 0.1628, 0.1038, 0.1116, 0.1160], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,199 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,199 - train - INFO - True
+2024-04-06 21:20:39,200 - train - INFO - alphas:tensor([0.5546, 0.1548, 0.0904, 0.0987, 0.1016], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,230 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,230 - train - INFO - True
+2024-04-06 21:20:39,232 - train - INFO - alphas:tensor([0.5407, 0.1629, 0.0978, 0.0984, 0.1002], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,266 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,266 - train - INFO - True
+2024-04-06 21:20:39,279 - train - INFO - alphas:tensor([0.4309, 0.1886, 0.1124, 0.1293, 0.1388], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,312 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,312 - train - INFO - True
+2024-04-06 21:20:39,317 - train - INFO - alphas:tensor([0.5180, 0.1596, 0.1019, 0.1082, 0.1124], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,347 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,347 - train - INFO - True
+2024-04-06 21:20:39,348 - train - INFO - alphas:tensor([0.5822, 0.1471, 0.0857, 0.0914, 0.0936], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,378 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,378 - train - INFO - True
+2024-04-06 21:20:39,380 - train - INFO - alphas:tensor([0.5633, 0.1526, 0.0953, 0.0932, 0.0956], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,414 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,414 - train - INFO - True
+2024-04-06 21:20:39,426 - train - INFO - alphas:tensor([0.4204, 0.1913, 0.1137, 0.1323, 0.1423], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,463 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,463 - train - INFO - True
+2024-04-06 21:20:39,464 - train - INFO - alphas:tensor([0.5042, 0.1632, 0.1037, 0.1117, 0.1173], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,494 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,494 - train - INFO - True
+2024-04-06 21:20:39,495 - train - INFO - alphas:tensor([0.6168, 0.1300, 0.0821, 0.0843, 0.0868], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,526 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,526 - train - INFO - True
+2024-04-06 21:20:39,527 - train - INFO - alphas:tensor([0.5901, 0.1357, 0.0923, 0.0896, 0.0923], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,563 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,563 - train - INFO - True
+2024-04-06 21:20:39,564 - train - INFO - alphas:tensor([0.4119, 0.1945, 0.1157, 0.1351, 0.1427], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,596 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,596 - train - INFO - True
+2024-04-06 21:20:39,597 - train - INFO - alphas:tensor([0.4840, 0.1760, 0.1079, 0.1146, 0.1175], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,627 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,627 - train - INFO - True
+2024-04-06 21:20:39,628 - train - INFO - alphas:tensor([0.5992, 0.1326, 0.0853, 0.0901, 0.0929], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,658 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,658 - train - INFO - True
+2024-04-06 21:20:39,672 - train - INFO - alphas:tensor([0.5575, 0.1446, 0.0947, 0.1015, 0.1017], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,708 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,708 - train - INFO - True
+2024-04-06 21:20:39,709 - train - INFO - alphas:tensor([0.3999, 0.1967, 0.1197, 0.1372, 0.1465], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,741 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,742 - train - INFO - True
+2024-04-06 21:20:39,743 - train - INFO - alphas:tensor([0.4289, 0.2063, 0.1175, 0.1225, 0.1247], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,773 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,773 - train - INFO - True
+2024-04-06 21:20:39,785 - train - INFO - alphas:tensor([0.5606, 0.1393, 0.0929, 0.1006, 0.1067], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,817 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,817 - train - INFO - True
+2024-04-06 21:20:39,819 - train - INFO - alphas:tensor([0.5080, 0.1674, 0.1027, 0.1095, 0.1124], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,855 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,855 - train - INFO - True
+2024-04-06 21:20:39,857 - train - INFO - alphas:tensor([0.5433, 0.2108, 0.2459], device='cuda:0', grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:20:39,862 - train - INFO - tau:0.8775210229989678
+2024-04-06 21:20:39,862 - train - INFO - avg block size:1.0
+2024-04-06 21:20:39,863 - train - INFO - current latency ratio:tensor(1.)
+2024-04-06 21:20:40,053 - train - INFO - Test: [   0/39]  Time: 0.187 (0.187)  Loss:  1.1055 (1.1055)  Acc@1: 74.2188 (74.2188)  Acc@5: 92.5781 (92.5781)
+2024-04-06 21:20:43,956 - train - INFO - Test: [  39/39]  Time: 0.100 (0.102)  Loss:  0.8491 (1.1725)  Acc@1: 81.2500 (70.1900)  Acc@5: 87.5000 (91.8700)
+2024-04-06 21:20:45,412 - train - INFO - Train: 16 [   0/195 (  0%)]  Loss:  3.457612 (3.4576)  Time: 1.372s,  186.54/s  (1.372s,  186.54/s)  LR: 5.350e-04  Data: 0.180 (0.180)
+2024-04-06 21:21:37,350 - train - INFO - Train: 16 [  50/195 ( 26%)]  Loss:  3.437471 (2.9811)  Time: 0.931s,  274.93/s  (1.045s,  244.92/s)  LR: 5.350e-04  Data: 0.007 (0.014)
+2024-04-06 21:22:28,260 - train - INFO - Train: 16 [ 100/195 ( 52%)]  Loss:  2.346392 (2.9243)  Time: 0.886s,  289.04/s  (1.032s,  248.10/s)  LR: 5.350e-04  Data: 0.012 (0.013)
+2024-04-06 21:23:20,610 - train - INFO - Train: 16 [ 150/195 ( 77%)]  Loss:  2.200504 (2.9243)  Time: 1.189s,  215.31/s  (1.037s,  246.90/s)  LR: 5.350e-04  Data: 0.020 (0.012)
+2024-04-06 21:24:07,106 - train - INFO - Train: 16 [ 194/195 (100%)]  Loss:  2.723849 (2.9230)  Time: 0.908s,  281.89/s  (1.041s,  245.84/s)  LR: 5.350e-04  Data: 0.000 (0.012)
+2024-04-06 21:24:07,107 - train - INFO - True
+2024-04-06 21:24:07,112 - train - INFO - alphas:tensor([0.2592, 0.2208, 0.1635, 0.1760, 0.1805], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,158 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,159 - train - INFO - True
+2024-04-06 21:24:07,160 - train - INFO - alphas:tensor([0.3084, 0.1889, 0.1443, 0.1700, 0.1884], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,204 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,205 - train - INFO - True
+2024-04-06 21:24:07,211 - train - INFO - alphas:tensor([0.4703, 0.1970, 0.1013, 0.1126, 0.1188], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,248 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,248 - train - INFO - True
+2024-04-06 21:24:07,261 - train - INFO - alphas:tensor([0.5016, 0.1606, 0.1036, 0.1135, 0.1207], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,293 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,293 - train - INFO - True
+2024-04-06 21:24:07,294 - train - INFO - alphas:tensor([0.3695, 0.2066, 0.1298, 0.1437, 0.1505], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,324 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,324 - train - INFO - True
+2024-04-06 21:24:07,325 - train - INFO - alphas:tensor([0.4592, 0.1799, 0.1139, 0.1209, 0.1261], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,359 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,359 - train - INFO - True
+2024-04-06 21:24:07,360 - train - INFO - alphas:tensor([0.5515, 0.1572, 0.0899, 0.0980, 0.1034], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,395 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,395 - train - INFO - True
+2024-04-06 21:24:07,396 - train - INFO - alphas:tensor([0.5523, 0.1616, 0.0927, 0.0945, 0.0988], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,427 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,427 - train - INFO - True
+2024-04-06 21:24:07,428 - train - INFO - alphas:tensor([0.4255, 0.1833, 0.1171, 0.1327, 0.1414], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,458 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,458 - train - INFO - True
+2024-04-06 21:24:07,459 - train - INFO - alphas:tensor([0.5208, 0.1561, 0.1009, 0.1089, 0.1133], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,492 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,492 - train - INFO - True
+2024-04-06 21:24:07,506 - train - INFO - alphas:tensor([0.5746, 0.1463, 0.0864, 0.0948, 0.0979], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,540 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,540 - train - INFO - True
+2024-04-06 21:24:07,543 - train - INFO - alphas:tensor([0.5625, 0.1542, 0.0932, 0.0941, 0.0961], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,575 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,575 - train - INFO - True
+2024-04-06 21:24:07,576 - train - INFO - alphas:tensor([0.4401, 0.1823, 0.1107, 0.1284, 0.1386], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,606 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,606 - train - INFO - True
+2024-04-06 21:24:07,607 - train - INFO - alphas:tensor([0.5329, 0.1540, 0.0984, 0.1052, 0.1095], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,645 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,645 - train - INFO - True
+2024-04-06 21:24:07,646 - train - INFO - alphas:tensor([0.6020, 0.1387, 0.0818, 0.0876, 0.0899], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,679 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,680 - train - INFO - True
+2024-04-06 21:24:07,681 - train - INFO - alphas:tensor([0.5862, 0.1441, 0.0901, 0.0885, 0.0911], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,713 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,713 - train - INFO - True
+2024-04-06 21:24:07,714 - train - INFO - alphas:tensor([0.4302, 0.1851, 0.1116, 0.1312, 0.1420], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,744 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,744 - train - INFO - True
+2024-04-06 21:24:07,746 - train - INFO - alphas:tensor([0.5205, 0.1561, 0.1004, 0.1085, 0.1145], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,779 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,779 - train - INFO - True
+2024-04-06 21:24:07,780 - train - INFO - alphas:tensor([0.6351, 0.1222, 0.0785, 0.0808, 0.0834], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,816 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,816 - train - INFO - True
+2024-04-06 21:24:07,817 - train - INFO - alphas:tensor([0.6105, 0.1282, 0.0875, 0.0854, 0.0884], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,850 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,850 - train - INFO - True
+2024-04-06 21:24:07,850 - train - INFO - alphas:tensor([0.4235, 0.1880, 0.1135, 0.1333, 0.1417], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,880 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,881 - train - INFO - True
+2024-04-06 21:24:07,881 - train - INFO - alphas:tensor([0.5015, 0.1695, 0.1040, 0.1110, 0.1141], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,918 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,918 - train - INFO - True
+2024-04-06 21:24:07,919 - train - INFO - alphas:tensor([0.6161, 0.1253, 0.0818, 0.0870, 0.0899], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,953 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,953 - train - INFO - True
+2024-04-06 21:24:07,953 - train - INFO - alphas:tensor([0.5742, 0.1378, 0.0910, 0.0983, 0.0988], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:07,984 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:07,984 - train - INFO - True
+2024-04-06 21:24:07,998 - train - INFO - alphas:tensor([0.4097, 0.1900, 0.1176, 0.1364, 0.1463], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:08,048 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:08,048 - train - INFO - True
+2024-04-06 21:24:08,050 - train - INFO - alphas:tensor([0.4452, 0.1989, 0.1141, 0.1197, 0.1221], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:08,100 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:08,100 - train - INFO - True
+2024-04-06 21:24:08,102 - train - INFO - alphas:tensor([0.5777, 0.1318, 0.0895, 0.0974, 0.1036], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:08,152 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:08,152 - train - INFO - True
+2024-04-06 21:24:08,154 - train - INFO - alphas:tensor([0.5266, 0.1586, 0.0991, 0.1063, 0.1093], device='cuda:0',
+       grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:08,204 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:08,204 - train - INFO - True
+2024-04-06 21:24:08,205 - train - INFO - alphas:tensor([0.5517, 0.2059, 0.2424], device='cuda:0', grad_fn=<SoftmaxBackward0>)
+2024-04-06 21:24:08,213 - train - INFO - tau:0.8687458127689781
+2024-04-06 21:24:08,213 - train - INFO - avg block size:1.0
+2024-04-06 21:24:08,214 - train - INFO - current latency ratio:tensor(1.)
+2024-04-06 21:24:08,214 - train - INFO - lasso_alpha:5.644739300537772e-06
+2024-04-06 21:24:08,407 - train - INFO - Test: [   0/39]  Time: 0.190 (0.190)  Loss:  1.1211 (1.1211)  Acc@1: 74.2188 (74.2188)  Acc@5: 93.7500 (93.7500)
+2024-04-06 21:24:12,188 - train - INFO - Test: [  39/39]  Time: 0.043 (0.099)  Loss:  0.9458 (1.1255)  Acc@1: 81.2500 (71.5100)  Acc@5: 87.5000 (92.2100)
+2024-04-06 21:24:13,615 - train - INFO - Train: 17 [   0/195 (  0%)]  Loss:  3.190428 (3.1904)  Time: 1.350s,  189.68/s  (1.350s,  189.68/s)  LR: 5.331e-04  Data: 0.175 (0.175)
+2024-04-06 21:25:06,823 - train - INFO - Train: 17 [  50/195 ( 26%)]  Loss:  3.314216 (2.9355)  Time: 1.147s,  223.24/s  (1.070s,  239.31/s)  LR: 5.331e-04  Data: 0.012 (0.014)
+2024-04-06 21:25:55,732 - train - INFO - Train: 17 [ 100/195 ( 52%)]  Loss:  3.176590 (2.9226)  Time: 1.114s,  229.86/s  (1.024s,  249.90/s)  LR: 5.331e-04  Data: 0.012 (0.012)

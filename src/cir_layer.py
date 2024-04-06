@@ -289,7 +289,7 @@ class CirConv2d(nn.Module):
         return F.softmax(logits/self.tau, dim=dim)
     
     def forward(self, x):
-        weight=self.trans_to_cir(x.device)
+        weight=self.trans_to_cir_meng(x.device)
         x = F.conv2d(x,weight,None,self.stride,self.padding)
         return x
 
