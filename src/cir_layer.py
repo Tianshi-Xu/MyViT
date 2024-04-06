@@ -111,7 +111,7 @@ class CirLinear(nn.Module):
             else:
                 alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
         else:
-            alphas_after = self.get_alpha_after()
+            alphas_after = self.get_alphas_after()
         weight=(alphas_after[0]*self.weight).to(device)
         for idx,block_size in enumerate(search_space):
             if idx==0:

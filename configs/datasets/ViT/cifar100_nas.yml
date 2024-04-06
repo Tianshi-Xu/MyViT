@@ -44,7 +44,7 @@ checkpoint_hist: 5
 finetune: False
 lasso_alpha: 1e-5
 tau: 0.99
-blocksize: 8
+blocksize: 10
 fix_blocksize: -1
 log_name: vit_c100_normal
 teacher: vit_7_4_32_c100

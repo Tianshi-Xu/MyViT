@@ -306,8 +306,8 @@ parser.add_argument('--log_name', default='none', type=str,
                     help='act sparsification pattern')
 parser.add_argument('--tau', default=1.0, type=float,
                     help='alpha for lasso loss')
-parser.add_argument('--blocksize', default=1, type=int,
-                    help='avg block size')
+parser.add_argument('--budget', default=1, type=int,
+                    help='budget, before is avg block size, now is latency ratio')
 
 def _parse_args():
     # Do we have a config file to parse?
@@ -684,7 +684,7 @@ def main():
         _logger.info("Verifying teacher model")
         validate(teacher, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
     if args.finetune and args.fix_blocksize==-1:
-        fix_model_by_budget(model, args.blocksize)
+        fix_model_by_budget(model, args.budget)
     if args.initial_checkpoint != "":
         _logger.info("Verifying initial model")
         validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
@@ -821,7 +821,7 @@ def train_one_epoch(
         def comm(HW,C,K,b):
             # print("H,W,C,K,b:",H,W,C,K,b)
             N=8192
-            return torch.tensor(cal_rot(N,HW,C,K,b)+0.0935*(HW*C*K)/(N*b))
+            return torch.tensor(cal_rot(N,HW,C,K,b)+0.1*(HW*C*K)/(N*b))
         # add lasso loss 
         if args.fix_blocksize==-1 and args.finetune is False:
             for layer in model.modules():
@@ -900,8 +900,9 @@ def train_one_epoch(
         # end for
     total_blocks = 0
     total_layers = 0
-    
-    # update lasso_alpha and tau each epoch
+    origin_latency = 0
+    current_latency = 0
+    # update lasso_alpha and tau each epoch, standard is avg block_size
     if args.fix_blocksize==-1 and args.finetune is False:
         for layer in model.modules():
             if isinstance(layer, CirLinear):
@@ -916,13 +917,20 @@ def train_one_epoch(
                 _logger.info("alphas:"+str(alphas))
                 # print("alphas:",alphas)
                 # print("tau:",layer.tau)
+                current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
+                origin_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
                 
                 if epoch > 2 and layer.tau > 1e-5:
                     layer.tau=(layer.tau*args.tau)
                     _logger.info("tau:"+str(layer.tau))
-        _logger.info("avg block size:"+str(total_blocks/total_layers))            
-        if total_blocks/total_layers < args.blocksize and epoch > 5 and epoch%3==0:
+                    
+        _logger.info("avg block size:"+str(total_blocks/total_layers))     
+        _logger.info("current latency ratio:"+str(current_latency/origin_latency))       
+        if current_latency/origin_latency < args.budget and epoch > 5 and epoch%2==0:
             args.lasso_alpha*=1.1
+            _logger.info("lasso_alpha:"+str(args.lasso_alpha))
+        elif current_latency/origin_latency > args.budget and epoch > 5 and epoch%2==0:
+            args.lasso_alpha/=1.1
             _logger.info("lasso_alpha:"+str(args.lasso_alpha))
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()
