@@ -17,6 +17,8 @@ class CirLinear(nn.Module):
         # d1 = input.shape[0] used for compute the latency
         self.d1 = None
         # search_space = [2,4,8,16] or [16], block size=1 always exists
+        self.rotate_mat = {}
+        self.rev_rotate_mat = {}
         self.search_space = [1]
         search=2
         
@@ -31,6 +33,7 @@ class CirLinear(nn.Module):
         if bias:
             self.bias = nn.Parameter(torch.zeros(out_features))
         self.reset_parameters()
+        self.set_rotate_mat()
         
     def reset_parameters(self) -> None:
         # Setting a=sqrt(5) in kaiming_uniform is the same as initializing with
@@ -41,6 +44,22 @@ class CirLinear(nn.Module):
             fan_in, _ = init._calculate_fan_in_and_fan_out(self.weight)
             bound = 1 / math.sqrt(fan_in) if fan_in > 0 else 0
             init.uniform_(self.bias, -bound, bound)
+    
+    def set_rotate_mat(self):
+        for block_size in self.search_space:
+            if block_size==1:
+                continue
+            rotate_mat = torch.zeros(block_size * block_size, 2).int()
+            rev_rotate_mat = torch.zeros(block_size * block_size, 2).int()
+            for i in range(0, block_size):
+                for j in range(0, block_size):
+                    rotate_mat[i * block_size + j, 0] = i 
+                    rotate_mat[i * block_size + j, 1] = (i + j) % block_size
+
+                    rev_rotate_mat[i * block_size + j, 0] = i 
+                    rev_rotate_mat[i * block_size + j, 1] = (j - i) % block_size
+            self.rotate_mat[block_size] = rotate_mat
+            self.rev_rotate_mat[block_size] = rev_rotate_mat
             
     # weight = \sum alpha[i]*W[i], alpha need to be softmaxed
     def trans_to_cir(self,device):
@@ -83,6 +102,43 @@ class CirLinear(nn.Module):
             weight=weight+alphas_after[idx]*w
         return weight
     
+    def trans_to_cir_meng(self,device):
+        search_space = self.search_space
+        # if fix_block_size, directly use the block size
+        if self.fix_block_size!=-1:
+            if search_space[-1] < self.fix_block_size:
+                alphas_after=torch.tensor([1 if i==int(math.log2(search_space[-1])) else 0 for i in range(self.alphas.shape[-1])]).to(device)
+            else:
+                alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
+        else:
+            alphas_after = self.get_alpha_after()
+        weight=(alphas_after[0]*self.weight).to(device)
+        for idx,block_size in enumerate(search_space):
+            if idx==0:
+                continue
+            if torch.abs(alphas_after[idx]) <1e-6:
+                continue
+            # print("block_size:",block_size)
+            rotate_mat = self.rotate_mat[block_size].to(device)
+            rev_rotate_mat = self.rev_rotate_mat[block_size].to(device)
+            q = self.out_features // block_size
+            p = self.in_features // block_size
+            tmp = self.weight.reshape(q, block_size, p, block_size)
+            # tmp (q,p,b,b)
+            tmp = tmp.permute(0, 2, 1, 3)
+            # print(tmp[0,0,:,:])
+            weights_rot = tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1]] 
+            weights_rot = weights_rot.view(q,p, block_size, block_size)
+            # print("-----------")
+            weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
+            weights_cir = weights_cir.repeat(1,1, block_size, 1)
+            weights_cir = weights_cir[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1]] 
+            weights_cir = weights_cir.view(q,p, block_size, block_size)
+            # print(weights_cir[0,0,:,:])
+            weights_cir=weights_cir.permute(0,2,1,3).reshape(self.out_features,self.in_features)
+            weight=weight+alphas_after[idx]*weights_cir
+        return weight
+    
     # get the alpha after softmax, if hard, fix the block size
     def get_alphas_after(self):
         logits = self.alphas
@@ -94,7 +150,7 @@ class CirLinear(nn.Module):
     
     def forward(self,x):
         self.d1 = x.shape[0]
-        weight = self.trans_to_cir(x.device).to(x.device)
+        weight = self.trans_to_cir_meng(x.device).to(x.device)
         return F.linear(x, weight, self.bias)
     
     def extra_repr(self) -> str:
@@ -251,15 +307,13 @@ class CirBatchNorm2d(nn.BatchNorm2d):
         return f'num_features={self.num_features}, eps={self.eps}, momentum={self.momentum}, affine={self.affine}, track_running_stats={self.track_running_stats}, block_size={self.block_size}'
 
 
-    
+
 if __name__ == '__main__':
-    circonv = CirConv2d(4,4,1,1,feature_size=4)
-    x = torch.randn(1,4,4,4)
-    circonv.alphas.data = torch.tensor([0.0,0.0,1000000.0])
-    print(circonv.get_alphas_after())
-    print(circonv.get_final_block_size())
-    print(circonv)
-    y = circonv(x)
+    # trans_to_cir_meng()
+    conv = CirLinear(16,96,-1,False)
+    x = torch.randn(4,16)
+    y = conv(x)
+    # print(y)
     # K=4
     # C=4
     # H=4
