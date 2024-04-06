@@ -1,11 +1,9 @@
-2024-04-06 20:50:08,360 - train - INFO - Training with a single process on 1 GPUs.
-2024-04-06 20:50:10,932 - train - INFO - Model c100_nas_mobilenetv2 created, param count:2352133
-2024-04-06 20:50:10,944 - train - INFO - Using native Torch AMP. Training in mixed precision.
-2024-04-06 20:50:10,944 - train - INFO - Scheduled epochs: 310
-2024-04-06 20:50:12,496 - train - INFO - Verifying teacher model
-2024-04-06 20:50:15,376 - train - INFO - Test: [   0/19]  Time: 2.879 (2.879)  Loss:  0.9644 (0.9644)  Acc@1: 79.6875 (79.6875)  Acc@5: 95.7031 (95.7031)
-2024-04-06 20:50:16,724 - train - INFO - Test: [  19/19]  Time: 0.842 (0.211)  Loss:  1.0098 (0.9843)  Acc@1: 78.3088 (78.6700)  Acc@5: 94.8529 (95.0900)
-2024-04-06 20:50:16,724 - train - INFO - Verifying initial model
-2024-04-06 20:50:18,468 - train - INFO - Test: [   0/19]  Time: 1.742 (1.742)  Loss:  5.9336 (5.9336)  Acc@1:  0.5859 ( 0.5859)  Acc@5:  5.0781 ( 5.0781)
-2024-04-06 20:50:39,731 - train - INFO - Test: [  19/19]  Time: 1.308 (1.150)  Loss:  5.7656 (5.9606)  Acc@1:  2.2059 ( 1.0000)  Acc@5:  5.8824 ( 5.0000)
-2024-04-06 20:50:46,044 - train - INFO - Train: 0 [   0/97 (  0%)]  Loss:  4.169473 (4.1695)  Time: 6.308s,   81.16/s  (6.308s,   81.16/s)  LR: 1.000e-05  Data: 0.473 (0.473)
+2024-04-06 21:00:43,021 - train - INFO - Training with a single process on 1 GPUs.
+2024-04-06 21:00:45,940 - train - INFO - Model c100_nas_mobilenetv2 created, param count:2352133
+2024-04-06 21:00:45,961 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-06 21:00:45,961 - train - INFO - Scheduled epochs: 310
+2024-04-06 21:00:47,557 - train - INFO - Verifying teacher model
+2024-04-06 21:00:50,716 - train - INFO - Test: [   0/19]  Time: 3.158 (3.158)  Loss:  0.9644 (0.9644)  Acc@1: 79.6875 (79.6875)  Acc@5: 95.7031 (95.7031)
+2024-04-06 21:00:52,171 - train - INFO - Test: [  19/19]  Time: 1.000 (0.231)  Loss:  1.0098 (0.9843)  Acc@1: 78.3088 (78.6700)  Acc@5: 94.8529 (95.0900)
+2024-04-06 21:00:52,171 - train - INFO - Verifying initial model
+2024-04-06 21:00:53,783 - train - INFO - Test: [   0/19]  Time: 1.610 (1.610)  Loss:  5.9336 (5.9336)  Acc@1:  0.5859 ( 0.5859)  Acc@5:  5.0781 ( 5.0781)

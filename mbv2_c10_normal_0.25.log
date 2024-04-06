@@ -1,12 +1,9 @@
-2024-04-06 20:48:42,059 - train - INFO - Training with a single process on 1 GPUs.
-2024-04-06 20:48:44,228 - train - INFO - Model c10_nas_mobilenetv2 created, param count:2236843
-2024-04-06 20:48:44,248 - train - INFO - Using native Torch AMP. Training in mixed precision.
-2024-04-06 20:48:44,248 - train - INFO - Scheduled epochs: 160
-2024-04-06 20:48:45,545 - train - INFO - Verifying teacher model
-2024-04-06 20:48:48,238 - train - INFO - Test: [   0/39]  Time: 2.692 (2.692)  Loss:  0.3931 (0.3931)  Acc@1: 94.1406 (94.1406)  Acc@5: 100.0000 (100.0000)
-2024-04-06 20:48:49,412 - train - INFO - Test: [  39/39]  Time: 0.628 (0.097)  Loss:  0.4517 (0.3957)  Acc@1: 93.7500 (94.7100)  Acc@5: 100.0000 (99.8500)
-2024-04-06 20:48:49,413 - train - INFO - Verifying initial model
-2024-04-06 20:48:50,480 - train - INFO - Test: [   0/39]  Time: 1.066 (1.066)  Loss:  3.0508 (3.0508)  Acc@1:  8.9844 ( 8.9844)  Acc@5: 50.3906 (50.3906)
-2024-04-06 20:49:20,128 - train - INFO - Test: [  39/39]  Time: 0.751 (0.768)  Loss:  2.7676 (3.0267)  Acc@1: 18.7500 (10.0000)  Acc@5: 75.0000 (50.0000)
-2024-04-06 20:49:24,320 - train - INFO - Train: 0 [   0/195 (  0%)]  Loss:  2.116114 (2.1161)  Time: 4.182s,   61.21/s  (4.182s,   61.21/s)  LR: 1.000e-05  Data: 0.569 (0.569)
-2024-04-06 20:50:38,449 - train - INFO - Train: 0 [  50/195 ( 26%)]  Loss:  2.036533 (2.1473)  Time: 1.765s,  145.03/s  (1.535s,  166.72/s)  LR: 1.000e-05  Data: 0.006 (0.021)
+2024-04-06 21:00:33,050 - train - INFO - Training with a single process on 1 GPUs.
+2024-04-06 21:00:35,986 - train - INFO - Model c10_nas_mobilenetv2 created, param count:2236843
+2024-04-06 21:00:36,064 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-06 21:00:36,065 - train - INFO - Scheduled epochs: 160
+2024-04-06 21:00:37,724 - train - INFO - Verifying teacher model
+2024-04-06 21:00:40,644 - train - INFO - Test: [   0/39]  Time: 2.919 (2.919)  Loss:  0.3931 (0.3931)  Acc@1: 94.1406 (94.1406)  Acc@5: 100.0000 (100.0000)
+2024-04-06 21:00:41,936 - train - INFO - Test: [  39/39]  Time: 0.682 (0.105)  Loss:  0.4514 (0.3957)  Acc@1: 93.7500 (94.7100)  Acc@5: 100.0000 (99.8500)
+2024-04-06 21:00:41,937 - train - INFO - Verifying initial model
+2024-04-06 21:00:43,114 - train - INFO - Test: [   0/39]  Time: 1.175 (1.175)  Loss:  3.0508 (3.0508)  Acc@1:  8.9844 ( 8.9844)  Acc@5: 50.3906 (50.3906)

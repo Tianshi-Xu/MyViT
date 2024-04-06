@@ -905,7 +905,7 @@ def train_one_epoch(
     # update lasso_alpha and tau each epoch, standard is avg block_size
     if args.fix_blocksize==-1 and args.finetune is False:
         for layer in model.modules():
-            if isinstance(layer, CirLinear):
+            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
                 total_blocks +=1
                 total_layers +=1
         for layer in model.modules():

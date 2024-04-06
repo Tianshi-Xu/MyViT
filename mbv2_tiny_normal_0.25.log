@@ -1,4 +1,10 @@
-2024-04-06 20:51:50,363 - train - INFO - Training with a single process on 1 GPUs.
-2024-04-06 20:51:53,051 - train - INFO - Model tiny_nas_mobilenetv2 created, param count:2480233
-2024-04-06 20:51:53,097 - train - INFO - Using native Torch AMP. Training in mixed precision.
-2024-04-06 20:51:53,097 - train - INFO - Scheduled epochs: 310
+2024-04-06 21:00:52,377 - train - INFO - Training with a single process on 1 GPUs.
+2024-04-06 21:00:56,706 - train - INFO - Model tiny_nas_mobilenetv2 created, param count:2480233
+2024-04-06 21:00:56,754 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-06 21:00:56,764 - train - INFO - Scheduled epochs: 310
+2024-04-06 21:00:57,113 - train - INFO - Verifying teacher model
+2024-04-06 21:00:59,838 - train - INFO - Test: [   0/78]  Time: 2.724 (2.724)  Loss:  0.9487 (0.9487)  Acc@1: 82.8125 (82.8125)  Acc@5: 93.7500 (93.7500)
+2024-04-06 21:01:00,905 - train - INFO - Test: [  50/78]  Time: 0.010 (0.074)  Loss:  1.5586 (1.5637)  Acc@1: 67.1875 (66.0846)  Acc@5: 88.2812 (86.4890)
+2024-04-06 21:01:02,150 - train - INFO - Test: [  78/78]  Time: 0.742 (0.064)  Loss:  1.8311 (1.5830)  Acc@1: 62.5000 (65.7000)  Acc@5: 93.7500 (86.1300)
+2024-04-06 21:01:02,150 - train - INFO - Verifying initial model
+2024-04-06 21:01:04,268 - train - INFO - Test: [   0/78]  Time: 2.117 (2.117)  Loss:  8.7422 (8.7422)  Acc@1:  0.0000 ( 0.0000)  Acc@5:  0.0000 ( 0.0000)
