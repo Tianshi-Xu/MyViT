@@ -345,16 +345,46 @@ def create_teacher_model(args):
     teacher = teacher.eval()
     return teacher
 
+# cal_rot and comm are used to compute latency of each layer, each block size
+def cal_rot(n,m,d1,d2,b):
+    # print("m,n,d1,d2,b:",m,n,d1,d2,b)
+    min_rot = 1e8
+    d_min = int(min(d2/b,d1/b))
+    for ri in range(1,(d_min)+1):
+        for ro in range(1,(d_min)+1):
+            d=int(ri*ro)
+            m_p=int(n/b/d)
+            if m*d_min*b<n:
+                if d!=d_min:
+                    continue
+                m_p=m
+            if d>d_min or m_p>m:
+                continue
+            tmp=m*d1*(ri-1)/(m_p*b*d)+m*d2*(ro-1)/(m_p*b*d)
+            if tmp<min_rot:
+                min_rot=tmp
+                # print("ri,ro,d,m_p",ri,ro,d,m_p)
+    # print(min_rot)
+    return min_rot
+
+def comm(HW,C,K,b):
+    # print("H,W,C,K,b:",H,W,C,K,b)
+    N=8192
+    return torch.tensor(cal_rot(N,HW,C,K,b)+0.1*(HW*C*K)/(N*b))
 def fix_model_by_budget(model, budget):
     _logger.info("budget:"+str(budget))
     with torch.no_grad():
         total_blocks = 0
         total_layers = 0
+        origin_latency = 0
+        current_latency = 0
         layer_info = []
         for layer in model.modules():
             if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
                 total_blocks +=1
                 total_layers +=1
+                origin_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
+                current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
                 _logger.info(layer.alphas.requires_grad)
                 alphas=layer.get_alphas_after()
                 max_alpha = torch.max(alphas)
@@ -362,19 +392,23 @@ def fix_model_by_budget(model, budget):
                 layer_info.append((layer, alphas, max_alpha))
                 _logger.info("alphas:"+str(alphas))
         _logger.info("total_layers:"+str(total_layers))
-        
         layer_info.sort(key=lambda x: x[2], reverse=True)
         for info in layer_info:
-            if total_blocks // total_layers < budget:
+            if current_latency/origin_latency > budget:
                 _logger.info("max_alpha:"+str(info[2]))
                 idx = torch.argmax(info[1])
                 layer = info[0]
                 total_blocks += layer.search_space[idx]-1
                 layer.fix_block_size = layer.search_space[idx]
                 layer.hard=True
+                current_latency -= comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
+                current_latency += comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
+                # _logger.info("current_latency:"+str(current_latency))
             else:
                 break
-        _logger.info("avg block size:"+str(total_blocks//total_layers))     
+        _logger.info("avg block size:"+str(total_blocks//total_layers))
+        # _logger.info("origin latency:"+str(origin_latency))
+        _logger.info("current latency ratio:"+str(current_latency/origin_latency))     
         
         for layer in model.modules():
             if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
@@ -683,11 +717,11 @@ def main():
     if args.use_kd:
         _logger.info("Verifying teacher model")
         validate(teacher, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
-    if args.finetune and args.fix_blocksize==-1:
-        fix_model_by_budget(model, args.budget)
     if args.initial_checkpoint != "":
         _logger.info("Verifying initial model")
         validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
+    if args.finetune and args.fix_blocksize==-1:
+        fix_model_by_budget(model, args.budget)
     # setup checkpoint saver and eval metric tracking
     eval_metric = args.eval_metric
     best_metric = None
@@ -796,32 +830,7 @@ def train_one_epoch(
                 loss = loss_fn(output, target)
         
         reg_loss = 0
-        # cal_rot and comm are used to compute latency of each layer, each block size
-        def cal_rot(n,m,d1,d2,b):
-            # print("m,n,d1,d2,b:",m,n,d1,d2,b)
-            min_rot = 1e8
-            d_min = int(min(d2/b,d1/b))
-            for ri in range(1,(d_min)+1):
-                for ro in range(1,(d_min)+1):
-                    d=int(ri*ro)
-                    m_p=int(n/b/d)
-                    if m*d_min*b<n:
-                        if d!=d_min:
-                            continue
-                        m_p=m
-                    if d>d_min or m_p>m:
-                        continue
-                    tmp=m*d1*(ri-1)/(m_p*b*d)+m*d2*(ro-1)/(m_p*b*d)
-                    if tmp<min_rot:
-                        min_rot=tmp
-                        # print("ri,ro,d,m_p",ri,ro,d,m_p)
-            # print(min_rot)
-            return min_rot
-        
-        def comm(HW,C,K,b):
-            # print("H,W,C,K,b:",H,W,C,K,b)
-            N=8192
-            return torch.tensor(cal_rot(N,HW,C,K,b)+0.1*(HW*C*K)/(N*b))
+
         # add lasso loss 
         if args.fix_blocksize==-1 and args.finetune is False:
             for layer in model.modules():

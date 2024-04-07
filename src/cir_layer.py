@@ -367,9 +367,12 @@ class CirBatchNorm2d(nn.BatchNorm2d):
 
 if __name__ == '__main__':
     # trans_to_cir_meng()
-    conv = CirLinear(16,96,-1,False)
-    x = torch.randn(4,16)
-    y = conv(x)
+    # conv = CirLinear(16,96,-1,False)
+    # x = torch.randn(4,16)
+    # y = conv(x)
+    x = torch.tensor([0.6543, 0.0022, 0.0044, 0.0204, 0.3187])
+    y = F.softmax(x/0.20,dim=-1)
+    print(y)
     # print(y)
     # K=4
     # C=4
