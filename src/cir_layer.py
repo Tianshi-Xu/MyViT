@@ -167,11 +167,14 @@ class CirConv2d(nn.Module):
         self.kernel_size = kernel_size
         self.stride = stride
         self.feature_size = feature_size
+        self.d1 = feature_size * feature_size
         self.fix_block_size = fix_block_size
         # print("finetune:",self.finetune)
         self.padding = kernel_size//2
         self.tau = 1.0
         self.hard = False
+        self.rotate_mat = {}
+        self.rev_rotate_mat = {}
         self.search_space = [1,]
         search=2
         while search<=16 and in_features %search ==0 and out_features %search ==0:
@@ -183,6 +186,60 @@ class CirConv2d(nn.Module):
         self.weight = nn.Parameter(torch.zeros(out_features,in_features, kernel_size,kernel_size))
         self.alphas_after = None
         init.kaiming_uniform_(self.weight)
+        self.set_rotate_mat()
+    
+    def set_rotate_mat(self):
+        for block_size in self.search_space:
+            if block_size==1:
+                continue
+            rotate_mat = torch.zeros(block_size * block_size, 2).int()
+            rev_rotate_mat = torch.zeros(block_size * block_size, 2).int()
+            for i in range(0, block_size):
+                for j in range(0, block_size):
+                    rotate_mat[i * block_size + j, 0] = i 
+                    rotate_mat[i * block_size + j, 1] = (i + j) % block_size
+
+                    rev_rotate_mat[i * block_size + j, 0] = i 
+                    rev_rotate_mat[i * block_size + j, 1] = (j - i) % block_size
+            self.rotate_mat[block_size] = rotate_mat
+            self.rev_rotate_mat[block_size] = rev_rotate_mat
+    
+    def trans_to_cir_meng(self,device):
+        search_space = self.search_space
+        # if fix_block_size, directly use the block size
+        if self.fix_block_size!=-1:
+            if search_space[-1] < self.fix_block_size:
+                alphas_after=torch.tensor([1 if i==int(math.log2(search_space[-1])) else 0 for i in range(self.alphas.shape[-1])]).to(device)
+            else:
+                alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
+        else:
+            alphas_after = self.get_alphas_after()
+        weight=(alphas_after[0]*self.weight).to(device)
+        for idx,block_size in enumerate(search_space):
+            if idx==0:
+                continue
+            if torch.abs(alphas_after[idx]) <1e-6:
+                continue
+            # print("block_size:",block_size)
+            rotate_mat = self.rotate_mat[block_size].to(device)
+            rev_rotate_mat = self.rev_rotate_mat[block_size].to(device)
+            q = self.out_features // block_size
+            p = self.in_features // block_size
+            tmp = self.weight.reshape(q, block_size, p, block_size, self.kernel_size,self.kernel_size)
+            # tmp (q,p,b,b,1,1)
+            tmp = tmp.permute(0, 2, 1, 3,4,5)
+            # print(tmp[0,0,:,:])
+            weights_rot = tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1],:,:] 
+            weights_rot = weights_rot.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
+            # print("-----------")
+            weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
+            weights_cir = weights_cir.repeat(1,1, block_size, 1,1,1)
+            weights_cir = weights_cir[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1],:,:] 
+            weights_cir = weights_cir.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
+            # print(weights_cir[0,0,:,:])
+            weights_cir=weights_cir.permute(0,2,1,3,4,5).reshape(self.out_features,self.in_features, self.kernel_size,self.kernel_size)
+            weight=weight+alphas_after[idx]*weights_cir
+        return weight
     
     def trans_to_cir(self,device):
         search_space = self.search_space
@@ -232,7 +289,7 @@ class CirConv2d(nn.Module):
         return F.softmax(logits/self.tau, dim=dim)
     
     def forward(self, x):
-        weight=self.trans_to_cir(x.device)
+        weight=self.trans_to_cir_meng(x.device)
         x = F.conv2d(x,weight,None,self.stride,self.padding)
         return x
 
@@ -310,9 +367,12 @@ class CirBatchNorm2d(nn.BatchNorm2d):
 
 if __name__ == '__main__':
     # trans_to_cir_meng()
-    conv = CirLinear(16,96,-1,False)
-    x = torch.randn(4,16)
-    y = conv(x)
+    # conv = CirLinear(16,96,-1,False)
+    # x = torch.randn(4,16)
+    # y = conv(x)
+    x = torch.tensor([0.6543, 0.0022, 0.0044, 0.0204, 0.3187])
+    y = F.softmax(x/0.20,dim=-1)
+    print(y)
     # print(y)
     # K=4
     # C=4

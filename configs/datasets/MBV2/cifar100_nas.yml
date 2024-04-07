@@ -30,7 +30,7 @@ lr: 75e-5
 min_lr: 1e-5
 sched: cosine
 weight_decay: 6e-2
-epochs: 300
+epochs: 150
 cooldown_epochs: 10
 warmup_epochs: 10
 warmup_lr: 0.00001
@@ -42,11 +42,11 @@ kd_alpha: 4
 seed: 3407
 checkpoint_hist: 5
 finetune: False
-lasso_alpha: 0
-tau: 1.0
-blocksize: 1
-fix_blocksize: 2
-log_name: mbv2_c100_fixb2
+lasso_alpha: 1e-5
+tau: 0.99
+budget: 0.25
+fix_blocksize: -1
+log_name: mbv2_c100_normal_0.25
 teacher: c100_mobilenetv2
 teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c100.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"

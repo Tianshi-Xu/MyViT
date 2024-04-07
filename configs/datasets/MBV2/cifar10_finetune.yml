@@ -36,26 +36,22 @@ warmup_epochs: 10
 warmup_lr: 0.00001
 opt: adamw
 smoothing: 0.1
-workers: 4
+workers: 8
 use_kd: true
 kd_alpha: 4
 seed: 3407
-checkpoint_hist: 5
+checkpoint_hist: 3
 # fix_blocksize=-1 represents that the blocksize depends on NAS
 # finetune should be false when nas
 # lasso_alpha 1e-5 for CIFAR /1e-4 for TinyImageNet
 # tau 0.99 is good
-finetune: False
-lasso_alpha: 1e-5
-tau: 0.98
-budget: 0.20
+finetune: True
+lasso_alpha: 0
+tau: 1.0
+budget: 0.25
 fix_blocksize: -1
-log_name: vit_c10_normal_0.20_tau0.98
-teacher: vit_7_4_32
-teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/vit_c10.pth.tar
+log_name: mbv2_c10_finetune_0.25
+teacher: c10_mobilenetv2
+teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c10.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
-initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/vit_c10.pth.tar
-# b8
-# resume: "/home/xts/code/njeans/Compact-Transformers/output/train/20240331-152914-vit_7_4_32-32/model_best.pth.tar"
-# b4
-# resume: "/home/xts/code/njeans/Compact-Transformers/output/train/20240331-153214-vit_7_4_32-32/model_best.pth.tar"
+initial_checkpoint: /home/xts/code/njeans/MyViT/output/train/20240406-212745-c10_nas_mobilenetv2-32/last.pth.tar
