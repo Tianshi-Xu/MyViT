@@ -148,10 +148,22 @@ class CirLinear(nn.Module):
             return F.one_hot(torch.argmax(logits, dim), logits.shape[-1]).float()
         return F.softmax(logits/self.tau, dim=dim)
     
+    def get_final_block_size(self):
+        return self.search_space[torch.argmax(self.alphas)]
+    
     def forward(self,x):
-        self.d1 = x.shape[0]
+        # print("x.shape:",x.shape)
+        
+        # print("w.shape:",self.weight.shape)
+        if len(x.shape)==3:
+            self.d1 = x.shape[1]
+        else:
+            self.d1 = 1
+        # print("d1:",self.d1)
         weight = self.trans_to_cir_meng(x.device).to(x.device)
-        return F.linear(x, weight, self.bias)
+        y = F.linear(x, weight, self.bias)
+        # print("y.shape:",y.shape)
+        return y
     
     def extra_repr(self) -> str:
         return f'in_features={self.in_features}, out_features={self.out_features}, bias={self.bias is not None}, fix_block_size={self.fix_block_size}, search_space={self.search_space}'
