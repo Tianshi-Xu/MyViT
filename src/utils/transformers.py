@@ -1,5 +1,5 @@
 import torch
-from torch.nn import Module, ModuleList, Linear, Dropout, LayerNorm, Identity, Parameter, init,ReLU
+from torch.nn import Module, ModuleList, Linear, Dropout, LayerNorm, Identity, Parameter, init
 import torch.nn.functional as F
 from .stochastic_depth import DropPath
 
@@ -90,8 +90,8 @@ class TransformerEncoderLayer(Module):
 
         self.drop_path = DropPath(drop_path_rate) if drop_path_rate > 0 else Identity()
 
-        # self.activation = F.gelu
-        self.activation = ReLU()
+        self.activation = F.gelu
+        # self.activation = ReLU()
 
     def forward(self, src: torch.Tensor, *args, **kwargs) -> torch.Tensor:
         src = src + self.drop_path(self.self_attn(self.pre_norm(src)))
@@ -121,8 +121,8 @@ class MaskedTransformerEncoderLayer(Module):
 
         self.drop_path = DropPath(drop_path_rate) if drop_path_rate > 0 else Identity()
 
-        # self.activation = F.gelu
-        self.activation = ReLU()
+        self.activation = F.gelu
+        # self.activation = ReLU()
 
     def forward(self, src: torch.Tensor, mask=None, *args, **kwargs) -> torch.Tensor:
         src = src + self.drop_path(self.self_attn(self.pre_norm(src), mask))

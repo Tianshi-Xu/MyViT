@@ -1,0 +1,44 @@
+# pretrain cifar10
+# CUDA_VISIBLE_DEVICES=1 python train.py -c configs/datasets/cifar10.yml --model vit_7_4_32 /home/xts/code/dataset/cifar10/
+
+# pretrain cifar100
+# CUDA_VISIBLE_DEVICES=2 python train.py -c configs/datasets/cifar100.yml --model vit_7_4_32_c100 /home/xts/code/dataset/cifar100/
+
+# pretrain tiny
+# CUDA_VISIBLE_DEVICES=2 python train.py -c configs/datasets/ViT/tiny.yml --model vit_9_12_64 /home/xts/code/dataset/tiny-imagenet-200
+
+# vit nas
+CUDA_VISIBLE_DEVICES=4 python train_nas.py -c configs/datasets/ViT/cifar10_nas.yml --model vit_7_4_32 /home/xts/code/dataset/cifar10/
+CUDA_VISIBLE_DEVICES=3 python train_nas.py -c configs/datasets/ViT/cifar100_nas.yml --model vit_7_4_32_c100 /home/xts/code/dataset/cifar100/
+CUDA_VISIBLE_DEVICES=5 python train_nas.py -c configs/datasets/ViT/tiny_nas.yml --model vit_9_12_64 /home/xts/code/dataset/tiny-imagenet-200
+# CUDA_VISIBLE_DEVICES=3 python train_nas.py -c configs/datasets/ViT/tiny_nas.yml --model vit_9_12_64 /home/xts/code/dataset/tiny-imagenet-200
+
+
+# CUDA_VISIBLE_DEVICES=4 python train.py -c configs/datasets/MBV2/tiny.yml --model tiny_mobilenetv2 /home/xts/code/dataset/tiny-imagenet-200/
+
+# MBV2
+# CUDA_VISIBLE_DEVICES=5 python train.py -c configs/datasets/MBV2/tiny_imagenet.yml --model tiny_mobilenetv2 /home/xts/code/dataset/tiny-imagenet-200/
+# fix block size
+# CUDA_VISIBLE_DEVICES=4 python train_nas.py -c configs/datasets/MBV2/cifar100_nas.yml --model c100_nas_mobilenetv2 /home/xts/code/dataset/cifar100/
+# finetune tiny mbv2
+# CUDA_VISIBLE_DEVICES=5 python train_nas.py -c configs/datasets/MBV2/tiny_finetune.yml --model tiny_nas_mobilenetv2 /home/xts/code/dataset/tiny-imagenet-200/
+# prune hunter
+CUDA_VISIBLE_DEVICES=6 python train.py -c configs/datasets/Prune/cifar100_nas.yml --model c100_prune_mobilenetv2 /home/xts/code/dataset/cifar100/
+
+# finetune vit_c10
+CUDA_VISIBLE_DEVICES=3 python train_nas.py -c configs/datasets/ViT/cifar10_finetune.yml --model vit_7_4_32 /home/xts/code/dataset/cifar10/
+
+# mbv2 finetune
+CUDA_VISIBLE_DEVICES=4 python train_nas.py -c configs/datasets/MBV2/cifar10_finetune.yml --model c10_nas_mobilenetv2 /home/xts/code/dataset/cifar10/
+
+# mbv2 gumbel
+CUDA_VISIBLE_DEVICES=5 python train_nas.py -c configs/datasets/MBV2/cifar10_nas_gumbel.yml --model c10_nas_mobilenetv2 /home/xts/code/dataset/cifar10/
+
+# mbv2 ILP
+CUDA_VISIBLE_DEVICES=1 python CirILP.py -c configs/datasets/MBV2/cifar10_ILP.yml --model c10_nas_mobilenetv2 /home/xts/code/dataset/cifar10/
+CUDA_VISIBLE_DEVICES=1 python CirILP.py -c configs/datasets/MBV2/cifar100_ILP.yml --model c100_nas_mobilenetv2 /home/xts/code/dataset/cifar100/
+CUDA_VISIBLE_DEVICES=1 python CirILP.py -c configs/datasets/MBV2/tiny_ILP.yml --model tiny_nas_mobilenetv2 /home/xts/code/dataset/tiny-imagenet-200/
+# vit ILP
+CUDA_VISIBLE_DEVICES=3 python CirILP.py -c configs/datasets/ViT/cifar10_ILP.yml --model vit_7_4_32 /home/xts/code/dataset/cifar10/
+CUDA_VISIBLE_DEVICES=3 python CirILP.py -c configs/datasets/ViT/cifar100_ILP.yml --model vit_7_4_32_c100 /home/xts/code/dataset/cifar100/
+CUDA_VISIBLE_DEVICES=5 python CirILP.py -c configs/datasets/ViT/tiny_ILP.yml --model vit_9_12_64 /home/xts/code/dataset/tiny-imagenet-200
