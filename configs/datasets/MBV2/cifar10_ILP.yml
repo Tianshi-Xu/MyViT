@@ -39,8 +39,8 @@ smoothing: 0.1
 workers: 8
 seed: 3407
 checkpoint_hist: 1
-budget: 0.125
+budget: 4
 fix_blocksize: 1
-log_name: mbv2_c10_ILP_16_no1
+log_name: mbv2_c10_ILP
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
 initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c10.pth.tar

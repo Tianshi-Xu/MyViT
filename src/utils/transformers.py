@@ -21,16 +21,19 @@ class Attention(Module):
         self.proj_drop = Dropout(projection_dropout)
 
     def forward(self, x):
+        # print("x.shape: ", x.shape)
         B, N, C = x.shape
         qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
         q, k, v = qkv[0], qkv[1], qkv[2]
-
+        # print("q.shape: ", q.shape)
         attn = (q @ k.transpose(-2, -1)) * self.scale
         attn = attn.softmax(dim=-1)
         attn = self.attn_drop(attn)
-
+        # print("attention.shape: ", attn.shape)
         x = (attn @ v).transpose(1, 2).reshape(B, N, C)
+        # print("x2.shape: ", x.shape)
         x = self.proj(x)
+        # print("x_proj.shape: ", x.shape)
         x = self.proj_drop(x)
         return x
 

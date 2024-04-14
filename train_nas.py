@@ -350,21 +350,29 @@ def create_teacher_model(args):
     teacher = teacher.eval()
     return teacher
 
+def next_power_2(d):
+    p = math.ceil(math.log2(d))
+    return int(pow(2,p))
+
 # cal_rot and comm are used to compute latency of each layer, each block size
 def cal_rot(n,m,d1,d2,b):
-    # print("m,n,d1,d2,b:",m,n,d1,d2,b)
     min_rot = 1e8
     d_min = int(min(d2/b,d1/b))
     for ri in range(1,(d_min)+1):
         for ro in range(1,(d_min)+1):
             d=int(ri*ro)
             m_p=int(n/b/d)
+            
             if m*d_min*b<n:
                 if d!=d_min:
                     continue
                 m_p=m
             if d>d_min or m_p>m:
                 continue
+            if b!=1:
+                next_pow_2 = next_power_2(m_p*b)
+                if next_pow_2*d>n:
+                    continue
             tmp=m*d1*(ri-1)/(m_p*b*d)+m*d2*(ro-1)/(m_p*b*d)
             if tmp<min_rot:
                 min_rot=tmp
@@ -376,6 +384,7 @@ def comm(HW,C,K,b):
     # print("H,W,C,K,b:",H,W,C,K,b)
     N=8192
     return torch.tensor(cal_rot(N,HW,C,K,b)+0.1*(HW*C*K)/(N*b))
+
 def fix_model_by_budget(model, budget):
     _logger.info("budget:"+str(budget))
     with torch.no_grad():
