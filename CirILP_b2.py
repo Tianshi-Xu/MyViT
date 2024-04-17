@@ -747,20 +747,20 @@ def ILP(args,test_loader,model,loss_fn):
             cir_idx.append(idx)
             # _logger.info("d1:"+str(layer.d1))
             delta_weights_b1.append(0)
-            delta_weights_b2.append(cal_delta_z(layer,2,space))
-            delta_weights_b4.append(cal_delta_z(layer,4,space))
+            # delta_weights_b2.append(cal_delta_z(layer,2,space))
+            # delta_weights_b4.append(cal_delta_z(layer,4,space))
             # delta_weights_b8.append(cal_delta_z(layer,8,space))
             # delta_weights_b16.append(cal_delta_z(layer,16,space))
             
-            # delta_weights_b2.append(cal_mse(layer,2,space))
-            # delta_weights_b4.append(cal_mse(layer,4,space))
-            # delta_weights_b8.append(cal_mse(layer,8,space))
+            delta_weights_b2.append(cal_mse(layer,2,space))
+            delta_weights_b4.append(cal_mse(layer,4,space))
+            delta_weights_b8.append(cal_mse(layer,8,space))
             # delta_weights_b16.append(cal_mse(layer,16,space))
             # delta_weights_b32.append(cal_mse(layer,32,space))
             latency_weights_b1.append(cal_latency(layer.d1,layer.in_features,layer.out_features,1,space))
             latency_weights_b2.append(cal_latency(layer.d1,layer.in_features,layer.out_features,2,space))
             latency_weights_b4.append(cal_latency(layer.d1,layer.in_features,layer.out_features,4,space))
-            # latency_weights_b8.append(cal_latency(layer.d1,layer.in_features,layer.out_features,8,space))
+            latency_weights_b8.append(cal_latency(layer.d1,layer.in_features,layer.out_features,8,space))
             # latency_weights_b16.append(cal_latency(layer.d1,layer.in_features,layer.out_features,16,space))
             # latency_weights_b32.append(cal_latency(layer.d1,layer.in_features,layer.out_features,32,space))
             idx+=1
@@ -791,30 +791,33 @@ def ILP(args,test_loader,model,loss_fn):
         variable[f"b16_{i}"] = LpVariable(f"b16_{i}", 0, 1, cat=LpInteger)
         # variable[f"b32_{i}"] = LpVariable(f"b32_{i}", 0, 1, cat=LpInteger)
     prob = LpProblem("Block_size", LpMinimize)
-    prob += sum(variable[f"b1_{i}"]*latency_weights_b1[i] +variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] for i in range(num_variable))-origin_latency <= 0.01
+    prob += sum(variable[f"b1_{i}"]*latency_weights_b1[i] +variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] +variable[f"b8_{i}"]*latency_weights_b8[i] for i in range(num_variable))-origin_latency <= 0.01
     # prob += sum(variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] +variable[f"b8_{i}"]*latency_weights_b8[i] +variable[f"b16_{i}"]*latency_weights_b16[i] for i in range(num_variable))-origin_latency <= 0
 
-    prob += sum(variable[f"b4_{i}"] for i in range(num_variable)) <= num_variable/4
+    # prob += sum(variable[f"b4_{i}"] for i in range(num_variable)) <= num_variable/4
     
     #one layer only have one blocksize
     for i in range(num_variable):
-        prob += (variable[f"b1_{i}"]+ variable[f"b2_{i}"]+ variable[f"b4_{i}"]) == 1
+        prob += (variable[f"b1_{i}"]+ variable[f"b2_{i}"]+ variable[f"b4_{i}"]+ variable[f"b8_{i}"]) == 1
     delta_weights_b1 = np.array(delta_weights_b1)
     delta_weights_b2 = np.array(delta_weights_b2)
     delta_weights_b4 = np.array(delta_weights_b4)
-    # delta_weights_b8 = np.array(delta_weights_b8)
+    delta_weights_b8 = np.array(delta_weights_b8)
     # delta_weights_b16 = np.array(delta_weights_b16)
     # delta_weights_b32 = np.array(delta_weights_b32)
 
     sensitivity_b1 = traces * delta_weights_b1
     sensitivity_b2 = traces * delta_weights_b2
     sensitivity_b4 = traces * delta_weights_b4
-    # sensitivity_b8 = traces * delta_weights_b8
+    sensitivity_b8 = traces * delta_weights_b8
     # sensitivity_b16 = traces * delta_weights_b16
     # sensitivity_b32 = traces * delta_weights_b32
+    _logger.info("sensitivity_b2:"+str(sensitivity_b2))
+    _logger.info("sensitivity_b4:"+str(sensitivity_b4))
+    _logger.info("sensitivity_b8:"+str(sensitivity_b8))
     # optimization target: minimize the sensitivity
     # prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] +variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
-    prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] + variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] for i in range(num_variable))
+    prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] + variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] + variable[f"b8_{i}"]*sensitivity_b8[i]for i in range(num_variable))
 
     status = prob.solve(GLPK_CMD(msg=1, mip=1, options=["--tmlim", "10000","--simplex"]))
     
@@ -824,7 +827,7 @@ def ILP(args,test_loader,model,loss_fn):
     current_latency = 0
     for i in range(num_variable):
         # block_size = value(variable[f"b1_{i}"])+value(variable[f"b2_{i}"])*2+value(variable[f"b4_{i}"])*4+value(variable[f"b8_{i}"])*8+value(variable[f"b16_{i}"])*16
-        block_size = value(variable[f"b1_{i}"])+value(variable[f"b2_{i}"])*2+value(variable[f"b4_{i}"])*4
+        block_size = value(variable[f"b1_{i}"])+value(variable[f"b2_{i}"])*2+value(variable[f"b4_{i}"])*4+value(variable[f"b8_{i}"])*8
         result.append(block_size)
         if block_size == 1:
             current_latency += latency_weights_b1[i]
