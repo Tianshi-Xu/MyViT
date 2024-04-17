@@ -812,6 +812,10 @@ def ILP(args,test_loader,model,loss_fn):
     # sensitivity_b8 = traces * delta_weights_b8
     # sensitivity_b16 = traces * delta_weights_b16
     # sensitivity_b32 = traces * delta_weights_b32
+    _logger.info("sensitivity_b2:"+str(sensitivity_b2))
+    _logger.info("sensitivity_b4:"+str(sensitivity_b4))
+    # _logger.info("sensitivity_b8:"+str(sensitivity_b8))
+    # _logger.info("sensitivity_b16:"+str(sensitivity_b16))
     # optimization target: minimize the sensitivity
     # prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] +variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
     prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] + variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] for i in range(num_variable))

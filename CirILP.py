@@ -740,6 +740,7 @@ def ILP(args,test_loader,model,loss_fn):
     params = hessian_comp.params
     idx = 0
     origin_latency = 0
+    _logger.info("target_block_size:"+str(target_block_size))
     for layer in model.modules():
         if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
             space = layer.search_space
@@ -747,11 +748,13 @@ def ILP(args,test_loader,model,loss_fn):
             cir_idx.append(idx)
             # _logger.info("d1:"+str(layer.d1))
             delta_weights_b1.append(0)
+            # _logger.info("use cal_delta_z")
             # delta_weights_b2.append(cal_delta_z(layer,2,space))
             # delta_weights_b4.append(cal_delta_z(layer,4,space))
             # delta_weights_b8.append(cal_delta_z(layer,8,space))
             # delta_weights_b16.append(cal_delta_z(layer,16,space))
             
+            _logger.info("use cal_mse")
             delta_weights_b2.append(cal_mse(layer,2,space))
             delta_weights_b4.append(cal_mse(layer,4,space))
             delta_weights_b8.append(cal_mse(layer,8,space))
