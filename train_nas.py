@@ -371,6 +371,7 @@ def comm(HW,C,K,b):
     # print("H,W,C,K,b:",H,W,C,K,b)
     N=8192
     return torch.tensor(cal_rot(N,HW,C,K,b)+0.1*(HW*C*K)/(N*b))
+
 def fix_model_by_budget(model, budget):
     _logger.info("budget:"+str(budget))
     with torch.no_grad():
@@ -379,35 +380,47 @@ def fix_model_by_budget(model, budget):
         origin_latency = 0
         current_latency = 0
         layer_info = []
+        idxs = []
         for layer in model.modules():
             if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
                 total_blocks +=1
                 total_layers +=1
                 origin_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
-                current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
+                # current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
+                idx = torch.argmax(layer.get_alphas_after())
+                idxs.append(idx)
+                current_latency += comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
                 _logger.info(layer.alphas.requires_grad)
                 alphas=layer.get_alphas_after()
                 max_alpha = torch.max(alphas)
 
                 layer_info.append((layer, alphas, max_alpha))
                 _logger.info("alphas:"+str(alphas))
+        _logger.info(idxs)
         _logger.info("total_layers:"+str(total_layers))
+        _logger.info("current latency:"+str(current_latency))
+        _logger.info("origin latency:"+str(origin_latency))
+        _logger.info("current latency ratio:"+str(current_latency/origin_latency))
         layer_info.sort(key=lambda x: x[2], reverse=True)
+        current_latency2 = 0
         for info in layer_info:
-            if current_latency/origin_latency > budget:
+            if (current_latency)/origin_latency > -1:
                 _logger.info("max_alpha:"+str(info[2]))
-                idx = torch.argmax(info[1])
+                _logger.info("current_latency ration:"+str(current_latency/origin_latency))
                 layer = info[0]
+                idx = torch.argmax(layer.get_alphas_after())
                 total_blocks += layer.search_space[idx]-1
                 layer.fix_block_size = layer.search_space[idx]
                 layer.hard=True
-                current_latency -= comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
-                current_latency += comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
-                # _logger.info("current_latency:"+str(current_latency))
+                # current_latency -= comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
+                current_latency2 += comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
             else:
+                _logger.info("satisfy")
                 break
-        _logger.info("avg block size:"+str(total_blocks//total_layers))
+        _logger.info("avg block size:"+str(total_blocks/total_layers))
         # _logger.info("origin latency:"+str(origin_latency))
+        _logger.info("current latency2:"+str(current_latency2))
+        _logger.info("origin latency:"+str(origin_latency))
         _logger.info("current latency ratio:"+str(current_latency/origin_latency))     
         
         for layer in model.modules():
@@ -420,7 +433,7 @@ def fix_model_by_budget(model, budget):
                     layer.hard=True
         block_sizes=[]
         for layer in model.modules():
-            if isinstance(layer, CirConv2d):
+            if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
                 block_sizes.append(layer.get_final_block_size())
             elif isinstance(layer,CirBatchNorm2d):
                 layer.block_size = block_sizes[-1]
@@ -923,24 +936,30 @@ def train_one_epoch(
                 alphas=layer.get_alphas_after()
                 idx = torch.argmax(alphas)
                 total_blocks += layer.search_space[idx]-1
-                _logger.info("alphas:"+str(alphas))
+                _logger.info("trained alphas: "+str(layer.alphas))
+                _logger.info("alphas after:"+str(alphas))
                 # print("alphas:",alphas)
                 # print("tau:",layer.tau)
                 current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
                 origin_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
                 
-                if epoch > 2 and layer.tau > 1e-5:
+                if epoch > 5 and layer.tau > 1e-5:
                     layer.tau=(layer.tau*args.tau)
                     _logger.info("tau:"+str(layer.tau))
                     
         _logger.info("avg block size:"+str(total_blocks/total_layers))     
-        _logger.info("current latency ratio:"+str(current_latency/origin_latency))       
-        if current_latency/origin_latency > args.budget and epoch > 5 and epoch%2==0:
-            args.lasso_alpha*=1.1
+        _logger.info("current latency:"+str(current_latency))
+        _logger.info("origin latency:"+str(origin_latency))
+        _logger.info("current latency ratio:"+str(current_latency/origin_latency))  
+        if abs(current_latency/origin_latency-args.budget)<0.01:
             _logger.info("lasso_alpha:"+str(args.lasso_alpha))
-        elif current_latency/origin_latency < args.budget and epoch > 5 and epoch%2==0:
-            args.lasso_alpha/=1.1
-            _logger.info("lasso_alpha:"+str(args.lasso_alpha))
+        else:
+            if current_latency/origin_latency > args.budget and epoch > 5 and epoch%2==0:
+                args.lasso_alpha*=1.1
+                _logger.info("lasso_alpha:"+str(args.lasso_alpha))
+            elif current_latency/origin_latency < args.budget and epoch > 5 and epoch%2==0:
+                args.lasso_alpha/=1.1
+                _logger.info("lasso_alpha:"+str(args.lasso_alpha))
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()
 

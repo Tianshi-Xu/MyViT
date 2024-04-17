@@ -45,10 +45,10 @@ checkpoint_hist: 3
 finetune: True
 lasso_alpha: 0
 tau: 1.0
-budget: 0.25
+budget: 0.20
 fix_blocksize: -1
-log_name: vit_c10_finetune_0.25
+log_name: vit_c10_finetune_0.20
 teacher: vit_7_4_32
 teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/vit_c10.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
-initial_checkpoint: /home/xts/code/njeans/MyViT/output/train/20240406-212738-vit_7_4_32-32/last.pth.tar
+initial_checkpoint: /home/xts/code/njeans/MyViT/output/train/20240407-152519-vit_7_4_32-32/last.pth.tar
