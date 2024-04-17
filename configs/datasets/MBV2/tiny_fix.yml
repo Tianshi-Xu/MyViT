@@ -54,8 +54,14 @@ fix_blocksize: -1
 # fix_blocksize_list: 2,2,2,2,2,2,16,16,4,16,2,2,16,16,16,16,16,16,2,2,16,16,16,16,2,2,16,16,16,16,8,16
 # fix_blocksize_list: 2,2,2,2,2,2,16,16,16,16,2,2,16,16,16,16,16,16,2,8,16,16,16,16,4,8,16,16,16,16,16,16
 # b4
-fix_blocksize_list: 2,2,2,2,2,2,2,2,2,2,2,2,2,16,16,16,8,16,2,2,4,16,2,16,2,2,16,16,16,16,2,8
-log_name: mbv2_tiny_b4
+# fix_blocksize_list: 2,2,2,2,2,2,2,2,2,2,2,2,2,16,16,16,8,16,2,2,4,16,2,16,2,2,16,16,16,16,2,8
+# b2
+# fix_blocksize_list: 1,1,1,1,1,1,1,1,1,1,1,1,1,8,8,8,8,8,1,1,2,8,1,8,1,1,8,8,8,8,1,8
+# hawq-v3 b8
+# fix_blocksize_list: 1,1,8,4,2,1,16,16,16,16,1,1,16,16,16,16,16,16,16,16,16,16,16,16,16,8,16,16,16,16,16,16
+# b4
+fix_blocksize_list: 1,1,1,1,1,1,16,8,16,8,1,1,16,16,16,16,16,16,1,2,16,16,16,16,1,2,16,16,16,16,1,8
+log_name: mbv2_tiny_b4_hawq
 teacher: tiny_mobilenetv2
 teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_tiny.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"

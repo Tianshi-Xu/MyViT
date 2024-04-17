@@ -51,7 +51,7 @@ tau: 1
 # budget is the uniform block size latency we want to achieve
 budget: 8
 fix_blocksize: 1
-log_name: vit_c10_ILP_test
+log_name: vit_c10_ILP
 teacher: vit_7_4_32
 teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/vit_c10.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
