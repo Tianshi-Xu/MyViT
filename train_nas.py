@@ -393,6 +393,7 @@ def fix_model_by_budget(model, budget):
         origin_latency = 0
         current_latency = 0
         layer_info = []
+        idxs = []
         for layer in model.modules():
             if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
                 total_blocks +=1
@@ -405,13 +406,19 @@ def fix_model_by_budget(model, budget):
 
                 layer_info.append((layer, alphas, max_alpha))
                 _logger.info("alphas:"+str(alphas))
+        _logger.info(idxs)
         _logger.info("total_layers:"+str(total_layers))
+        _logger.info("current latency:"+str(current_latency))
+        _logger.info("origin latency:"+str(origin_latency))
+        _logger.info("current latency ratio:"+str(current_latency/origin_latency))
         layer_info.sort(key=lambda x: x[2], reverse=True)
+        current_latency2 = 0
         for info in layer_info:
-            if current_latency/origin_latency > budget:
+            if (current_latency)/origin_latency > -1:
                 _logger.info("max_alpha:"+str(info[2]))
-                idx = torch.argmax(info[1])
+                _logger.info("current_latency ration:"+str(current_latency/origin_latency))
                 layer = info[0]
+                idx = torch.argmax(layer.get_alphas_after())
                 total_blocks += layer.search_space[idx]-1
                 layer.fix_block_size = layer.search_space[idx]
                 layer.hard=True
@@ -419,9 +426,12 @@ def fix_model_by_budget(model, budget):
                 current_latency += comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
                 # _logger.info("current_latency:"+str(current_latency))
             else:
+                _logger.info("satisfy")
                 break
-        _logger.info("avg block size:"+str(total_blocks//total_layers))
+        _logger.info("avg block size:"+str(total_blocks/total_layers))
         # _logger.info("origin latency:"+str(origin_latency))
+        _logger.info("current latency2:"+str(current_latency2))
+        _logger.info("origin latency:"+str(origin_latency))
         _logger.info("current latency ratio:"+str(current_latency/origin_latency))     
         
         for layer in model.modules():
@@ -434,7 +444,7 @@ def fix_model_by_budget(model, budget):
                     layer.hard=True
         block_sizes=[]
         for layer in model.modules():
-            if isinstance(layer, CirConv2d):
+            if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
                 block_sizes.append(layer.get_final_block_size())
             elif isinstance(layer,CirBatchNorm2d):
                 layer.block_size = block_sizes[-1]

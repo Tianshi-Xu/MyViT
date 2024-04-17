@@ -142,7 +142,9 @@ class CirLinear(nn.Module):
         else:
             self.d1 = 1
         weight = self.trans_to_cir_meng(x.device).to(x.device)
-        return F.linear(x, weight, self.bias)
+        y = F.linear(x, weight, self.bias)
+        # print("y.shape:",y.shape)
+        return y
     
     def extra_repr(self) -> str:
         return f'in_features={self.in_features}, out_features={self.out_features}, bias={self.bias is not None}, fix_block_size={self.fix_block_size}, search_space={self.search_space}'
