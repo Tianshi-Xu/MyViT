@@ -398,8 +398,6 @@
 2024-04-15 10:18:20,132 - train - INFO - delta_weights_b32:[]
 2024-04-15 10:18:20,200 - train - INFO - result:[16 16  2  2 16  2  2 16  2  2  2 16  4  2  2 16 16 16  2 16 16 16  2 16
  16 16  2  2  2]
- 2024-04-15 22:45:17,188 - train - INFO - result:[16 16  2  2 16 16  2  8 16  8  2 16 16 16 16 16 16 16 16 16 16 16 16 16
- 16 16 16  4  2]
 2024-04-15 10:18:20,200 - train - INFO - origin_latency:1726.196077823639
 2024-04-15 10:18:20,200 - train - INFO - current_latency-origin_latency:-5.20001220703125
 2024-04-15 10:24:45,687 - train - INFO - Model vit_7_4_32 created, param count:3717072
