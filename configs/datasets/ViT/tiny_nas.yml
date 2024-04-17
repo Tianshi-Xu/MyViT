@@ -32,7 +32,7 @@ lr: 0.0005
 min_lr: 0.00001
 sched: cosine
 weight_decay: 5e-2
-epochs: 150
+epochs: 300
 cooldown_epochs: 10
 warmup_epochs: 10
 warmup_lr: 0.000001
@@ -45,12 +45,18 @@ kd_alpha: 4
 seed: 3407
 checkpoint_hist: 5
 finetune: False
-lasso_alpha: 1e-5
-tau: 0.99
-budget: 0.25
-fix_blocksize: -1
-log_name: vit_tiny_normal_0.25
+lasso_alpha: 0
+tau: 1.0
+budget: 1
+fix_blocksize: 8
+log_name: vit_tiny_fixb8
 teacher: vit_9_12_64
-teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/vit_tiny.pth.tar
+teacher_checkpoint: /home/xts/code/njeans/MyViT/output/train/20240331-115359-vit_9_12_64-64/model_best.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
-initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/vit_tiny.pth.tar
+initial_checkpoint: /home/xts/code/njeans/MyViT/output/train/20240331-115359-vit_9_12_64-64/model_best.pth.tar
+# b8
+# resume: "/home/xts/code/njeans/MyViT/output/train/20240404-093530-vit_9_12_64-64/last.pth.tar"
+# b4
+# resume: "/home/xts/code/njeans/MyViT/output/train/20240404-093451-vit_9_12_64-64/last.pth.tar"
+# b2
+# resume: "/home/xts/code/njeans/MyViT/output/train/20240404-093326-vit_9_12_64-64/last.pth.tar"

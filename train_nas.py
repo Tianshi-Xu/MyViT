@@ -298,7 +298,11 @@ parser.add_argument('--teacher-checkpoint', default='', type=str, metavar='PATH'
 # CIR
 parser.add_argument('--lasso-alpha', default=0, type=float,
                     help='alpha for lasso loss')
+parser.add_argument('--lasso-beta', default=1, type=float,
+                    help='beta for lasso loss')
 parser.add_argument('--fix_blocksize',type=int, default=-1,
+                    help='whether to use dual skip for resnet blocks')
+parser.add_argument('--fix_blocksize_list', default="",type=str,
                     help='whether to use dual skip for resnet blocks')
 parser.add_argument('--finetune', action='store_true', default=False,
                     help='whether to use dual skip for resnet blocks')
@@ -308,7 +312,8 @@ parser.add_argument('--tau', default=1.0, type=float,
                     help='alpha for lasso loss')
 parser.add_argument('--budget', default=1, type=int,
                     help='budget, before is avg block size, now is latency ratio')
-
+lasso_beta=0
+origin_latency = 0
 def _parse_args():
     # Do we have a config file to parse?
     args_config, remaining = config_parser.parse_known_args()
@@ -345,21 +350,29 @@ def create_teacher_model(args):
     teacher = teacher.eval()
     return teacher
 
+def next_power_2(d):
+    p = math.ceil(math.log2(d))
+    return int(pow(2,p))
+
 # cal_rot and comm are used to compute latency of each layer, each block size
 def cal_rot(n,m,d1,d2,b):
-    # print("m,n,d1,d2,b:",m,n,d1,d2,b)
     min_rot = 1e8
     d_min = int(min(d2/b,d1/b))
     for ri in range(1,(d_min)+1):
         for ro in range(1,(d_min)+1):
             d=int(ri*ro)
             m_p=int(n/b/d)
+            
             if m*d_min*b<n:
                 if d!=d_min:
                     continue
                 m_p=m
             if d>d_min or m_p>m:
                 continue
+            if b!=1:
+                next_pow_2 = next_power_2(m_p*b)
+                if next_pow_2*d>n:
+                    continue
             tmp=m*d1*(ri-1)/(m_p*b*d)+m*d2*(ro-1)/(m_p*b*d)
             if tmp<min_rot:
                 min_rot=tmp
@@ -385,11 +398,8 @@ def fix_model_by_budget(model, budget):
             if isinstance(layer, CirConv2d) or isinstance(layer, CirLinear):
                 total_blocks +=1
                 total_layers +=1
-                origin_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
-                # current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
-                idx = torch.argmax(layer.get_alphas_after())
-                idxs.append(idx)
-                current_latency += comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
+                origin_latency+=comm(layer.d1,layer.in_features,layer.out_features,1)
+                current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
                 _logger.info(layer.alphas.requires_grad)
                 alphas=layer.get_alphas_after()
                 max_alpha = torch.max(alphas)
@@ -412,8 +422,9 @@ def fix_model_by_budget(model, budget):
                 total_blocks += layer.search_space[idx]-1
                 layer.fix_block_size = layer.search_space[idx]
                 layer.hard=True
-                # current_latency -= comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
-                current_latency2 += comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
+                current_latency -= comm(layer.d1,layer.in_features,layer.out_features,1)
+                current_latency += comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
+                # _logger.info("current_latency:"+str(current_latency))
             else:
                 _logger.info("satisfy")
                 break
@@ -454,7 +465,7 @@ def main():
         else:
             _logger.warning("You've requested to log metrics to wandb but package not found. "
                             "Metrics not being logged to wandb, try `pip install wandb`")
-
+    _logger.info(args_text)
     args.prefetcher = not args.no_prefetcher
     args.distributed = False
     if 'WORLD_SIZE' in os.environ:
@@ -495,7 +506,7 @@ def main():
     if args.use_kd:
         teacher = create_teacher_model(args)
         teacher.cuda()
-    
+    _logger.info(teacher)
     model = create_model(
         args.model,
         pretrained=args.pretrained,
@@ -524,6 +535,17 @@ def main():
             if isinstance(layer, nn.Linear):
                 hasBias = layer.bias is not None
                 _set_module(model,name,CirLinear(layer.in_features,layer.out_features,args.fix_blocksize,hasBias))
+    # print("-------")
+    # print(args.fix_blocksize_list)
+    if args.fix_blocksize_list != "":
+        fix_blocksize_list = [int(x) for x in args.fix_blocksize_list.split(',')]
+        idx = 0
+        for name,layer in model.named_modules():
+            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
+                layer.fix_block_size = fix_blocksize_list[idx]
+                idx += 1
+            elif isinstance(layer,CirBatchNorm2d):
+                layer.block_size = fix_blocksize_list[idx-1]
     # print("OK1")
     if args.initial_checkpoint:
         load_checkpoint(model, args.initial_checkpoint,strict=False)
@@ -813,7 +835,14 @@ def train_one_epoch(
             loader.mixup_enabled = False
         elif mixup_fn is not None:
             mixup_fn.mixup_enabled = False
-    
+    if epoch <= 10:
+        for layer in model.modules():
+            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
+                layer.alphas.requires_grad = False
+    else:
+        for layer in model.modules():
+            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
+                layer.alphas.requires_grad = True
     second_order = hasattr(optimizer, 'is_second_order') and optimizer.is_second_order
     batch_time_m = AverageMeter()
     data_time_m = AverageMeter()
@@ -845,13 +874,26 @@ def train_one_epoch(
         reg_loss = 0
 
         # add lasso loss 
-        if args.fix_blocksize==-1 and args.finetune is False:
+        if args.fix_blocksize==-1 and args.finetune is False and args.fix_blocksize_list == "":
+            global origin_latency
+            origin = True
+            if origin_latency == 0:
+                origin = False
             for layer in model.modules():
                 if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
-                    alphas = layer.get_alphas_after()
+                    alphas = layer.alphas_after
+                    idx = torch.argmax(alphas)
+                    if not origin:
+                        origin_latency += comm(layer.d1,layer.in_features,layer.out_features,1)
+                    # reg_loss += alphas[idx]*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
                     for i,alpha in enumerate(alphas):
                         reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[i])
-            loss += args.lasso_alpha*reg_loss
+            global lasso_beta
+            if lasso_beta == 0:
+                lasso_beta = 1/(torch.pow(torch.log2(reg_loss.detach()),args.lasso_alpha))
+            # _logger.info("loss:"+str(loss))
+            loss = loss * lasso_beta *torch.pow(torch.log2(reg_loss),args.lasso_alpha)
+            # loss =loss+args.lasso_alpha*reg_loss
             # _logger.info("lasso_loss:"+str(args.lasso_alpha*reg_loss))
     
         if not args.distributed:
@@ -922,10 +964,9 @@ def train_one_epoch(
         # end for
     total_blocks = 0
     total_layers = 0
-    origin_latency = 0
     current_latency = 0
     # update lasso_alpha and tau each epoch, standard is avg block_size
-    if args.fix_blocksize==-1 and args.finetune is False:
+    if args.fix_blocksize==-1 and args.finetune is False and epoch > 10 and args.fix_blocksize_list == "":
         for layer in model.modules():
             if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
                 total_blocks +=1
@@ -933,32 +974,35 @@ def train_one_epoch(
         for layer in model.modules():
             if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
                 _logger.info(layer.alphas.requires_grad)
-                alphas=layer.get_alphas_after()
+                alphas=layer.alphas_after
                 idx = torch.argmax(alphas)
+                if torch.max(alphas)>0.6:
+                    layer.fix_block_size = layer.search_space[idx]
+                    layer.alphas.requires_grad = False
                 total_blocks += layer.search_space[idx]-1
-                _logger.info("trained alphas: "+str(layer.alphas))
+                if layer.fix_block_size == -1:
+                    _logger.info("trained alphas:"+str(layer.alphas))
+                else:
+                    _logger.info("fix_block_size:"+str(layer.fix_block_size))
                 _logger.info("alphas after:"+str(alphas))
                 # print("alphas:",alphas)
                 # print("tau:",layer.tau)
                 current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
-                origin_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[0])
                 
-                if epoch > 5 and layer.tau > 1e-5:
+                if epoch > 10 and layer.tau > 1e-5:
                     layer.tau=(layer.tau*args.tau)
                     _logger.info("tau:"+str(layer.tau))
                     
         _logger.info("avg block size:"+str(total_blocks/total_layers))     
-        _logger.info("current latency:"+str(current_latency))
-        _logger.info("origin latency:"+str(origin_latency))
-        _logger.info("current latency ratio:"+str(current_latency/origin_latency))  
+        _logger.info("current latency ratio:"+str(current_latency/origin_latency)) 
         if abs(current_latency/origin_latency-args.budget)<0.01:
             _logger.info("lasso_alpha:"+str(args.lasso_alpha))
-        else:
-            if current_latency/origin_latency > args.budget and epoch > 5 and epoch%2==0:
-                args.lasso_alpha*=1.1
+        else:      
+            if current_latency/origin_latency > args.budget and epoch > 10:
+                args.lasso_alpha*=1.05
                 _logger.info("lasso_alpha:"+str(args.lasso_alpha))
-            elif current_latency/origin_latency < args.budget and epoch > 5 and epoch%2==0:
-                args.lasso_alpha/=1.1
+            elif current_latency/origin_latency < args.budget and epoch > 10:
+                args.lasso_alpha/=1.05
                 _logger.info("lasso_alpha:"+str(args.lasso_alpha))
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()

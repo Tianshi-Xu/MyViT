@@ -39,8 +39,8 @@ class CirInvertedResidual(nn.Module):
                 nn.BatchNorm2d(hidden_dim),
                 nn.ReLU6(inplace=True),
                 # pw-linear
-                CirConv2d(hidden_dim, oup, 1, 1, feature_size, fix_block_size=fix_block_size),
-                CirBatchNorm2d(oup, block_size=fix_block_size),
+                nn.Conv2d(hidden_dim, oup, 1, 1, bias=False),
+                nn.BatchNorm2d(oup),
             )
         else:
             self.conv = nn.Sequential(

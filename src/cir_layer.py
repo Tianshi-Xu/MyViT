@@ -20,9 +20,11 @@ class CirLinear(nn.Module):
         self.rotate_mat = {}
         self.rev_rotate_mat = {}
         self.search_space = [1]
+        self.alphas_after = None
+        self.input = None
         search=2
         
-        while search<=16 and in_features %search ==0 and out_features %search ==0:
+        while search<=64 and in_features %search ==0 and out_features %search ==0:
             self.search_space.append(search)
             search *= 2
         
@@ -62,46 +64,6 @@ class CirLinear(nn.Module):
             self.rev_rotate_mat[block_size] = rev_rotate_mat
             
     # weight = \sum alpha[i]*W[i], alpha need to be softmaxed
-    def trans_to_cir(self,device):
-        search_space = self.search_space
-        # if fix_block_size, directly use the block size
-        if self.fix_block_size!=-1:
-            if search_space[-1] < self.fix_block_size:
-                alphas_after=torch.tensor([1 if i==int(math.log2(search_space[-1])) else 0 for i in range(self.alphas.shape[-1])]).to(device)
-            else:
-                alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
-        else:
-            alphas_after = self.get_alphas_after()
-        weight=(alphas_after[0]*self.weight).to(device)
-        for idx,block_size in enumerate(search_space):
-            if idx==0:
-                continue
-            if torch.abs(alphas_after[idx]) <1e-6:
-                continue
-            q = self.out_features // block_size
-            p = self.in_features // block_size
-            assert self.out_features % block_size == 0
-            assert self.in_features % block_size == 0
-            tmp = self.weight.reshape(q, block_size, p, block_size)
-            tmp = tmp.permute(0, 2, 1, 3)
-            # print(tmp[0,0,:,:])
-            w = torch.zeros(q, p, block_size, block_size).to(device)
-            tmp_compress = torch.zeros(q,p,block_size).to(device)
-            for i in range(block_size):
-                diagonal = torch.diagonal(tmp,offset=i,dim1=2,dim2=3)
-                if i>0:
-                    part_two = torch.diagonal(tmp,offset=-block_size+i,dim1=2,dim2=3)
-                    diagonal = torch.cat([diagonal,part_two],dim=2)
-                mean_of_diagonal = diagonal.mean(dim=2)
-                tmp_compress[:,:,i] = mean_of_diagonal
-
-            for i in range(block_size):
-                w[:,:,:,i] = tmp_compress.roll(shifts=i,dims=2)
-            # print(w[0,0,:,:])
-            w = w.permute(0,2,1,3).reshape(self.out_features,self.in_features)
-            weight=weight+alphas_after[idx]*w
-        return weight
-    
     def trans_to_cir_meng(self,device):
         search_space = self.search_space
         # if fix_block_size, directly use the block size
@@ -112,6 +74,7 @@ class CirLinear(nn.Module):
                 alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
         else:
             alphas_after = self.get_alphas_after()
+        self.alphas_after = alphas_after
         weight=(alphas_after[0]*self.weight).to(device)
         for idx,block_size in enumerate(search_space):
             if idx==0:
@@ -141,6 +104,7 @@ class CirLinear(nn.Module):
     
     # get the alpha after softmax, if hard, fix the block size
     def get_alphas_after(self):
+        return self.gumbel_softmax()
         logits = self.alphas
         dim=-1
         if self.hard:
@@ -148,18 +112,35 @@ class CirLinear(nn.Module):
             return F.one_hot(torch.argmax(logits, dim), logits.shape[-1]).float()
         return F.softmax(logits/self.tau, dim=dim)
     
-    def get_final_block_size(self):
-        return self.search_space[torch.argmax(self.alphas)]
+    def gumbel_softmax(self):
+        logits = self.alphas
+        tau = self.tau
+        hard = self.hard
+        dim=-1
+        gumbel_dist = torch.distributions.gumbel.Gumbel(
+        torch.tensor(0., device=logits.device, dtype=logits.dtype),
+        torch.tensor(1., device=logits.device, dtype=logits.dtype))
+        gumbels = gumbel_dist.sample(logits.shape)
+
+        gumbels = (logits + gumbels) / tau  # ~Gumbel(logits,tau)
+        y_soft = gumbels.softmax(dim)
+
+        if hard:
+            # Straight through.
+            index = y_soft.max(dim, keepdim=True)[1]
+            y_hard = torch.zeros_like(logits, memory_format=torch.legacy_contiguous_format).scatter_(dim, index, 1.0)
+            ret = y_hard - y_soft.detach() + y_soft
+        else:
+            # Reparametrization trick.
+            ret = y_soft
+        return ret
     
     def forward(self,x):
-        # print("x.shape:",x.shape)
-        
-        # print("w.shape:",self.weight.shape)
+        self.input = x.detach()
         if len(x.shape)==3:
             self.d1 = x.shape[1]
         else:
             self.d1 = 1
-        # print("d1:",self.d1)
         weight = self.trans_to_cir_meng(x.device).to(x.device)
         y = F.linear(x, weight, self.bias)
         # print("y.shape:",y.shape)
@@ -187,15 +168,19 @@ class CirConv2d(nn.Module):
         self.hard = False
         self.rotate_mat = {}
         self.rev_rotate_mat = {}
-        self.search_space = [1,]
-        search=2
-        while search<=16 and in_features %search ==0 and out_features %search ==0:
+        self.search_space = []
+        self.alphas_after = None
+        self.input = None
+        search=1
+        while search<=64 and in_features %search ==0 and out_features %search ==0:
             self.search_space.append(search)
             search *= 2
         # self.search_space = [self.search_space[-1]]
         self.alphas = nn.Parameter(torch.ones(len(self.search_space)), requires_grad=True)
 
         self.weight = nn.Parameter(torch.zeros(out_features,in_features, kernel_size,kernel_size))
+        self.separate_weights = None
+        self.separate_weight = False
         self.alphas_after = None
         init.kaiming_uniform_(self.weight)
         self.set_rotate_mat()
@@ -226,73 +211,104 @@ class CirConv2d(nn.Module):
                 alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
         else:
             alphas_after = self.get_alphas_after()
-        weight=(alphas_after[0]*self.weight).to(device)
+        self.alphas_after = alphas_after
+        if self.separate_weight:
+            if self.separate_weights is None:
+                self.gen_separete_weights(device)
+            weight = alphas_after[0]*self.separate_weights[0].to(device)
+            for idx,block_size in enumerate(search_space):
+                if idx==0:
+                    continue
+                rev_rotate_mat = self.rev_rotate_mat[block_size].to(device)
+                q = self.out_features // block_size
+                p = self.in_features // block_size
+                w_i = self.separate_weights[block_size].repeat(1,1, block_size, 1,1,1).to(device)
+                w_i = w_i[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1],:,:] 
+                w_i = w_i.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
+                # print(weights_cir[0,0,:,:])
+                w_i=w_i.permute(0,2,1,3,4,5).reshape(self.out_features,self.in_features, self.kernel_size,self.kernel_size)
+                weight=weight+alphas_after[idx]*w_i
+        else:
+            weight=torch.zeros_like(self.weight).to(device)
+            for idx,block_size in enumerate(search_space):
+                if block_size == 1:
+                    weight = weight + alphas_after[idx]*self.weight
+                    continue
+                if torch.abs(alphas_after[idx]) <1e-8:
+                    continue
+                # print("block_size:",block_size)
+                rotate_mat = self.rotate_mat[block_size].to(device)
+                rev_rotate_mat = self.rev_rotate_mat[block_size].to(device)
+                q = self.out_features // block_size
+                p = self.in_features // block_size
+                tmp = self.weight.reshape(q, block_size, p, block_size, self.kernel_size,self.kernel_size)
+                # tmp (q,p,b,b,1,1)
+                tmp = tmp.permute(0, 2, 1, 3,4,5)
+                # print(tmp[0,0,:,:])
+                weights_rot = tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1],:,:] 
+                weights_rot = weights_rot.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
+                # print("-----------")
+                weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
+                weights_cir = weights_cir.repeat(1,1, block_size, 1,1,1)
+                weights_cir = weights_cir[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1],:,:] 
+                weights_cir = weights_cir.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
+                # print(weights_cir[0,0,:,:])
+                weights_cir=weights_cir.permute(0,2,1,3,4,5).reshape(self.out_features,self.in_features, self.kernel_size,self.kernel_size)
+                weight=weight+alphas_after[idx]*weights_cir
+        return weight
+    
+    def gen_separete_weights(self,device):
+        self.separate_weights = {}
+        self.separate_weights[0] = self.weight
+        search_space = self.search_space
         for idx,block_size in enumerate(search_space):
             if idx==0:
                 continue
-            if torch.abs(alphas_after[idx]) <1e-6:
-                continue
+            q = self.out_features // block_size
+            p = self.in_features // block_size
+            self.separate_weights[block_size] = nn.Parameter(torch.zeros(q,p,1,block_size,self.kernel_size,self.kernel_size),requires_grad=True)
             # print("block_size:",block_size)
             rotate_mat = self.rotate_mat[block_size].to(device)
             rev_rotate_mat = self.rev_rotate_mat[block_size].to(device)
-            q = self.out_features // block_size
-            p = self.in_features // block_size
             tmp = self.weight.reshape(q, block_size, p, block_size, self.kernel_size,self.kernel_size)
             # tmp (q,p,b,b,1,1)
             tmp = tmp.permute(0, 2, 1, 3,4,5)
             # print(tmp[0,0,:,:])
             weights_rot = tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1],:,:] 
+            # (q,p,b,b,1,1)
             weights_rot = weights_rot.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
             # print("-----------")
+            # (q,p,b,1,1)
             weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
-            weights_cir = weights_cir.repeat(1,1, block_size, 1,1,1)
-            weights_cir = weights_cir[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1],:,:] 
-            weights_cir = weights_cir.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
-            # print(weights_cir[0,0,:,:])
-            weights_cir=weights_cir.permute(0,2,1,3,4,5).reshape(self.out_features,self.in_features, self.kernel_size,self.kernel_size)
-            weight=weight+alphas_after[idx]*weights_cir
-        return weight
-    
-    def trans_to_cir(self,device):
-        search_space = self.search_space
-        if self.fix_block_size!=-1:
-            if search_space[-1] < self.fix_block_size:
-                alphas_after=torch.tensor([1 if i==int(math.log2(search_space[-1])) else 0 for i in range(self.alphas.shape[-1])]).to(device)
-            else:
-                alphas_after=torch.tensor([1 if 2**i==self.fix_block_size else 0 for i in range(self.alphas.shape[-1])]).to(device)
+            with torch.no_grad():
+                self.separate_weights[block_size].copy_(weights_cir.data)
+            
+        
+    def gumbel_softmax(self):
+        logits = self.alphas
+        tau = self.tau
+        hard = self.hard
+        dim=-1
+        gumbel_dist = torch.distributions.gumbel.Gumbel(
+        torch.tensor(0., device=logits.device, dtype=logits.dtype),
+        torch.tensor(0.0001, device=logits.device, dtype=logits.dtype))
+        gumbels = gumbel_dist.sample(logits.shape)
+
+        gumbels = (logits + gumbels) / tau  # ~Gumbel(logits,tau)
+        y_soft = gumbels.softmax(dim)
+
+        if hard:
+            # Straight through.
+            index = y_soft.max(dim, keepdim=True)[1]
+            y_hard = torch.zeros_like(logits, memory_format=torch.legacy_contiguous_format).scatter_(dim, index, 1.0)
+            ret = y_hard - y_soft.detach() + y_soft
         else:
-            alphas_after = self.get_alphas_after()
-        # weight=torch.zeros(self.out_features,self.in_feat*ures, self.kernel_size,self.kernel_size).cuda()
-        weight=alphas_after[0]*self.weight
-        for idx,block_size in enumerate(search_space):
-            if idx==0:
-                continue
-            if torch.abs(alphas_after[idx]) <1e-6:
-                continue
-            q=self.out_features//block_size
-            p=self.in_features//block_size
-            tmp = self.weight.view(q,block_size, p, block_size, self.kernel_size,self.kernel_size)
-            tmp = tmp.permute(0,2,1,3,4,5)
-            w = torch.zeros(q,p,block_size,block_size,self.kernel_size,self.kernel_size).to(device)
-            # print(tmp[0,0,:,:,0,0])
-            tmp_compress = torch.zeros(q,p,block_size,self.kernel_size,self.kernel_size).to(device)
-            for i in range(block_size):
-                diagonal = torch.diagonal(tmp, offset=i, dim1=2, dim2=3)
-                if i>0:
-                    diagonal2 = torch.diagonal(tmp, offset=-block_size+i, dim1=2, dim2=3)
-                    diagonal = torch.cat((diagonal,diagonal2),dim=4)
-                assert diagonal.shape[4] == block_size
-                mean_of_diagonal = diagonal.mean(dim=4)
-                tmp_compress[:,:,i,:,:] = mean_of_diagonal
-            for i in range(block_size):
-                w[:,:,:,i,:,:] = tmp_compress.roll(shifts=i, dims=2)
-            # print(w[0,0,:,:,0,0])
-            w = w.permute(0,2,1,3,4,5)
-            w = w.reshape(q*block_size,p*block_size,self.kernel_size,self.kernel_size)
-            weight=weight+alphas_after[idx]*w
-        return weight
+            # Reparametrization trick.
+            ret = y_soft
+        return ret
     
     def get_alphas_after(self):
+        return self.gumbel_softmax()
         logits = self.alphas
         dim=-1
         if self.hard:
@@ -301,6 +317,7 @@ class CirConv2d(nn.Module):
         return F.softmax(logits/self.tau, dim=dim)
     
     def forward(self, x):
+        self.input = x.detach()
         weight=self.trans_to_cir_meng(x.device)
         x = F.conv2d(x,weight,None,self.stride,self.padding)
         return x
@@ -309,7 +326,7 @@ class CirConv2d(nn.Module):
         return self.search_space[torch.argmax(self.alphas)]
     
     def extra_repr(self) -> str:
-        return f'in_features={self.in_features}, out_features={self.out_features}, kernel_size={self.kernel_size}, fix_block_size={self.fix_block_size}, search_space={self.search_space}'
+        return f'in_features={self.in_features}, out_features={self.out_features}, kernel_size={self.kernel_size}, fix_block_size={self.fix_block_size}, search_space={self.search_space}, separate_weight={self.separate_weight}'
 
 class CirBatchNorm2d(nn.BatchNorm2d):
     def __init__(self, num_features, eps=1e-5, momentum=0.1, affine=True, track_running_stats=True,block_size=-1):

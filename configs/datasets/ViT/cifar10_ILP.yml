@@ -1,0 +1,62 @@
+dataset: torch/cifar10
+num_classes: 10
+img_size: 32
+mean:
+    - 0.4914
+    - 0.4822
+    - 0.4465
+std:
+    - 0.2470
+    - 0.2435
+    - 0.2616
+crop_pct: 1.0
+scale:
+    - 0.8
+    - 1.0
+interpolation: bicubic
+train_interpolation: random
+aa: rand-m9-mstd0.5-inc1
+mixup: 0.8
+mixup_off_epoch: 175
+mixup_prob: 1.0
+mixup_mode: batch
+mixup_switch_prob: 0.5
+cutmix: 1.0
+reprob: 0.25
+remode: pixel
+amp: True
+batch_size: 256
+lr: 55e-5
+min_lr: 1e-5
+sched: cosine
+weight_decay: 6e-2
+epochs: 1
+cooldown_epochs: 10
+warmup_epochs: 10
+warmup_lr: 0.00001
+opt: adamw
+smoothing: 0.1
+workers: 4
+use_kd: true
+kd_alpha: 4
+seed: 3407
+checkpoint_hist: 1
+# fix_blocksize=-1 represents that the blocksize depends on NAS
+# finetune should be false when nas
+# lasso_alpha 1e-5 for CIFAR /1e-4 for TinyImageNet
+# tau 0.99 is good
+finetune: False
+lasso_alpha: 0
+tau: 1
+# budget is the uniform block size latency we want to achieve
+budget: 8
+fix_blocksize: 1
+log_name: vit_c10_ILP
+teacher: vit_7_4_32
+teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/vit_c10.pth.tar
+# resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
+initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/vit_c10.pth.tar
+# b8
+# resume: "/home/xts/code/njeans/Compact-Transformers/output/train/20240331-152914-vit_7_4_32-32/model_best.pth.tar"
+# b4
+# resume: "/home/xts/code/njeans/Compact-Transformers/output/train/20240331-153214-vit_7_4_32-32/model_best.pth.tar"
