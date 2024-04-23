@@ -213,7 +213,7 @@ class hessian():
                 trace = np.mean(trace_vhv)
             '''
         return trace
-
+    
     def density(self, iter=100, n_v=1):
         """
         compute estimated eigenvalue density using stochastic lanczos algorithm (SLQ)

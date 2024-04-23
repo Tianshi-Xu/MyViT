@@ -537,15 +537,7 @@ def main():
                 _set_module(model,name,CirLinear(layer.in_features,layer.out_features,args.fix_blocksize,hasBias))
     # print("-------")
     # print(args.fix_blocksize_list)
-    if args.fix_blocksize_list != "":
-        fix_blocksize_list = [int(x) for x in args.fix_blocksize_list.split(',')]
-        idx = 0
-        for name,layer in model.named_modules():
-            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
-                layer.fix_block_size = fix_blocksize_list[idx]
-                idx += 1
-            elif isinstance(layer,CirBatchNorm2d):
-                layer.block_size = fix_blocksize_list[idx-1]
+
     # print("OK1")
     if args.initial_checkpoint:
         load_checkpoint(model, args.initial_checkpoint,strict=False)
@@ -749,6 +741,7 @@ def main():
     
     validate_loss_fn = nn.CrossEntropyLoss().cuda()
     
+    # 设置每一层的block size
     if args.use_kd:
         _logger.info("Verifying teacher model")
         validate(teacher, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
@@ -757,6 +750,15 @@ def main():
         validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
     if args.finetune and args.fix_blocksize==-1:
         fix_model_by_budget(model, args.budget)
+    if args.fix_blocksize_list != "":
+        fix_blocksize_list = [int(x) for x in args.fix_blocksize_list.split(',')]
+        idx = 0
+        for name,layer in model.named_modules():
+            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
+                layer.fix_block_size = fix_blocksize_list[idx]
+                idx += 1
+            elif isinstance(layer,CirBatchNorm2d):
+                layer.block_size = fix_blocksize_list[idx-1]
     # setup checkpoint saver and eval metric tracking
     eval_metric = args.eval_metric
     best_metric = None
@@ -1071,6 +1073,72 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
 
     metrics = OrderedDict([('loss', losses_m.avg), ('top1', top1_m.avg), ('top5', top5_m.avg)])
 
+    return metrics
+
+def pre_validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix=''):
+    batch_time_m = AverageMeter()
+    losses_m = AverageMeter()
+    top1_m = AverageMeter()
+    top5_m = AverageMeter()
+
+    model.eval()
+
+    end = time.time()
+    last_idx = len(loader) - 1
+    for batch_idx, (input, target) in enumerate(loader):
+        last_batch = batch_idx == last_idx
+        if not args.prefetcher:
+            input = input.cuda()
+            target = target.cuda()
+        if args.channels_last:
+            input = input.contiguous(memory_format=torch.channels_last)
+
+        with amp_autocast():
+            output = model(input)
+        if isinstance(output, (tuple, list)):
+            output = output[0]
+
+        # augmentation reduction
+        reduce_factor = args.tta
+        if reduce_factor > 1:
+            output = output.unfold(0, reduce_factor, reduce_factor).mean(dim=2)
+            target = target[0:target.size(0):reduce_factor]
+
+        loss = loss_fn(output, target)
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
+
+        if args.distributed:
+            reduced_loss = reduce_tensor(loss.data, args.world_size)
+            acc1 = reduce_tensor(acc1, args.world_size)
+            acc5 = reduce_tensor(acc5, args.world_size)
+        else:
+            reduced_loss = loss.data
+        loss.backward()
+        torch.cuda.synchronize()
+
+        losses_m.update(reduced_loss.item(), input.size(0))
+        top1_m.update(acc1.item(), output.size(0))
+        top5_m.update(acc5.item(), output.size(0))
+
+        batch_time_m.update(time.time() - end)
+        end = time.time()
+        if args.local_rank == 0 and (last_batch or batch_idx % args.log_interval == 0):
+            log_name = 'Test' + log_suffix
+            _logger.info(
+                '{0}: [{1:>4d}/{2}]  '
+                'Time: {batch_time.val:.3f} ({batch_time.avg:.3f})  '
+                'Loss: {loss.val:>7.4f} ({loss.avg:>6.4f})  '
+                'Acc@1: {top1.val:>7.4f} ({top1.avg:>7.4f})  '
+                'Acc@5: {top5.val:>7.4f} ({top5.avg:>7.4f})'.format(
+                    log_name, batch_idx, last_idx, batch_time=batch_time_m,
+                    loss=losses_m, top1=top1_m, top5=top5_m))
+
+    metrics = OrderedDict([('loss', losses_m.avg), ('top1', top1_m.avg), ('top5', top5_m.avg)])
+    _logger.info("len loader:"+str(len(loader.dataset)))
+    for param in model.parameters():
+        if param.grad is not None:
+            param.grad.data /= len(loader.dataset)
+            # _logger.info("grad_shape:"+str(param.grad.shape))
     return metrics
 
 

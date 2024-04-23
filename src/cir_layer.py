@@ -36,6 +36,7 @@ class CirLinear(nn.Module):
             self.bias = nn.Parameter(torch.zeros(out_features))
         self.reset_parameters()
         self.set_rotate_mat()
+        self.ILP = False
         
     def reset_parameters(self) -> None:
         # Setting a=sqrt(5) in kaiming_uniform is the same as initializing with
@@ -92,8 +93,20 @@ class CirLinear(nn.Module):
             # print(tmp[0,0,:,:])
             weights_rot = tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1]] 
             weights_rot = weights_rot.view(q,p, block_size, block_size)
-            # print("-----------")
-            weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
+            if self.ILP:
+                # add lambda only for ILP
+                assert self.weight.grad is not None
+                lambda_tmp = self.weight.grad.reshape(q, block_size, p, block_size)
+                lambda_tmp = lambda_tmp.permute(0, 2, 1, 3)
+                lambda_tmp = lambda_tmp ** 2
+                # print(lambda_tmp[0,0,:,:])
+                lambda_rot = lambda_tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1]]
+                lambda_rot = lambda_rot.view(q,p, block_size, block_size)
+                weights_cir = lambda_rot*weights_rot
+
+                weights_cir = torch.sum(weights_cir, dim=2, keepdim=True)/torch.sum(lambda_rot, dim=2, keepdim=True)
+            else:
+                weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
             weights_cir = weights_cir.repeat(1,1, block_size, 1)
             weights_cir = weights_cir[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1]] 
             weights_cir = weights_cir.view(q,p, block_size, block_size)
@@ -179,11 +192,14 @@ class CirConv2d(nn.Module):
         self.alphas = nn.Parameter(torch.ones(len(self.search_space)), requires_grad=True)
 
         self.weight = nn.Parameter(torch.zeros(out_features,in_features, kernel_size,kernel_size))
+        # self.weight_prime = None
+        self.grad = None
         self.separate_weights = None
         self.separate_weight = False
         self.alphas_after = None
         init.kaiming_uniform_(self.weight)
         self.set_rotate_mat()
+        self.ILP = False
     
     def set_rotate_mat(self):
         for block_size in self.search_space:
@@ -241,19 +257,33 @@ class CirConv2d(nn.Module):
                 rev_rotate_mat = self.rev_rotate_mat[block_size].to(device)
                 q = self.out_features // block_size
                 p = self.in_features // block_size
+                # if self.weight_prime is None:
                 tmp = self.weight.reshape(q, block_size, p, block_size, self.kernel_size,self.kernel_size)
                 # tmp (q,p,b,b,1,1)
                 tmp = tmp.permute(0, 2, 1, 3,4,5)
-                # print(tmp[0,0,:,:])
+                # print(tmp[0,0,:,:,0,0])
                 weights_rot = tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1],:,:] 
                 weights_rot = weights_rot.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
-                # print("-----------")
-                weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
+                if self.ILP:
+                    # add lambda only for ILP
+                    assert self.weight.grad is not None
+                    if self.grad is None:
+                        self.grad = self.weight.grad.clone()
+                    lambda_tmp = self.grad.reshape(q, block_size, p, block_size, self.kernel_size,self.kernel_size)
+                    lambda_tmp = lambda_tmp.permute(0, 2, 1, 3,4,5)
+                    lambda_tmp = lambda_tmp ** 2
+                    # print(lambda_tmp[0,0,:,:,0,0])
+                    lambda_rot = lambda_tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1],:,:]
+                    lambda_rot = lambda_rot.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
+                    weights_cir = lambda_rot*weights_rot
+                    weights_cir = torch.sum(weights_cir, dim=2, keepdim=True)/torch.sum(lambda_rot, dim=2, keepdim=True)
+                else:
+                    weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
                 weights_cir = weights_cir.repeat(1,1, block_size, 1,1,1)
                 weights_cir = weights_cir[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1],:,:] 
                 weights_cir = weights_cir.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
-                # print(weights_cir[0,0,:,:])
-                weights_cir=weights_cir.permute(0,2,1,3,4,5).reshape(self.out_features,self.in_features, self.kernel_size,self.kernel_size)
+                # print(weights_cir[0,0,:,:,0,0])
+                weights_cir = weights_cir.permute(0,2,1,3,4,5).reshape(self.out_features,self.in_features, self.kernel_size,self.kernel_size)
                 weight=weight+alphas_after[idx]*weights_cir
         return weight
     
