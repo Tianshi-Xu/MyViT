@@ -107,6 +107,12 @@ class CirLinear(nn.Module):
                 weights_cir = torch.sum(weights_cir, dim=2, keepdim=True)/torch.sum(lambda_rot, dim=2, keepdim=True)
             else:
                 weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
+            # if the grad are all zero, use the average weights
+            if torch.isnan(torch.mean(weights_cir)):
+                weights_cir2 = torch.mean(weights_rot, dim=2, keepdim=True)
+                nan_mask = torch.isnan(weights_cir)
+                nan_indices = torch.nonzero(nan_mask)
+                weights_cir[nan_indices] = weights_cir2[nan_indices]
             weights_cir = weights_cir.repeat(1,1, block_size, 1)
             weights_cir = weights_cir[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1]] 
             weights_cir = weights_cir.view(q,p, block_size, block_size)
@@ -271,7 +277,9 @@ class CirConv2d(nn.Module):
                         self.grad = self.weight.grad.clone()
                     lambda_tmp = self.grad.reshape(q, block_size, p, block_size, self.kernel_size,self.kernel_size)
                     lambda_tmp = lambda_tmp.permute(0, 2, 1, 3,4,5)
+                    lambda_tmp = lambda_tmp * 1e5
                     lambda_tmp = lambda_tmp ** 2
+                    
                     # print(lambda_tmp[0,0,:,:,0,0])
                     lambda_rot = lambda_tmp[:,:, rotate_mat[:, 0], rotate_mat[:, 1],:,:]
                     lambda_rot = lambda_rot.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)
@@ -279,6 +287,12 @@ class CirConv2d(nn.Module):
                     weights_cir = torch.sum(weights_cir, dim=2, keepdim=True)/torch.sum(lambda_rot, dim=2, keepdim=True)
                 else:
                     weights_cir = torch.mean(weights_rot, dim=2, keepdim=True)
+                # if the grad are all zero, use the average weights
+                if torch.isnan(torch.mean(weights_cir)):
+                    weights_cir2 = torch.mean(weights_rot, dim=2, keepdim=True)
+                    nan_mask = torch.isnan(weights_cir)
+                    nan_indices = torch.nonzero(nan_mask)
+                    weights_cir[nan_indices] = weights_cir2[nan_indices]
                 weights_cir = weights_cir.repeat(1,1, block_size, 1,1,1)
                 weights_cir = weights_cir[:,:, rev_rotate_mat[:, 0], rev_rotate_mat[:, 1],:,:] 
                 weights_cir = weights_cir.view(q,p, block_size, block_size, self.kernel_size,self.kernel_size)

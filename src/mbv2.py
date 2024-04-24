@@ -147,6 +147,11 @@ def mobilenet(n_class, input_size, width_mult,fix_block_size=-1) -> MobileNetV2:
     return model
 
 @register_model
+def image_mobilenetv2(**kwargs):
+    model=mobilenet(1000,224,1)
+    return model
+
+@register_model
 def tiny_mobilenetv2(**kwargs):
     model=mobilenet(200,64,1)
     return model

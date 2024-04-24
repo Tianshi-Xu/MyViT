@@ -344,11 +344,16 @@ def cal_rot(n,m,d1,d2,b):
         for ro in range(1,(d_min)+1):
             d=int(ri*ro)
             m_p=int(n/b/d)
-            
             if m*d_min*b<n:
                 if d!=d_min:
                     continue
-                m_p=m
+                i = 1
+                while i<=m:
+                    next_pow_2 = next_power_2(i*b)
+                    if next_pow_2*d>n:
+                        break
+                    i+=1
+                m_p=i-1
             if d>d_min or m_p>m:
                 continue
             if b!=1:
@@ -362,6 +367,8 @@ def cal_rot(n,m,d1,d2,b):
                 final_mp = m_p
                 # print("ri,ro,d,m_p",ri,ro,d,m_p)
     # print(min_rot)
+    # print("n,m,d1,d2,b:",n,m,d1,d2,b)
+    # print("final_mp,final_d:",final_mp,final_d)
     mul = math.ceil(1.0*m/final_mp)*math.ceil(1.0*d1/b/final_d)*math.ceil(1.0*d2/b/final_d)*final_d
     return min_rot, mul
 
@@ -747,9 +754,10 @@ def main():
     if args.use_kd:    
         train_loss_fn_kd = KLLossSoft().cuda()
     validate_loss_fn = nn.CrossEntropyLoss().cuda()
-    if args.use_kd:
-        _logger.info("Verifying teacher model")
-        validate(teacher, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
+    # _logger.info("model:"+str(model))
+    # if args.use_kd:
+    #     _logger.info("Verifying teacher model")
+    #     validate(teacher, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
     if args.initial_checkpoint != "":
         _logger.info("Verifying initial model in training dataset")
         # validate(model, loader_train, validate_loss_fn, args, amp_autocast=amp_autocast)
@@ -828,6 +836,7 @@ def ILP(args,test_loader,model,loss_fn):
                 delta_weights_b8.append(cal_delta_z(layer,8,space))
                 delta_weights_b16.append(cal_delta_z(layer,16,space))
             if args.use_fim:
+                sensitivity_b1.append(0)
                 sensitivity_b2.append(cal_delta_fim_w(layer,2,space,device))
                 sensitivity_b4.append(cal_delta_fim_w(layer,4,space,device))
                 sensitivity_b8.append(cal_delta_fim_w(layer,8,space,device))
@@ -897,14 +906,15 @@ def ILP(args,test_loader,model,loss_fn):
         sensitivity_b4 = hessian_matrix * delta_weights_b4
         sensitivity_b8 = hessian_matrix * delta_weights_b8
         sensitivity_b16 = hessian_matrix * delta_weights_b16
+    _logger.info("sensitivity_b1:"+str(sensitivity_b1))
     _logger.info("sensitivity_b2:"+str(sensitivity_b2))
     _logger.info("sensitivity_b4:"+str(sensitivity_b4))
     _logger.info("sensitivity_b8:"+str(sensitivity_b8))
     _logger.info("sensitivity_b16:"+str(sensitivity_b16))
     # sensitivity_b32 = traces * delta_weights_b32
     # optimization target: minimize the sensitivity
-    # prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] +variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
-    prob += sum(variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
+    prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] +variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
+    # prob += sum(variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
 
     status = prob.solve(GLPK_CMD(msg=1, mip=1, options=["--tmlim", "10000","--simplex"]))
     
@@ -945,6 +955,7 @@ def train_one_epoch(
         epoch, model, loader, optimizer, loss_fn, args,
         lr_scheduler=None, saver=None, output_dir=None, amp_autocast=suppress,
         loss_scaler=None, model_ema=None, mixup_fn=None,teacher=None,loss_fn_kd=None):
+    
     if args.mixup_off_epoch and epoch >= args.mixup_off_epoch:
         if args.prefetcher and loader.mixup_enabled:
             loader.mixup_enabled = False
@@ -1027,8 +1038,13 @@ def train_one_epoch(
             lr_scheduler.step_update(num_updates=num_updates, metric=losses_m.avg)
 
         end = time.time()
-        if batch_idx>300 and args.num_classes == 200 and "mobile" in args.teacher:
-            total_samples = 300
+        if args.num_classes == 1000 and batch_idx % 50==0:
+            _logger.info("batch_idx:"+str(batch_idx))
+        # if batch_idx>300 and args.num_classes == 200 and "mobile" in args.teacher:
+        #     total_samples = 300
+        #     break
+        if batch_idx>2000 and args.num_classes == 1000:
+            total_samples = 2000
             break
         # end for
     

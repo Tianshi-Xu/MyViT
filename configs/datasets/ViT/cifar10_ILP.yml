@@ -49,7 +49,7 @@ finetune: False
 lasso_alpha: 0
 tau: 1
 # budget is the uniform block size latency we want to achieve
-budget: 8
+budget: 4
 fix_blocksize: 1
 log_name: vit_c10_ILP_baseline
 delta_w: True
