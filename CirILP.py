@@ -290,6 +290,15 @@ parser.add_argument('--torchscript', dest='torchscript', action='store_true',
                     help='convert model torchscript for inference')
 parser.add_argument('--log-wandb', action='store_true', default=False,
                     help='log training and validation metrics to wandb')
+# KD
+parser.add_argument('--use-kd', action='store_true', default=False,
+                    help='whether to use kd')
+parser.add_argument('--kd-alpha', default=1.0, type=float,
+                    help='KD alpha, soft loss portion (default: 1.0)')
+parser.add_argument('--teacher', default='resnet101', type=str, metavar='MODEL',
+                    help='Name of teacher model (default: "countception"')
+parser.add_argument('--teacher-checkpoint', default='', type=str, metavar='PATH',
+                    help='Initialize teacher model from this checkpoint (default: none)')
 # CIR
 parser.add_argument('--log_name', default='none', type=str,
                     help='act sparsification pattern')
@@ -297,6 +306,10 @@ parser.add_argument('--budget', default=1,
                     help='budget, before is avg block size, now is latency ratio')
 parser.add_argument('--fix_blocksize',type=int, default=1,
                     help='whether to use dual skip for resnet blocks')
+parser.add_argument('--delta_w',type=bool, default=True,
+                    help='use delta_w or delta_z')
+parser.add_argument('--use_fim',type=bool, default=True,
+                    help='use fim or trace')
 lasso_beta=0
 origin_latency = 0
 rotate_mats = {}
@@ -331,11 +344,16 @@ def cal_rot(n,m,d1,d2,b):
         for ro in range(1,(d_min)+1):
             d=int(ri*ro)
             m_p=int(n/b/d)
-            
             if m*d_min*b<n:
                 if d!=d_min:
                     continue
-                m_p=m
+                i = 1
+                while i<=m:
+                    next_pow_2 = next_power_2(i*b)
+                    if next_pow_2*d>n:
+                        break
+                    i+=1
+                m_p=i-1
             if d>d_min or m_p>m:
                 continue
             if b!=1:
@@ -349,15 +367,19 @@ def cal_rot(n,m,d1,d2,b):
                 final_mp = m_p
                 # print("ri,ro,d,m_p",ri,ro,d,m_p)
     # print(min_rot)
+    # print("n,m,d1,d2,b:",n,m,d1,d2,b)
+    # print("final_mp,final_d:",final_mp,final_d)
     mul = math.ceil(1.0*m/final_mp)*math.ceil(1.0*d1/b/final_d)*math.ceil(1.0*d2/b/final_d)*final_d
     return min_rot, mul
 
-def comm(HW,C,K,b):
+def comm(HW,C,K,b,args):
     # print("H,W,C,K,b:",H,W,C,K,b)
     # _logger.info("HWCKb:%d,%d,%d,%d",HW,C,K,b)
     N=8192
-    rot, _ = cal_rot(N,HW,C,K,b)
-    return torch.tensor(rot+0.135*HW*C*K/(N*b))
+    rot, mul = cal_rot(N,HW,C,K,b)
+    if "vit" in args.model:
+        mul = HW*C*K/(N*b)
+    return torch.tensor(rot+0.135*mul)
 
 def set_rotate_mat():
     global rotate_mats,rev_rotate_mats
@@ -418,12 +440,34 @@ def trans_to_cir(weight: nn.Parameter,block_size):
         weights_cir=weights_cir.permute(0,2,1,3).reshape(out_features,in_features)
     return weights_cir
 
-def cal_mse(layer,block_size,space):
+def cal_delta_w(layer,block_size,space,device):
     if space[-1]<block_size:
         block_size = space[-1]
-    cir_weight = trans_to_cir(layer.weight,block_size)
-    mse = (torch.norm(layer.weight-cir_weight,p=2))**2
-    return mse.item()
+    layer.fix_block_size = block_size
+    cir_weight = layer.trans_to_cir_meng(device)
+    # _logger.info("cir_weight_gradient.shape:{0}".format(layer.weight.grad.shape))
+    # _logger.info("cir_weight_gradient_mean:{0}".format(torch.mean((layer.weight.grad))))
+    # _logger.info("cir_weight_gradient_mean*1e5:{0}".format(torch.mean((layer.weight.grad*1e5))))
+    # _logger.info("cir_weight_gradient_mean*1e5^2:{0}".format(torch.mean((layer.weight.grad*1e5)**2)))
+    layer.fix_block_size = 1
+    delta_w_2 = (torch.norm(layer.weight-cir_weight,p=2))**2
+    # exit(0)
+    return delta_w_2.item()
+
+def cal_delta_fim_w(layer,block_size,space,device):
+    if space[-1]<block_size:
+        block_size = space[-1]
+    layer.fix_block_size = block_size
+    cir_weight = layer.trans_to_cir_meng(device)
+    # _logger.info("cir_weight_gradient.shape:{0}".format(layer.weight.grad.shape))
+    # _logger.info("cir_weight_gradient_mean:{0}".format(torch.mean((layer.weight.grad))))
+    # _logger.info("cir_weight_gradient_mean*1e5:{0}".format(torch.mean((layer.weight.grad*1e5))))
+    # _logger.info("cir_weight_gradient_mean*1e5^2:{0}".format(torch.mean((layer.weight.grad*1e5)**2)))
+    layer.fix_block_size = 1
+    # the grad need to be computed beforehand in training set
+    delta_fim_w = torch.sum(((layer.weight-cir_weight)**2) * (layer.weight.grad **2))
+    # exit(0)
+    return delta_fim_w.item()
 
 def cal_mse_xts(layer,block_size,space):
     if space[-1]<block_size:
@@ -448,12 +492,32 @@ def cal_delta_z(layer, block_size,space):
     layer.fix_block_size = 1
     return delta.item()
     
-
-def cal_latency(HW,C,K,b,space):
+def cal_latency(HW,C,K,b,space,args):
     if space[-1]<b:
         b = space[-1]
-    latency = comm(HW,C,K,b)
+    latency = comm(HW,C,K,b,args)
     return latency.item()
+
+def create_teacher_model(args):
+    teacher = create_model(
+        args.teacher,
+        pretrained=False,
+        num_classes=args.num_classes,
+        drop_rate=0.,
+        drop_connect_rate=0.,
+        drop_block_rate=0.,
+        global_pool=args.gp,
+        bn_tf=args.bn_tf,
+        bn_momentum=args.bn_momentum,
+        bn_eps=args.bn_eps,
+        # checkpoint_path=args.teacher_checkpoint,
+        # checkpoint_path="",
+    )
+    if args.teacher_checkpoint != "":
+        load_checkpoint(teacher, args.teacher_checkpoint, strict=True)
+    teacher = teacher.eval()
+    return teacher
+
 
 def main():
     setup_default_logging()
@@ -495,7 +559,9 @@ def main():
 
     random_seed(args.seed, args.rank)
     teacher = None
-    
+    if args.use_kd:
+        teacher = create_teacher_model(args)
+        teacher.cuda()
     model = create_model(
         args.model,
         pretrained=args.pretrained,
@@ -685,12 +751,20 @@ def main():
     else:
         train_loss_fn = nn.CrossEntropyLoss().cuda()
     train_loss_fn_kd = None
-    
+    if args.use_kd:    
+        train_loss_fn_kd = KLLossSoft().cuda()
     validate_loss_fn = nn.CrossEntropyLoss().cuda()
-    
+    # _logger.info("model:"+str(model))
+    # if args.use_kd:
+    #     _logger.info("Verifying teacher model")
+    #     validate(teacher, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
     if args.initial_checkpoint != "":
-        _logger.info("Verifying initial model")
-        validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
+        _logger.info("Verifying initial model in training dataset")
+        # validate(model, loader_train, validate_loss_fn, args, amp_autocast=amp_autocast)
+        train_metrics = train_one_epoch(
+                0, model, loader_train, optimizer, train_loss_fn, args,
+                lr_scheduler=lr_scheduler,
+                amp_autocast=amp_autocast, loss_scaler=loss_scaler, model_ema=model_ema, mixup_fn=mixup_fn,teacher=teacher,loss_fn_kd=train_loss_fn_kd)
     # setup checkpoint saver and eval metric tracking
     eval_metric = args.eval_metric
     best_metric = None
@@ -717,13 +791,9 @@ def ILP(args,test_loader,model,loss_fn):
     for input, target in test_loader:
         break
     input, target = input.cuda(), target.cuda()
-    # _logger.info(model)
-    output = model(input)
-    hessian_comp = hessian(model, loss_fn, data=(input, target), cuda=True)
-    traces = hessian_comp.trace()
-    traces = [trace/size for trace, size in zip(traces, hessian_comp.sizes)]
-    _logger.info("len trace:"+str(len(traces)))
-    Hutchinson_trace = np.array(traces)
+    device = input.device
+    idx = 0
+    origin_latency = 0
     cir_idx = []
     delta_weights_b32 = []
     delta_weights_b16 = []
@@ -737,54 +807,75 @@ def ILP(args,test_loader,model,loss_fn):
     latency_weights_b4 = []
     latency_weights_b2 = []
     latency_weights_b1 = []
-    params = hessian_comp.params
-    idx = 0
-    origin_latency = 0
+    sensitivity_b16 = []
+    sensitivity_b8 = []
+    sensitivity_b4 = []
+    sensitivity_b2 = []
+    sensitivity_b1 = []
     _logger.info("target_block_size:"+str(target_block_size))
+    if args.delta_w:
+        _logger.info("use cal_delta_w")
+    else:
+        _logger.info("use cal_delta_z")
     for layer in model.modules():
         if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
             space = layer.search_space
-            origin_latency += cal_latency(layer.d1,layer.in_features,layer.out_features,target_block_size,space)
+            origin_latency += cal_latency(layer.d1,layer.in_features,layer.out_features,target_block_size,space,args)
             cir_idx.append(idx)
             # _logger.info("d1:"+str(layer.d1))
             delta_weights_b1.append(0)
-            _logger.info("use cal_delta_z")
-            delta_weights_b2.append(cal_delta_z(layer,2,space))
-            delta_weights_b4.append(cal_delta_z(layer,4,space))
-            delta_weights_b8.append(cal_delta_z(layer,8,space))
-            delta_weights_b16.append(cal_delta_z(layer,16,space))
-            
-            # _logger.info("use cal_mse")
-            # delta_weights_b2.append(cal_mse(layer,2,space))
-            # delta_weights_b4.append(cal_mse(layer,4,space))
-            # delta_weights_b8.append(cal_mse(layer,8,space))
-            # delta_weights_b16.append(cal_mse(layer,16,space))
-            # delta_weights_b32.append(cal_mse(layer,32,space))
-            latency_weights_b1.append(cal_latency(layer.d1,layer.in_features,layer.out_features,1,space))
-            latency_weights_b2.append(cal_latency(layer.d1,layer.in_features,layer.out_features,2,space))
-            latency_weights_b4.append(cal_latency(layer.d1,layer.in_features,layer.out_features,4,space))
-            latency_weights_b8.append(cal_latency(layer.d1,layer.in_features,layer.out_features,8,space))
-            latency_weights_b16.append(cal_latency(layer.d1,layer.in_features,layer.out_features,16,space))
+            if args.delta_w:
+                delta_weights_b2.append(cal_delta_w(layer,2,space,device))
+                delta_weights_b4.append(cal_delta_w(layer,4,space,device))
+                delta_weights_b8.append(cal_delta_w(layer,8,space,device))
+                delta_weights_b16.append(cal_delta_w(layer,16,space,device))
+                # delta_weights_b32.append(cal_delta_w(layer,32,space))
+            else:
+                delta_weights_b2.append(cal_delta_z(layer,2,space))
+                delta_weights_b4.append(cal_delta_z(layer,4,space))
+                delta_weights_b8.append(cal_delta_z(layer,8,space))
+                delta_weights_b16.append(cal_delta_z(layer,16,space))
+            if args.use_fim:
+                sensitivity_b1.append(0)
+                sensitivity_b2.append(cal_delta_fim_w(layer,2,space,device))
+                sensitivity_b4.append(cal_delta_fim_w(layer,4,space,device))
+                sensitivity_b8.append(cal_delta_fim_w(layer,8,space,device))
+                sensitivity_b16.append(cal_delta_fim_w(layer,16,space,device))
+                  
+            latency_weights_b1.append(cal_latency(layer.d1,layer.in_features,layer.out_features,1,space,args))
+            latency_weights_b2.append(cal_latency(layer.d1,layer.in_features,layer.out_features,2,space,args))
+            latency_weights_b4.append(cal_latency(layer.d1,layer.in_features,layer.out_features,4,space,args))
+            latency_weights_b8.append(cal_latency(layer.d1,layer.in_features,layer.out_features,8,space,args))
+            latency_weights_b16.append(cal_latency(layer.d1,layer.in_features,layer.out_features,16,space,args))
             # latency_weights_b32.append(cal_latency(layer.d1,layer.in_features,layer.out_features,32,space))
             idx+=1
         elif isinstance(layer, nn.Conv2d) or isinstance(layer, nn.Linear):
             idx+=1
-    _logger.info("cir_idx:"+str(cir_idx))
-    traces = [traces[i] for i in cir_idx]
-    _logger.info("len traces:"+str(Hutchinson_trace.shape))
-    _logger.info("traces:"+str(Hutchinson_trace))
-    params = [params[i] for i in cir_idx]
-    _logger.info("len params:"+str(len(params)))
-    # _logger.info("params:"+str(params))
-    _logger.info("params[0].shape:"+str(params[0].shape))
+    # _logger.info(model)
     _logger.info("delta_weights_b1:"+str(delta_weights_b1))
     _logger.info("delta_weights_b2:"+str(delta_weights_b2))
     _logger.info("delta_weights_b4:"+str(delta_weights_b4))
     _logger.info("delta_weights_b8:"+str(delta_weights_b8))
     _logger.info("delta_weights_b16:"+str(delta_weights_b16))
-    _logger.info("delta_weights_b32:"+str(delta_weights_b32))
+    # _logger.info("delta_weights_b32:"+str(delta_weights_b32))
+    hessian_comp = hessian(model, loss_fn, data=(input, target), cuda=True)
+    if not args.use_fim:
+        hessian_matrix = hessian_comp.trace()
+        hessian_matrix = [trace/size for trace, size in zip(hessian_matrix, hessian_comp.sizes)]
+        hessian_matrix = [hessian_matrix[i] for i in cir_idx]
+        _logger.info("len hessian_matrix:"+str(len(hessian_matrix)))
+        hessian_matrix = np.array(hessian_matrix)
+
+    params = hessian_comp.params
+    
+    _logger.info("cir_idx:"+str(cir_idx))
+    
+    params = [params[i] for i in cir_idx]
+    _logger.info("len params:"+str(len(params)))
+    # _logger.info("params:"+str(params))
+    _logger.info("params[0].shape:"+str(params[0].shape))
     # print(traces)
-    num_variable = len(traces)
+    num_variable = len(cir_idx)
     variable = {}
     for i in range(num_variable):
         variable[f"b1_{i}"] = LpVariable(f"b1_{i}", 0, 1, cat=LpInteger)
@@ -794,35 +885,36 @@ def ILP(args,test_loader,model,loss_fn):
         variable[f"b16_{i}"] = LpVariable(f"b16_{i}", 0, 1, cat=LpInteger)
         # variable[f"b32_{i}"] = LpVariable(f"b32_{i}", 0, 1, cat=LpInteger)
     prob = LpProblem("Block_size", LpMinimize)
-    # prob += sum(variable[f"b1_{i}"]*latency_weights_b1[i] +variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] +variable[f"b8_{i}"]*latency_weights_b8[i] +variable[f"b16_{i}"]*latency_weights_b16[i] for i in range(num_variable))-origin_latency <= 0.01
-    prob += sum(variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] +variable[f"b8_{i}"]*latency_weights_b8[i] +variable[f"b16_{i}"]*latency_weights_b16[i] for i in range(num_variable))-origin_latency <= 0
+    prob += sum(variable[f"b1_{i}"]*latency_weights_b1[i] +variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] +variable[f"b8_{i}"]*latency_weights_b8[i] +variable[f"b16_{i}"]*latency_weights_b16[i] for i in range(num_variable))-origin_latency <= 0.01
+    # prob += sum(variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] +variable[f"b8_{i}"]*latency_weights_b8[i] +variable[f"b16_{i}"]*latency_weights_b16[i] for i in range(num_variable))-origin_latency <= 0
 
     # prob += sum(variable[f"b16_{i}"] for i in range(num_variable)) <= num_variable/2
     
     #one layer only have one blocksize
     for i in range(num_variable):
-        # prob += (variable[f"b1_{i}"]+ variable[f"b2_{i}"]+ variable[f"b4_{i}"]+ variable[f"b8_{i}"]+ variable[f"b16_{i}"]) == 1
-        prob += (variable[f"b2_{i}"]+ variable[f"b4_{i}"]+ variable[f"b8_{i}"]+ variable[f"b16_{i}"]) == 1
+        prob += (variable[f"b1_{i}"]+ variable[f"b2_{i}"]+ variable[f"b4_{i}"]+ variable[f"b8_{i}"]+ variable[f"b16_{i}"]) == 1
+        # prob += (variable[f"b2_{i}"]+ variable[f"b4_{i}"]+ variable[f"b8_{i}"]+ variable[f"b16_{i}"]) == 1
     delta_weights_b1 = np.array(delta_weights_b1)
     delta_weights_b2 = np.array(delta_weights_b2)
     delta_weights_b4 = np.array(delta_weights_b4)
     delta_weights_b8 = np.array(delta_weights_b8)
     delta_weights_b16 = np.array(delta_weights_b16)
     # delta_weights_b32 = np.array(delta_weights_b32)
-
-    sensitivity_b1 = traces * delta_weights_b1
-    sensitivity_b2 = traces * delta_weights_b2
-    sensitivity_b4 = traces * delta_weights_b4
-    sensitivity_b8 = traces * delta_weights_b8
-    sensitivity_b16 = traces * delta_weights_b16
+    if not args.use_fim:
+        sensitivity_b1 = hessian_matrix * delta_weights_b1
+        sensitivity_b2 = hessian_matrix * delta_weights_b2
+        sensitivity_b4 = hessian_matrix * delta_weights_b4
+        sensitivity_b8 = hessian_matrix * delta_weights_b8
+        sensitivity_b16 = hessian_matrix * delta_weights_b16
+    _logger.info("sensitivity_b1:"+str(sensitivity_b1))
     _logger.info("sensitivity_b2:"+str(sensitivity_b2))
     _logger.info("sensitivity_b4:"+str(sensitivity_b4))
     _logger.info("sensitivity_b8:"+str(sensitivity_b8))
     _logger.info("sensitivity_b16:"+str(sensitivity_b16))
     # sensitivity_b32 = traces * delta_weights_b32
     # optimization target: minimize the sensitivity
-    # prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] +variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
-    prob += sum(variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
+    prob += sum(variable[f"b1_{i}"]*sensitivity_b1[i] +variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
+    # prob += sum(variable[f"b2_{i}"]*sensitivity_b2[i] + variable[f"b4_{i}"]*sensitivity_b4[i] +variable[f"b8_{i}"]*sensitivity_b8[i] +variable[f"b16_{i}"]*sensitivity_b16[i] for i in range(num_variable))
 
     status = prob.solve(GLPK_CMD(msg=1, mip=1, options=["--tmlim", "10000","--simplex"]))
     
@@ -831,8 +923,8 @@ def ILP(args,test_loader,model,loss_fn):
     result = []
     current_latency = 0
     for i in range(num_variable):
-        # block_size = value(variable[f"b1_{i}"])+value(variable[f"b2_{i}"])*2+value(variable[f"b4_{i}"])*4+value(variable[f"b8_{i}"])*8+value(variable[f"b16_{i}"])*16
-        block_size = value(variable[f"b2_{i}"])*2+value(variable[f"b4_{i}"])*4+value(variable[f"b8_{i}"])*8+value(variable[f"b16_{i}"])*16
+        block_size = value(variable[f"b1_{i}"])+value(variable[f"b2_{i}"])*2+value(variable[f"b4_{i}"])*4+value(variable[f"b8_{i}"])*8+value(variable[f"b16_{i}"])*16
+        # block_size = value(variable[f"b2_{i}"])*2+value(variable[f"b4_{i}"])*4+value(variable[f"b8_{i}"])*8+value(variable[f"b16_{i}"])*16
         result.append(block_size)
         if block_size == 1:
             current_latency += latency_weights_b1[i]
@@ -850,7 +942,6 @@ def ILP(args,test_loader,model,loss_fn):
     print(result.shape)
     idx = 0
     for layer in model.modules():
-        
         if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
             if layer.search_space[-1] < result[idx]:
                 result[idx] = layer.search_space[-1]
@@ -864,6 +955,7 @@ def train_one_epoch(
         epoch, model, loader, optimizer, loss_fn, args,
         lr_scheduler=None, saver=None, output_dir=None, amp_autocast=suppress,
         loss_scaler=None, model_ema=None, mixup_fn=None,teacher=None,loss_fn_kd=None):
+    
     if args.mixup_off_epoch and epoch >= args.mixup_off_epoch:
         if args.prefetcher and loader.mixup_enabled:
             loader.mixup_enabled = False
@@ -887,6 +979,8 @@ def train_one_epoch(
     end = time.time()
     last_idx = len(loader) - 1
     num_updates = epoch * len(loader)
+    optimizer.zero_grad()
+    total_samples = len(loader.dataset)
     for batch_idx, (input, target) in enumerate(loader):
         last_batch = batch_idx == last_idx
         data_time_m.update(time.time() - end)
@@ -904,36 +998,11 @@ def train_one_epoch(
                 loss = loss_fn_kd(output, target_t)
             else:
                 loss = loss_fn(output, target)
-        
-        reg_loss = 0
-
-        # add lasso loss 
-        if args.fix_blocksize==-1 and args.finetune is False:
-            global origin_latency
-            origin = True
-            if origin_latency == 0:
-                origin = False
-            for layer in model.modules():
-                if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
-                    alphas = layer.alphas_after
-                    idx = torch.argmax(alphas)
-                    if not origin:
-                        origin_latency += comm(layer.d1,layer.in_features,layer.out_features,1)
-                    # reg_loss += alphas[idx]*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
-                    for i,alpha in enumerate(alphas):
-                        reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[i])
-            global lasso_beta
-            if lasso_beta == 0:
-                lasso_beta = 1/(torch.pow(torch.log2(reg_loss.detach()),args.lasso_alpha))
-            # _logger.info("loss:"+str(loss))
-            loss = loss * lasso_beta *torch.pow(torch.log2(reg_loss),args.lasso_alpha)
-            # loss =loss+args.lasso_alpha*reg_loss
-            # _logger.info("lasso_loss:"+str(args.lasso_alpha*reg_loss))
-    
+        # _logger.info("loss:"+str(loss.item()))
         if not args.distributed:
             losses_m.update(loss.item(), input.size(0))
 
-        optimizer.zero_grad()
+
         if loss_scaler is not None:
             loss_scaler(
                 loss, optimizer,
@@ -946,7 +1015,6 @@ def train_one_epoch(
                 dispatch_clip_grad(
                     model_parameters(model, exclude_head='agc' in args.clip_mode),
                     value=args.clip_grad, mode=args.clip_mode)
-            optimizer.step()
 
         if model_ema is not None:
             model_ema.update(model)
@@ -962,31 +1030,6 @@ def train_one_epoch(
                 reduced_loss = reduce_tensor(loss.data, args.world_size)
                 losses_m.update(reduced_loss.item(), input.size(0))
 
-            if args.local_rank == 0:
-                _logger.info(
-                    'Train: {} [{:>4d}/{} ({:>3.0f}%)]  '
-                    'Loss: {loss.val:>9.6f} ({loss.avg:>6.4f})  '
-                    'Time: {batch_time.val:.3f}s, {rate:>7.2f}/s  '
-                    '({batch_time.avg:.3f}s, {rate_avg:>7.2f}/s)  '
-                    'LR: {lr:.3e}  '
-                    'Data: {data_time.val:.3f} ({data_time.avg:.3f})'.format(
-                        epoch,
-                        batch_idx, len(loader),
-                        100. * batch_idx / last_idx,
-                        loss=losses_m,
-                        batch_time=batch_time_m,
-                        rate=input.size(0) * args.world_size / batch_time_m.val,
-                        rate_avg=input.size(0) * args.world_size / batch_time_m.avg,
-                        lr=lr,
-                        data_time=data_time_m))
-
-                if args.save_images and output_dir:
-                    torchvision.utils.save_image(
-                        input,
-                        os.path.join(output_dir, 'train-batch-%d.jpg' % batch_idx),
-                        padding=0,
-                        normalize=True)
-
         if saver is not None and args.recovery_interval and (
                 last_batch or (batch_idx + 1) % args.recovery_interval == 0):
             saver.save_recovery(epoch, batch_idx=batch_idx)
@@ -995,52 +1038,23 @@ def train_one_epoch(
             lr_scheduler.step_update(num_updates=num_updates, metric=losses_m.avg)
 
         end = time.time()
+        if args.num_classes == 1000 and batch_idx % 50==0:
+            _logger.info("batch_idx:"+str(batch_idx))
+        # if batch_idx>300 and args.num_classes == 200 and "mobile" in args.teacher:
+        #     total_samples = 300
+        #     break
+        if batch_idx>2000 and args.num_classes == 1000:
+            total_samples = 2000
+            break
         # end for
-    total_blocks = 0
-    total_layers = 0
-    current_latency = 0
-    # update lasso_alpha and tau each epoch, standard is avg block_size
-    if args.fix_blocksize==-1 and args.finetune is False and epoch > 10:
-        for layer in model.modules():
-            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
-                total_blocks +=1
-                total_layers +=1
-        for layer in model.modules():
-            if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
-                _logger.info(layer.alphas.requires_grad)
-                alphas=layer.alphas_after
-                idx = torch.argmax(alphas)
-                if torch.max(alphas)>0.6:
-                    layer.fix_block_size = layer.search_space[idx]
-                    layer.alphas.requires_grad = False
-                total_blocks += layer.search_space[idx]-1
-                if layer.fix_block_size == -1:
-                    _logger.info("trained alphas:"+str(layer.alphas))
-                else:
-                    _logger.info("fix_block_size:"+str(layer.fix_block_size))
-                _logger.info("alphas after:"+str(alphas))
-                # print("alphas:",alphas)
-                # print("tau:",layer.tau)
-                current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
-                
-                if epoch > 10 and layer.tau > 1e-5:
-                    layer.tau=(layer.tau*args.tau)
-                    _logger.info("tau:"+str(layer.tau))
-                    
-        _logger.info("avg block size:"+str(total_blocks/total_layers))     
-        _logger.info("current latency ratio:"+str(current_latency/origin_latency)) 
-        if abs(current_latency/origin_latency-args.budget)<0.01:
-            _logger.info("lasso_alpha:"+str(args.lasso_alpha))
-        else:      
-            if current_latency/origin_latency > args.budget and epoch > 10:
-                args.lasso_alpha*=1.05
-                _logger.info("lasso_alpha:"+str(args.lasso_alpha))
-            elif current_latency/origin_latency < args.budget and epoch > 10:
-                args.lasso_alpha/=1.05
-                _logger.info("lasso_alpha:"+str(args.lasso_alpha))
+    
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()
-
+    _logger.info("len loader.dataset:"+str(total_samples))
+    for param in model.parameters():
+        if param.grad is not None:
+            param.grad.data /= total_samples
+            # _logger.info("mean grad:"+str(torch.mean(param.grad.data)))
     return OrderedDict([('loss', losses_m.avg)])
 
 

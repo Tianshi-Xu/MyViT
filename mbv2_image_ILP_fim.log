@@ -1,0 +1,1229 @@
+2024-04-24 17:20:49,343 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 17:20:49,358 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 17:20:49,358 - train - INFO - Scheduled epochs: 11
+2024-04-24 17:21:00,745 - train - INFO - model:CirMobileNetV2(
+  (features): Sequential(
+    (0): Sequential(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU6(inplace=True)
+    )
+    (1): CirInvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+        (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(32, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (4): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (2): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=16, out_features=96, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=96, bias=False)
+        (4): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=96, out_features=24, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (3): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=24, out_features=144, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(144, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=144, bias=False)
+        (4): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=144, out_features=24, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (4): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=24, out_features=144, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(144, 144, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=144, bias=False)
+        (4): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=144, out_features=32, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (5): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=32, out_features=192, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=192, out_features=32, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (6): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=32, out_features=192, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=192, out_features=32, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (7): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=32, out_features=192, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=192, out_features=64, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (8): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=64, out_features=384, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=384, out_features=64, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (9): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=64, out_features=384, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=384, out_features=64, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (10): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=64, out_features=384, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=384, out_features=64, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (11): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=64, out_features=384, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=384, out_features=96, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (12): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=96, out_features=576, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=576, out_features=96, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (13): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=96, out_features=576, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=576, out_features=96, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (14): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=96, out_features=576, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=576, out_features=160, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (15): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=160, out_features=960, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=960, out_features=160, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (16): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=160, out_features=960, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=960, out_features=160, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (17): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=160, out_features=960, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=960, out_features=320, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+  )
+  (conv): Sequential(
+    (0): Conv2d(320, 1280, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (1): BatchNorm2d(1280, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU6(inplace=True)
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (classifier): Linear(in_features=1280, out_features=1000, bias=True)
+)
+2024-04-24 17:21:00,746 - train - INFO - Verifying initial model in training dataset
+2024-04-24 17:21:04,480 - train - INFO - batch_idx:0
+2024-04-24 17:21:04,738 - train - INFO - len loader.dataset:1
+2024-04-24 17:21:06,546 - train - INFO - target_block_size:8
+2024-04-24 17:21:06,547 - train - INFO - use cal_delta_w
+2024-04-24 17:21:06,590 - train - INFO - cir_weight.mean:0.0056094094179570675
+2024-04-24 17:21:06,590 - train - INFO - layer.weight.mean:0.0027491950895637274
+2024-04-24 17:21:06,623 - train - INFO - cir_weight.mean:-0.00013660846161656082
+2024-04-24 17:21:06,623 - train - INFO - layer.weight.mean:-0.0035522617399692535
+2024-04-24 17:21:06,631 - train - INFO - cir_weight.mean:-0.0053799571469426155
+2024-04-24 17:21:06,631 - train - INFO - layer.weight.mean:-0.0030875145457684994
+2024-04-24 17:21:06,639 - train - INFO - cir_weight.mean:0.0035651337821036577
+2024-04-24 17:21:06,639 - train - INFO - layer.weight.mean:0.003548227483406663
+2024-04-24 17:21:06,647 - train - INFO - cir_weight.mean:-0.0065127708949148655
+2024-04-24 17:21:06,647 - train - INFO - layer.weight.mean:-0.0033235240262001753
+2024-04-24 17:21:06,655 - train - INFO - cir_weight.mean:-0.005169867537915707
+2024-04-24 17:21:06,655 - train - INFO - layer.weight.mean:-0.0023395242169499397
+2024-04-24 17:21:06,663 - train - INFO - cir_weight.mean:0.003507959423586726
+2024-04-24 17:21:06,663 - train - INFO - layer.weight.mean:0.0032226431649178267
+2024-04-24 17:21:06,672 - train - INFO - cir_weight.mean:-0.0031005151104182005
+2024-04-24 17:21:06,672 - train - INFO - layer.weight.mean:-0.0018560764146968722
+2024-04-24 17:21:06,680 - train - INFO - cir_weight.mean:0.0017829759744927287
+2024-04-24 17:21:06,680 - train - INFO - layer.weight.mean:0.0018068533390760422
+2024-04-24 17:21:06,688 - train - INFO - cir_weight.mean:-0.0007530811126343906
+2024-04-24 17:21:06,688 - train - INFO - layer.weight.mean:-0.0008350383723154664
+2024-04-24 17:21:06,696 - train - INFO - cir_weight.mean:0.003586719511076808
+2024-04-24 17:21:06,697 - train - INFO - layer.weight.mean:0.00451651168987155
+2024-04-24 17:21:06,705 - train - INFO - cir_weight.mean:0.0020414781756699085
+2024-04-24 17:21:06,705 - train - INFO - layer.weight.mean:0.0008128884946927428
+2024-04-24 17:21:06,714 - train - INFO - cir_weight.mean:1.3639917597174644e-05
+2024-04-24 17:21:06,714 - train - INFO - layer.weight.mean:0.0002920283004641533
+2024-04-24 17:21:06,724 - train - INFO - cir_weight.mean:-0.0007390137761831284
+2024-04-24 17:21:06,724 - train - INFO - layer.weight.mean:-0.0004073595628142357
+2024-04-24 17:21:06,733 - train - INFO - cir_weight.mean:-0.0007503476808778942
+2024-04-24 17:21:06,734 - train - INFO - layer.weight.mean:-0.0004856414161622524
+2024-04-24 17:21:06,743 - train - INFO - cir_weight.mean:-0.0005985337193123996
+2024-04-24 17:21:06,743 - train - INFO - layer.weight.mean:-0.0005006200517527759
+2024-04-24 17:21:06,752 - train - INFO - cir_weight.mean:0.0009038728894665837
+2024-04-24 17:21:06,752 - train - INFO - layer.weight.mean:0.0012959729647263885
+2024-04-24 17:21:06,762 - train - INFO - cir_weight.mean:-0.00019627436995506287
+2024-04-24 17:21:06,762 - train - INFO - layer.weight.mean:-0.00015328347217291594
+2024-04-24 17:21:06,772 - train - INFO - cir_weight.mean:-0.001901482930406928
+2024-04-24 17:21:06,772 - train - INFO - layer.weight.mean:-0.0009594538132660091
+2024-04-24 17:21:06,782 - train - INFO - cir_weight.mean:0.0006749817403033376
+2024-04-24 17:21:06,782 - train - INFO - layer.weight.mean:0.0005944470758549869
+2024-04-24 17:21:06,793 - train - INFO - cir_weight.mean:-0.0005295879091136158
+2024-04-24 17:21:06,793 - train - INFO - layer.weight.mean:-0.000494042644277215
+2024-04-24 17:21:06,804 - train - INFO - cir_weight.mean:0.0013248128816485405
+2024-04-24 17:21:06,804 - train - INFO - layer.weight.mean:0.001141682849265635
+2024-04-24 17:21:06,838 - train - INFO - cir_weight.mean:nan
+2024-04-24 17:21:06,838 - train - INFO - layer.weight.mean:-0.0012816189555451274
+2024-04-24 17:21:06,839 - train - INFO - layer:CirConv2d(in_features=96, out_features=576, kernel_size=1, fix_block_size=2, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+2024-04-24 17:21:06,839 - train - INFO - tensor([[266,   0,   0,   0],
+        [266,   1,   0,   0],
+        [266,   2,   0,   0],
+        [266,   3,   0,   0],
+        [266,   4,   0,   0],
+        [266,   5,   0,   0],
+        [266,   6,   0,   0],
+        [266,   7,   0,   0],
+        [266,   8,   0,   0],
+        [266,   9,   0,   0],
+        [266,  10,   0,   0],
+        [266,  11,   0,   0],
+        [266,  12,   0,   0],
+        [266,  13,   0,   0],
+        [266,  14,   0,   0],
+        [266,  15,   0,   0],
+        [266,  16,   0,   0],
+        [266,  17,   0,   0],
+        [266,  18,   0,   0],
+        [266,  19,   0,   0],
+        [266,  20,   0,   0],
+        [266,  21,   0,   0],
+        [266,  22,   0,   0],
+        [266,  23,   0,   0],
+        [266,  24,   0,   0],
+        [266,  25,   0,   0],
+        [266,  26,   0,   0],
+        [266,  27,   0,   0],
+        [266,  28,   0,   0],
+        [266,  29,   0,   0],
+        [266,  30,   0,   0],
+        [266,  31,   0,   0],
+        [266,  32,   0,   0],
+        [266,  33,   0,   0],
+        [266,  34,   0,   0],
+        [266,  35,   0,   0],
+        [266,  36,   0,   0],
+        [266,  37,   0,   0],
+        [266,  38,   0,   0],
+        [266,  39,   0,   0],
+        [266,  40,   0,   0],
+        [266,  41,   0,   0],
+        [266,  42,   0,   0],
+        [266,  43,   0,   0],
+        [266,  44,   0,   0],
+        [266,  45,   0,   0],
+        [266,  46,   0,   0],
+        [266,  47,   0,   0],
+        [266,  48,   0,   0],
+        [266,  49,   0,   0],
+        [266,  50,   0,   0],
+        [266,  51,   0,   0],
+        [266,  52,   0,   0],
+        [266,  53,   0,   0],
+        [266,  54,   0,   0],
+        [266,  55,   0,   0],
+        [266,  56,   0,   0],
+        [266,  57,   0,   0],
+        [266,  58,   0,   0],
+        [266,  59,   0,   0],
+        [266,  60,   0,   0],
+        [266,  61,   0,   0],
+        [266,  62,   0,   0],
+        [266,  63,   0,   0],
+        [266,  64,   0,   0],
+        [266,  65,   0,   0],
+        [266,  66,   0,   0],
+        [266,  67,   0,   0],
+        [266,  68,   0,   0],
+        [266,  69,   0,   0],
+        [266,  70,   0,   0],
+        [266,  71,   0,   0],
+        [266,  72,   0,   0],
+        [266,  73,   0,   0],
+        [266,  74,   0,   0],
+        [266,  75,   0,   0],
+        [266,  76,   0,   0],
+        [266,  77,   0,   0],
+        [266,  78,   0,   0],
+        [266,  79,   0,   0],
+        [266,  80,   0,   0],
+        [266,  81,   0,   0],
+        [266,  82,   0,   0],
+        [266,  83,   0,   0],
+        [266,  84,   0,   0],
+        [266,  85,   0,   0],
+        [266,  86,   0,   0],
+        [266,  87,   0,   0],
+        [266,  88,   0,   0],
+        [266,  89,   0,   0],
+        [266,  90,   0,   0],
+        [266,  91,   0,   0],
+        [266,  92,   0,   0],
+        [266,  93,   0,   0],
+        [266,  94,   0,   0],
+        [266,  95,   0,   0],
+        [267,   0,   0,   0],
+        [267,   1,   0,   0],
+        [267,   2,   0,   0],
+        [267,   3,   0,   0],
+        [267,   4,   0,   0],
+        [267,   5,   0,   0],
+        [267,   6,   0,   0],
+        [267,   7,   0,   0],
+        [267,   8,   0,   0],
+        [267,   9,   0,   0],
+        [267,  10,   0,   0],
+        [267,  11,   0,   0],
+        [267,  12,   0,   0],
+        [267,  13,   0,   0],
+        [267,  14,   0,   0],
+        [267,  15,   0,   0],
+        [267,  16,   0,   0],
+        [267,  17,   0,   0],
+        [267,  18,   0,   0],
+        [267,  19,   0,   0],
+        [267,  20,   0,   0],
+        [267,  21,   0,   0],
+        [267,  22,   0,   0],
+        [267,  23,   0,   0],
+        [267,  24,   0,   0],
+        [267,  25,   0,   0],
+        [267,  26,   0,   0],
+        [267,  27,   0,   0],
+        [267,  28,   0,   0],
+        [267,  29,   0,   0],
+        [267,  30,   0,   0],
+        [267,  31,   0,   0],
+        [267,  32,   0,   0],
+        [267,  33,   0,   0],
+        [267,  34,   0,   0],
+        [267,  35,   0,   0],
+        [267,  36,   0,   0],
+        [267,  37,   0,   0],
+        [267,  38,   0,   0],
+        [267,  39,   0,   0],
+        [267,  40,   0,   0],
+        [267,  41,   0,   0],
+        [267,  42,   0,   0],
+        [267,  43,   0,   0],
+        [267,  44,   0,   0],
+        [267,  45,   0,   0],
+        [267,  46,   0,   0],
+        [267,  47,   0,   0],
+        [267,  48,   0,   0],
+        [267,  49,   0,   0],
+        [267,  50,   0,   0],
+        [267,  51,   0,   0],
+        [267,  52,   0,   0],
+        [267,  53,   0,   0],
+        [267,  54,   0,   0],
+        [267,  55,   0,   0],
+        [267,  56,   0,   0],
+        [267,  57,   0,   0],
+        [267,  58,   0,   0],
+        [267,  59,   0,   0],
+        [267,  60,   0,   0],
+        [267,  61,   0,   0],
+        [267,  62,   0,   0],
+        [267,  63,   0,   0],
+        [267,  64,   0,   0],
+        [267,  65,   0,   0],
+        [267,  66,   0,   0],
+        [267,  67,   0,   0],
+        [267,  68,   0,   0],
+        [267,  69,   0,   0],
+        [267,  70,   0,   0],
+        [267,  71,   0,   0],
+        [267,  72,   0,   0],
+        [267,  73,   0,   0],
+        [267,  74,   0,   0],
+        [267,  75,   0,   0],
+        [267,  76,   0,   0],
+        [267,  77,   0,   0],
+        [267,  78,   0,   0],
+        [267,  79,   0,   0],
+        [267,  80,   0,   0],
+        [267,  81,   0,   0],
+        [267,  82,   0,   0],
+        [267,  83,   0,   0],
+        [267,  84,   0,   0],
+        [267,  85,   0,   0],
+        [267,  86,   0,   0],
+        [267,  87,   0,   0],
+        [267,  88,   0,   0],
+        [267,  89,   0,   0],
+        [267,  90,   0,   0],
+        [267,  91,   0,   0],
+        [267,  92,   0,   0],
+        [267,  93,   0,   0],
+        [267,  94,   0,   0],
+        [267,  95,   0,   0]], device='cuda:0')
+2024-04-24 17:21:06,884 - train - INFO - cir_weight_gradient_mean:-1.0313647180737462e-05
+2024-04-24 17:21:06,896 - train - INFO - cir_weight.mean:0.0008535155211575329
+2024-04-24 17:21:06,896 - train - INFO - layer.weight.mean:0.0006623447989113629
+2024-04-24 17:21:06,907 - train - INFO - cir_weight.mean:-0.0012900707079097629
+2024-04-24 17:21:06,908 - train - INFO - layer.weight.mean:-0.0014000782975926995
+2024-04-24 17:21:06,918 - train - INFO - cir_weight.mean:-0.0003720356326084584
+2024-04-24 17:21:06,919 - train - INFO - layer.weight.mean:-0.0001889929990284145
+2024-04-24 17:21:06,935 - train - INFO - cir_weight.mean:0.00032044079853221774
+2024-04-24 17:21:06,935 - train - INFO - layer.weight.mean:0.000286902446532622
+2024-04-24 17:21:06,952 - train - INFO - cir_weight.mean:-0.0002767892146948725
+2024-04-24 17:21:06,952 - train - INFO - layer.weight.mean:-0.00037072491250000894
+2024-04-24 17:21:06,969 - train - INFO - cir_weight.mean:-0.00025819626171141863
+2024-04-24 17:21:06,969 - train - INFO - layer.weight.mean:-0.000467894395114854
+2024-04-24 17:21:06,987 - train - INFO - cir_weight.mean:0.00018225214444100857
+2024-04-24 17:21:06,987 - train - INFO - layer.weight.mean:8.79403087310493e-05
+2024-04-24 17:21:07,004 - train - INFO - cir_weight.mean:-0.0004028216644655913
+2024-04-24 17:21:07,004 - train - INFO - layer.weight.mean:-0.00017743736680131406
+2024-04-24 17:21:07,021 - train - INFO - cir_weight.mean:2.4711913283681497e-05
+2024-04-24 17:21:07,022 - train - INFO - layer.weight.mean:4.335576522862539e-05
+2024-04-24 17:21:07,063 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 17:21:07,063 - train - INFO - delta_weights_b2:[66.16333770751953, 66.94868469238281, 57.07826614379883, 51.27263259887695, 93.62330627441406, 103.5608901977539, 55.33212661743164, 51.92063903808594, 49.275962829589844, 41.436004638671875, 120.20901489257812, 151.8173065185547, 85.30463409423828, 79.3757095336914, 86.1593246459961, 68.41641235351562, 88.54132843017578, 67.57671356201172, 203.16244506835938, 212.8643798828125, 159.06068420410156, 134.42462158203125, nan, 130.34710693359375, 313.6391906738281, 391.7820739746094, 309.1494140625, 287.1116943359375, 373.40478515625, 293.17095947265625, 564.9564208984375, 611.5473022460938]
+2024-04-24 17:21:07,063 - train - INFO - delta_weights_b4:[94.44477844238281, 91.6911392211914, 76.9967041015625, 72.3134994506836, 129.44378662109375, 142.5068359375, 78.38594055175781, 69.70369720458984, 66.39018249511719, 59.37521743774414, 171.52432250976562, 207.55746459960938, 120.8650894165039, 112.09496307373047, 116.99330139160156, 92.75975036621094, 120.18246459960938, 91.3557357788086, 275.1846923828125, 293.1282653808594, 219.3628387451172, 183.41375732421875, 230.7368927001953, 177.05661010742188, 429.8633728027344, 528.708984375, 425.3681945800781, 388.34332275390625, 512.2007446289062, 399.3267517089844, 768.4669799804688, 822.8699951171875]
+2024-04-24 17:21:07,063 - train - INFO - delta_weights_b8:[95.09175109863281, 95.4655990600586, 82.54804229736328, 77.98929595947266, 142.06036376953125, 151.9303741455078, 83.83811950683594, 74.56036376953125, 69.73666381835938, 63.83084487915039, 178.1595458984375, 223.72799682617188, 128.9588165283203, 118.98816680908203, 124.71739196777344, 98.46048736572266, 125.55104064941406, 96.98491668701172, 290.322509765625, 313.52227783203125, 232.91986083984375, 195.2369842529297, 242.10244750976562, 187.47779846191406, 457.7121887207031, 557.1717529296875, 458.7030029296875, 412.23712158203125, 544.0134887695312, 422.606201171875, 815.8233642578125, 870.1864013671875]
+2024-04-24 17:21:07,063 - train - INFO - delta_weights_b16:[100.50042724609375, 95.4655990600586, 82.54804229736328, 77.98929595947266, 142.06036376953125, 152.43338012695312, 84.37914276123047, 71.74932098388672, 69.56388854980469, 61.021976470947266, 173.82154846191406, 217.8795166015625, 126.86515045166016, 116.61502075195312, 123.98274993896484, 98.17719268798828, 123.5015640258789, 95.25743865966797, 290.68450927734375, 312.48773193359375, 231.9326629638672, 193.84762573242188, 242.75865173339844, 185.6014404296875, 455.84417724609375, 552.9075927734375, 455.8009338378906, 405.7529602050781, 539.7977294921875, 418.8388671875, 812.2421875, 862.4171142578125]
+2024-04-24 17:21:08,205 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 17:21:08,205 - train - INFO - len params:32
+2024-04-24 17:21:08,205 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 17:21:08,219 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 17:21:08,219 - train - INFO - sensitivity_b2:[0.0018728376599028707, 0.001274477457627654, 0.000531636702362448, 0.0005447918083518744, 0.001640993868932128, 0.0017895966302603483, 0.0003430263604968786, 0.00026699251611717045, 0.00027892785146832466, 0.00021231309801805764, 0.0014763646759092808, 0.0013038369361311197, 0.00016044374206103384, 0.00017949644825421274, 0.00019375557894818485, 0.00013222434790804982, 0.00019040267216041684, 0.00011301287304377183, 0.000926826789509505, 0.000808682176284492, 0.00026681137387640774, 0.0002089047629851848, nan, 0.00016864313511177897, 0.0009429139317944646, 0.0009383605793118477, 0.0003512121911626309, 0.000284036184893921, 0.0004168877494521439, 0.00024285880499519408, 0.0007299998542293906, 0.0004159286618232727]
+2024-04-24 17:21:08,219 - train - INFO - sensitivity_b4:[0.0040520597249269485, 0.002974944654852152, 0.0013520740903913975, 0.0011549335904419422, 0.003319826675578952, 0.004069725517183542, 0.0007205456495285034, 0.0005569617496803403, 0.0005352927255444229, 0.00041487166890874505, 0.002999159973114729, 0.0027045009192079306, 0.0003875457332469523, 0.0003623556112870574, 0.00039499529520981014, 0.00026686061755754054, 0.00039071677019819617, 0.00023796680034138262, 0.0019567511044442654, 0.0016489189583808184, 0.0005570654175244272, 0.0004185827565379441, 0.0005758021143265069, 0.0003455598489381373, 0.002035769633948803, 0.0018999057356268167, 0.0007414024439640343, 0.0005838957731612027, 0.0008760366472415626, 0.0004980379017069936, 0.0014886233257129788, 0.000853563251439482]
+2024-04-24 17:21:08,219 - train - INFO - sensitivity_b8:[0.006443005986511707, 0.0041489251889288425, 0.00201320368796587, 0.001688030082732439, 0.005754810757935047, 0.005868745967745781, 0.0010575947817415, 0.0008155476534739137, 0.0007594312191940844, 0.0006518783047795296, 0.004513158928602934, 0.003930321428924799, 0.0005955633241683245, 0.000540911452844739, 0.0005653786938637495, 0.0003935635322704911, 0.0005624392069876194, 0.0003512806724756956, 0.002912716241553426, 0.0023349826224148273, 0.0008192711975425482, 0.0006019745487719774, 0.0008467287989333272, 0.0005014081252738833, 0.002929103560745716, 0.0027318953070789576, 0.0010915141319856048, 0.0008470272878184915, 0.0012753704795613885, 0.0007339725270867348, 0.002191570121794939, 0.0012220550561323762]
+2024-04-24 17:21:08,220 - train - INFO - sensitivity_b16:[0.007999680936336517, 0.0041489251889288425, 0.00201320368796587, 0.001688030082732439, 0.005754810757935047, 0.007131734862923622, 0.0013390537351369858, 0.0010685172164812684, 0.0009155316511169076, 0.0008598607964813709, 0.005630695726722479, 0.005008441396057606, 0.0007542467792518437, 0.000683745602145791, 0.000705415615811944, 0.00047455038293264806, 0.0006816727109253407, 0.0004319299478083849, 0.003567771054804325, 0.0028994150925427675, 0.0010191790061071515, 0.0007428181706927717, 0.0010352091630920768, 0.0006173484725877643, 0.0035929898731410503, 0.0033263780642300844, 0.0013755186228081584, 0.0010379108134657145, 0.0015782940899953246, 0.0009060674346983433, 0.0027021151036024094, 0.0014871313469484448]
+2024-04-24 17:23:41,838 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 17:23:41,852 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 17:23:41,853 - train - INFO - Scheduled epochs: 11
+2024-04-24 17:23:54,157 - train - INFO - model:CirMobileNetV2(
+  (features): Sequential(
+    (0): Sequential(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU6(inplace=True)
+    )
+    (1): CirInvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+        (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(32, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (4): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (2): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=16, out_features=96, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=96, bias=False)
+        (4): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=96, out_features=24, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (3): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=24, out_features=144, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(144, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=144, bias=False)
+        (4): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=144, out_features=24, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (4): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=24, out_features=144, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(144, 144, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=144, bias=False)
+        (4): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=144, out_features=32, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (5): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=32, out_features=192, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=192, out_features=32, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (6): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=32, out_features=192, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=192, out_features=32, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (7): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=32, out_features=192, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=192, out_features=64, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (8): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=64, out_features=384, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=384, out_features=64, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (9): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=64, out_features=384, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=384, out_features=64, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (10): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=64, out_features=384, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=384, out_features=64, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (11): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=64, out_features=384, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=384, out_features=96, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (12): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=96, out_features=576, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=576, out_features=96, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (13): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=96, out_features=576, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=576, out_features=96, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (14): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=96, out_features=576, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=576, out_features=160, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (15): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=160, out_features=960, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=960, out_features=160, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (16): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=160, out_features=960, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=960, out_features=160, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+    (17): CirInvertedResidual(
+      (conv): Sequential(
+        (0): CirConv2d(in_features=160, out_features=960, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32], separate_weight=False)
+        (1): CirBatchNorm2d(num_features=960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): CirConv2d(in_features=960, out_features=320, kernel_size=1, fix_block_size=1, search_space=[1, 2, 4, 8, 16, 32, 64], separate_weight=False)
+        (7): CirBatchNorm2d(num_features=320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, block_size=1)
+      )
+    )
+  )
+  (conv): Sequential(
+    (0): Conv2d(320, 1280, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (1): BatchNorm2d(1280, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU6(inplace=True)
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (classifier): Linear(in_features=1280, out_features=1000, bias=True)
+)
+2024-04-24 17:23:54,158 - train - INFO - Verifying initial model in training dataset
+2024-04-24 17:23:57,955 - train - INFO - batch_idx:0
+2024-04-24 17:23:58,235 - train - INFO - len loader.dataset:1
+2024-04-24 17:24:00,064 - train - INFO - target_block_size:8
+2024-04-24 17:24:00,065 - train - INFO - use cal_delta_w
+2024-04-24 17:24:00,108 - train - INFO - cir_weight.mean:0.0056672533974051476
+2024-04-24 17:24:00,108 - train - INFO - layer.weight.mean:0.002749195322394371
+2024-04-24 17:24:00,141 - train - INFO - cir_weight.mean:0.0002705198130570352
+2024-04-24 17:24:00,142 - train - INFO - layer.weight.mean:-0.0035522617399692535
+2024-04-24 17:24:00,150 - train - INFO - cir_weight.mean:-0.005201841238886118
+2024-04-24 17:24:00,150 - train - INFO - layer.weight.mean:-0.003087514080107212
+2024-04-24 17:24:00,158 - train - INFO - cir_weight.mean:0.003916088026016951
+2024-04-24 17:24:00,158 - train - INFO - layer.weight.mean:0.003548227483406663
+2024-04-24 17:24:00,166 - train - INFO - cir_weight.mean:-0.006002071779221296
+2024-04-24 17:24:00,166 - train - INFO - layer.weight.mean:-0.0033235244918614626
+2024-04-24 17:24:00,174 - train - INFO - cir_weight.mean:-0.0051531014032661915
+2024-04-24 17:24:00,174 - train - INFO - layer.weight.mean:-0.0023395242169499397
+2024-04-24 17:24:00,183 - train - INFO - cir_weight.mean:0.0037344731390476227
+2024-04-24 17:24:00,183 - train - INFO - layer.weight.mean:0.0032226431649178267
+2024-04-24 17:24:00,192 - train - INFO - cir_weight.mean:-0.003274600487202406
+2024-04-24 17:24:00,192 - train - INFO - layer.weight.mean:-0.001856076531112194
+2024-04-24 17:24:00,200 - train - INFO - cir_weight.mean:0.0017245117342099547
+2024-04-24 17:24:00,201 - train - INFO - layer.weight.mean:0.0018068533390760422
+2024-04-24 17:24:00,210 - train - INFO - cir_weight.mean:-0.000715467962436378
+2024-04-24 17:24:00,211 - train - INFO - layer.weight.mean:-0.0008350384305231273
+2024-04-24 17:24:00,219 - train - INFO - cir_weight.mean:0.0035150626208633184
+2024-04-24 17:24:00,219 - train - INFO - layer.weight.mean:0.00451651168987155
+2024-04-24 17:24:00,228 - train - INFO - cir_weight.mean:0.0018784813582897186
+2024-04-24 17:24:00,228 - train - INFO - layer.weight.mean:0.0008128887857310474
+2024-04-24 17:24:00,238 - train - INFO - cir_weight.mean:7.213991193566471e-05
+2024-04-24 17:24:00,238 - train - INFO - layer.weight.mean:0.0002920283586718142
+2024-04-24 17:24:00,248 - train - INFO - cir_weight.mean:-0.0008200000738725066
+2024-04-24 17:24:00,249 - train - INFO - layer.weight.mean:-0.0004073595046065748
+2024-04-24 17:24:00,259 - train - INFO - cir_weight.mean:-0.0007299172575585544
+2024-04-24 17:24:00,259 - train - INFO - layer.weight.mean:-0.0004856413579545915
+2024-04-24 17:24:00,270 - train - INFO - cir_weight.mean:-0.0005899641546420753
+2024-04-24 17:24:00,270 - train - INFO - layer.weight.mean:-0.0005006200517527759
+2024-04-24 17:24:00,280 - train - INFO - cir_weight.mean:0.0009251515148207545
+2024-04-24 17:24:00,280 - train - INFO - layer.weight.mean:0.0012959730811417103
+2024-04-24 17:24:00,291 - train - INFO - cir_weight.mean:-0.00017647247295826674
+2024-04-24 17:24:00,291 - train - INFO - layer.weight.mean:-0.00015328338486142457
+2024-04-24 17:24:00,301 - train - INFO - cir_weight.mean:-0.0019379062578082085
+2024-04-24 17:24:00,301 - train - INFO - layer.weight.mean:-0.00095945387147367
+2024-04-24 17:24:00,311 - train - INFO - cir_weight.mean:0.0007515442557632923
+2024-04-24 17:24:00,311 - train - INFO - layer.weight.mean:0.0005944470758549869
+2024-04-24 17:24:00,323 - train - INFO - cir_weight.mean:-0.00046968183596618474
+2024-04-24 17:24:00,323 - train - INFO - layer.weight.mean:-0.000494042644277215
+2024-04-24 17:24:00,335 - train - INFO - cir_weight.mean:0.0013206375297158957
+2024-04-24 17:24:00,335 - train - INFO - layer.weight.mean:0.001141682849265635
+2024-04-24 17:24:00,352 - train - INFO - cir_weight.mean:-0.0007050092099234462
+2024-04-24 17:24:00,352 - train - INFO - layer.weight.mean:-0.0012816189555451274
+2024-04-24 17:24:00,364 - train - INFO - cir_weight.mean:0.0008425202104263008
+2024-04-24 17:24:00,364 - train - INFO - layer.weight.mean:0.0006623449153266847
+2024-04-24 17:24:00,389 - train - INFO - cir_weight.mean:-0.0012921966845169663
+2024-04-24 17:24:00,390 - train - INFO - layer.weight.mean:-0.0014000782975926995
+2024-04-24 17:24:00,405 - train - INFO - cir_weight.mean:-0.00035695492988452315
+2024-04-24 17:24:00,405 - train - INFO - layer.weight.mean:-0.00018899307178799063
+2024-04-24 17:24:00,423 - train - INFO - cir_weight.mean:0.0003202467632945627
+2024-04-24 17:24:00,423 - train - INFO - layer.weight.mean:0.000286902446532622
+2024-04-24 17:24:00,440 - train - INFO - cir_weight.mean:-0.00028688236488960683
+2024-04-24 17:24:00,440 - train - INFO - layer.weight.mean:-0.0003707248833961785
+2024-04-24 17:24:00,460 - train - INFO - cir_weight.mean:-0.00027994319680146873
+2024-04-24 17:24:00,460 - train - INFO - layer.weight.mean:-0.000467894395114854
+2024-04-24 17:24:00,478 - train - INFO - cir_weight.mean:0.0001796573487808928
+2024-04-24 17:24:00,478 - train - INFO - layer.weight.mean:8.794031600700691e-05
+2024-04-24 17:24:00,496 - train - INFO - cir_weight.mean:-0.0004149123269598931
+2024-04-24 17:24:00,497 - train - INFO - layer.weight.mean:-0.00017743735224939883
+2024-04-24 17:24:00,515 - train - INFO - cir_weight.mean:2.8477430532802828e-05
+2024-04-24 17:24:00,515 - train - INFO - layer.weight.mean:4.335575795266777e-05
+2024-04-24 17:24:00,560 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 17:24:00,560 - train - INFO - delta_weights_b2:[66.00206756591797, 67.29593658447266, 56.93923568725586, 51.2998046875, 93.64549255371094, 103.77495574951172, 55.27995300292969, 51.975067138671875, 49.26234436035156, 41.31608963012695, 119.97303771972656, 151.88485717773438, 85.37728118896484, 79.2605209350586, 86.04998016357422, 68.48065185546875, 88.66948699951172, 67.53987121582031, 203.20013427734375, 212.6319122314453, 159.0546875, 134.53500366210938, 158.4298553466797, 130.41995239257812, 313.6832580566406, 391.9649658203125, 309.0099182128906, 287.1314697265625, 373.27447509765625, 293.122314453125, 564.9169311523438, 611.4459838867188]
+2024-04-24 17:24:00,560 - train - INFO - delta_weights_b4:[95.34817504882812, 91.72248840332031, 77.2127914428711, 72.16000366210938, 129.619384765625, 142.51319885253906, 78.37583923339844, 69.52196502685547, 66.53863525390625, 59.23255157470703, 171.74766540527344, 208.05581665039062, 120.86347198486328, 112.24217224121094, 117.01492309570312, 92.79826354980469, 120.14934539794922, 91.39366149902344, 275.5385437011719, 293.1703796386719, 219.38348388671875, 183.4619140625, 230.80596923828125, 177.0668182373047, 430.041259765625, 528.8112182617188, 425.4242248535156, 388.4013671875, 512.2410278320312, 399.3371276855469, 768.3506469726562, 822.8099365234375]
+2024-04-24 17:24:00,560 - train - INFO - delta_weights_b8:[96.09530639648438, 95.41078186035156, 82.57798767089844, 78.04093170166016, 143.09776306152344, 152.1982421875, 83.79702758789062, 74.79180908203125, 69.8726577758789, 63.9014892578125, 178.5137481689453, 223.76011657714844, 129.0725555419922, 119.15715026855469, 124.71085357666016, 98.47125244140625, 125.60334014892578, 97.02928924560547, 290.526123046875, 313.4911193847656, 232.97935485839844, 195.31275939941406, 242.19764709472656, 187.43655395507812, 457.68524169921875, 557.2120971679688, 458.6839599609375, 412.21038818359375, 543.9212036132812, 422.595947265625, 815.9104614257812, 870.30908203125]
+2024-04-24 17:24:00,561 - train - INFO - delta_weights_b16:[101.62255096435547, 95.41078186035156, 82.57798767089844, 78.04093170166016, 143.09776306152344, 152.40570068359375, 84.24311828613281, 71.78562927246094, 69.61038208007812, 61.09881591796875, 174.1079864501953, 218.07626342773438, 126.9853515625, 116.82276916503906, 123.91204071044922, 98.1675033569336, 123.44586944580078, 95.29521179199219, 290.9811096191406, 312.4611511230469, 232.07537841796875, 193.9287109375, 242.80453491210938, 185.646728515625, 455.9969787597656, 552.9591674804688, 455.911865234375, 405.74237060546875, 539.7264404296875, 418.8149108886719, 812.3319702148438, 862.5009155273438]
+2024-04-24 17:24:01,670 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 17:24:01,671 - train - INFO - len params:32
+2024-04-24 17:24:01,671 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 17:24:01,680 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 17:24:01,680 - train - INFO - sensitivity_b2:[0.0019093661103397608, 0.0012983264168724418, 0.0005289550172165036, 0.000540553533937782, 0.0016403947956860065, 0.0017832433804869652, 0.0003424743772484362, 0.00026699400041252375, 0.00027723025414161384, 0.00021307438146322966, 0.0014837631024420261, 0.0012974529527127743, 0.0001606568112038076, 0.00018033751985058188, 0.0001945817784871906, 0.0001320835726801306, 0.00019018625607714057, 0.00011297810851829126, 0.0009296623757109046, 0.000809966993983835, 0.0002665102365426719, 0.000208109020604752, 0.0003423272864893079, 0.000168649508850649, 0.0009441247675567865, 0.000938384619075805, 0.00035130957257933915, 0.0002837911597453058, 0.00041683268500491977, 0.00024282785307150334, 0.0007306461338885128, 0.00041592211346141994]
+2024-04-24 17:24:01,680 - train - INFO - sensitivity_b4:[0.004096638411283493, 0.0030283837113529444, 0.0013362173922359943, 0.0011434383923187852, 0.003309780266135931, 0.00404359120875597, 0.0007152716279961169, 0.0005563268205150962, 0.0005321448552422225, 0.00041636344394646585, 0.0029988063033670187, 0.0026949031744152308, 0.00038949036388657987, 0.0003629311977420002, 0.00039481540443375707, 0.0002662725455593318, 0.00039117486448958516, 0.0002374975010752678, 0.0019578917417675257, 0.0016465686494484544, 0.0005573452799580991, 0.00041752957622520626, 0.0005767736583948135, 0.0003453139215707779, 0.0020386248361319304, 0.0018991855904459953, 0.0007405978976748884, 0.0005834505427628756, 0.0008752697613090277, 0.0004979678778909147, 0.0014897574437782168, 0.0008535640081390738]
+2024-04-24 17:24:01,681 - train - INFO - sensitivity_b8:[0.006548209115862846, 0.004243518225848675, 0.0019936258904635906, 0.0016681227134540677, 0.005713357590138912, 0.005836660508066416, 0.0010510286083444953, 0.000812159851193428, 0.0007565991836600006, 0.0006541587063111365, 0.00450945645570755, 0.003918108064681292, 0.0005971634527668357, 0.0005419094813987613, 0.0005671541439369321, 0.0003928490332327783, 0.0005616728449240327, 0.0003502905019558966, 0.0029150964692234993, 0.0023314403370022774, 0.0008198447758331895, 0.0006008223863318563, 0.0008470428874716163, 0.0005008568405173719, 0.0029319985769689083, 0.0027333186008036137, 0.0010904328664764762, 0.0008464303100481629, 0.0012746291467919946, 0.0007339930161833763, 0.00219253939576447, 0.0012218551710247993]
+2024-04-24 17:24:01,681 - train - INFO - sensitivity_b16:[0.00818154588341713, 0.004243518225848675, 0.0019936258904635906, 0.0016681227134540677, 0.005713357590138912, 0.007104795426130295, 0.0013311690418049693, 0.0010696854442358017, 0.0009120856411755085, 0.0008619747823104262, 0.0056352862156927586, 0.0049890996888279915, 0.0007549959700554609, 0.0006856485269963741, 0.000707811675965786, 0.0004736611736007035, 0.0006814788794144988, 0.00043089259997941554, 0.0035723955370485783, 0.002896575490012765, 0.001020169584080577, 0.0007418949389830232, 0.0010361354798078537, 0.0006163408979773521, 0.0035965400747954845, 0.0033283070661127567, 0.0013743118615821004, 0.0010369998635724187, 0.0015775763895362616, 0.000906120054423809, 0.0027034550439566374, 0.001487016212195158]
+# only one sample
+2024-04-24 17:24:01,778 - train - INFO - result:[ 2  2  8  8  2  1 16 16 16 16  2  2 16 16 16 16 16 16  2  4 16 16 16 16
+  8  2 16 16 16 16 16 16]
+2024-04-24 17:24:01,779 - train - INFO - origin_latency:1912.3449869155884
+2024-04-24 17:24:01,779 - train - INFO - current_latency-origin_latency:-10.149689674377441
+2024-04-24 17:27:59,135 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 17:27:59,149 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 17:27:59,149 - train - INFO - Scheduled epochs: 11
+2024-04-24 17:28:11,249 - train - INFO - Verifying initial model in training dataset
+2024-04-24 17:28:15,046 - train - INFO - batch_idx:0
+2024-04-24 17:28:23,652 - train - INFO - batch_idx:50
+2024-04-24 17:28:35,135 - train - INFO - batch_idx:100
+2024-04-24 17:28:46,824 - train - INFO - batch_idx:150
+2024-04-24 17:28:57,835 - train - INFO - batch_idx:200
+2024-04-24 17:29:09,154 - train - INFO - batch_idx:250
+2024-04-24 17:29:19,398 - train - INFO - batch_idx:300
+2024-04-24 17:29:45,511 - train - INFO - batch_idx:350
+2024-04-24 17:30:12,906 - train - INFO - batch_idx:400
+2024-04-24 17:30:42,073 - train - INFO - batch_idx:450
+2024-04-24 17:31:10,199 - train - INFO - batch_idx:500
+2024-04-24 17:31:12,798 - train - INFO - len loader.dataset:500
+2024-04-24 17:31:15,593 - train - INFO - target_block_size:8
+2024-04-24 17:31:15,594 - train - INFO - use cal_delta_w
+2024-04-24 17:31:16,044 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 17:31:16,044 - train - INFO - delta_weights_b2:[64.08291625976562, 69.22537994384766, 58.58778762817383, 51.410099029541016, 94.59114074707031, 102.14813995361328, 55.120121002197266, 51.85078430175781, 50.439937591552734, 41.395355224609375, 120.31688690185547, 153.34115600585938, 85.76519775390625, 79.47257995605469, 86.00824737548828, 69.16221618652344, 89.08853149414062, 66.88340759277344, 201.2147979736328, 215.773193359375, 159.03135681152344, 135.1438446044922, 158.90013122558594, 129.8541259765625, 313.1613464355469, 390.9829406738281, 309.9320373535156, 287.6038513183594, 373.8973693847656, 293.59210205078125, 564.9937744140625, 611.0111083984375]
+2024-04-24 17:31:16,044 - train - INFO - delta_weights_b4:[89.09072875976562, 98.7145004272461, 77.91232299804688, 73.7885971069336, 129.23678588867188, 140.70066833496094, 78.2567367553711, 69.67357635498047, 67.89028930664062, 56.93452453613281, 168.71209716796875, 210.49998474121094, 121.10112762451172, 109.12702941894531, 116.81953430175781, 92.36492156982422, 119.23311614990234, 91.91130065917969, 274.569580078125, 297.2281799316406, 219.9333038330078, 183.94668579101562, 230.91363525390625, 176.30068969726562, 434.5648193359375, 529.7892456054688, 427.9350280761719, 389.1514892578125, 516.4570922851562, 398.59124755859375, 764.2369995117188, 822.6513061523438]
+2024-04-24 17:31:16,045 - train - INFO - delta_weights_b8:[91.30995178222656, 99.9343032836914, 85.7311782836914, 82.14131927490234, 143.24533081054688, 161.9301300048828, 85.05000305175781, 76.24005126953125, 72.90889739990234, 59.80733871459961, 181.253173828125, 220.49725341796875, 129.78448486328125, 116.66584014892578, 124.92748260498047, 98.2153549194336, 126.96861267089844, 97.974609375, 292.6936950683594, 318.9528503417969, 235.05873107910156, 192.96978759765625, 244.78936767578125, 187.0403289794922, 470.7575988769531, 560.7396850585938, 460.1116027832031, 414.09906005859375, 551.4999389648438, 426.5426330566406, 814.3388671875, 870.2163696289062]
+2024-04-24 17:31:16,045 - train - INFO - delta_weights_b16:[88.77350616455078, 99.9343032836914, 85.7311782836914, 82.14131927490234, 143.24533081054688, 159.1991729736328, 86.90419006347656, 73.22789764404297, 71.03368377685547, 58.910377502441406, 182.38600158691406, 221.60292053222656, 128.1194610595703, 116.57135772705078, 122.83551788330078, 96.67202758789062, 126.68309783935547, 97.51914978027344, 289.685546875, 316.6746520996094, 236.61276245117188, 191.46327209472656, 247.08876037597656, 185.23219299316406, 471.18865966796875, 555.746826171875, 459.067138671875, 410.0466003417969, 548.72998046875, 422.1201477050781, 807.5813598632812, 862.6573486328125]
+2024-04-24 17:31:17,226 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 17:31:17,227 - train - INFO - len params:32
+2024-04-24 17:31:17,227 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 17:31:17,242 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 17:31:17,242 - train - INFO - sensitivity_b2:[7.799405565833695e-09, 6.6599987746940315e-09, 2.9056046457753837e-09, 3.088910904835984e-09, 9.210382678759288e-09, 1.166274365971276e-08, 1.687349371337632e-09, 1.436277541344566e-09, 1.1969178981274808e-09, 1.0861822552499234e-09, 8.200247592071719e-09, 6.661516671613299e-09, 7.948795510692719e-10, 8.491314318348486e-10, 9.38327526789351e-10, 6.372625760420192e-10, 9.894514096941975e-10, 6.1659027883465e-10, 4.767505501490632e-09, 3.748718668816764e-09, 1.351865508425476e-09, 9.887459739843507e-10, 1.8115532407492196e-09, 8.848491939161818e-10, 5.040076356266354e-09, 4.617071169832343e-09, 1.846823138862419e-09, 1.4639462975196693e-09, 2.319702652187061e-09, 1.3609403604064596e-09, 3.859121022742329e-09, 2.278172761549513e-09]
+2024-04-24 17:31:17,242 - train - INFO - sensitivity_b4:[1.4017361493756653e-08, 1.5959834342993418e-08, 5.972919936425569e-09, 7.4337798139367806e-09, 1.6525707025039083e-08, 2.6387876772560048e-08, 3.700136197437587e-09, 2.9504212406550323e-09, 2.415381672449257e-09, 2.0115180632274132e-09, 1.9783950477858525e-08, 1.415764216972093e-08, 1.8567414272752103e-09, 1.8398471635094893e-09, 2.0314472326532496e-09, 1.360566215247161e-09, 2.0324486538214614e-09, 1.2899856738357585e-09, 9.898098340954675e-09, 7.789902056742903e-09, 2.8492037618121913e-09, 2.1030579500092017e-09, 3.0795748173773063e-09, 1.8249745048493082e-09, 1.0569997321852043e-08, 9.35275146218828e-09, 3.9237169069394895e-09, 3.0680051832376876e-09, 4.7240038547613494e-09, 2.833660861512044e-09, 7.997111417523683e-09, 4.6327435221371616e-09]
+2024-04-24 17:31:17,242 - train - INFO - sensitivity_b8:[1.96000389252049e-08, 2.3779964664072395e-08, 9.977290105211978e-09, 1.0959993801407109e-08, 2.7933660717849307e-08, 3.603305032129356e-08, 5.577548201074478e-09, 4.324176572367833e-09, 3.4785203606446657e-09, 3.0892679525607036e-09, 2.820874556164199e-08, 2.1908682867888274e-08, 2.869578574760112e-09, 2.694922951462786e-09, 2.8443241095743588e-09, 1.9500570047625843e-09, 2.9411848512239658e-09, 1.9222854419354007e-09, 1.4309402551759831e-08, 1.1494929452737779e-08, 4.135796594084695e-09, 3.0215168145275584e-09, 4.461470748395868e-09, 2.640434093592603e-09, 1.520633574614294e-08, 1.3475569105025897e-08, 5.798951985269696e-09, 4.421377930441395e-09, 7.031796478429442e-09, 4.06461042601336e-09, 1.1602906191399143e-08, 6.649001793590514e-09]
+2024-04-24 17:31:17,243 - train - INFO - sensitivity_b16:[2.462863157859374e-08, 2.3779964664072395e-08, 9.977290105211978e-09, 1.0959993801407109e-08, 2.7933660717849307e-08, 4.541318787687487e-08, 7.43499573019335e-09, 5.506023192936027e-09, 4.416452537014948e-09, 3.743989562821071e-09, 3.417334326627497e-08, 2.678656230159504e-08, 3.6816634185754538e-09, 3.3531830645472382e-09, 3.581671847996404e-09, 2.3951802763377827e-09, 3.5580081103603334e-09, 2.3255133374533443e-09, 1.7834615562151157e-08, 1.4589085495231302e-08, 5.182483775456603e-09, 3.67976471515874e-09, 5.459283691777728e-09, 3.2656062298741517e-09, 1.9073901569299778e-08, 1.6437262218005344e-08, 7.321139250393571e-09, 5.46146772251177e-09, 8.820265406939143e-09, 5.047710249783677e-09, 1.4359002875607985e-08, 8.0584907635739e-09]
+# 500 sample
+2024-04-24 17:31:17,340 - train - INFO - result:[ 4  2  8  8  2  1 16 16 16 16  2  2 16 16 16 16 16 16  2  4 16 16 16 16
+  4  2 16 16 16 16  4 16]
+2024-04-24 17:31:17,341 - train - INFO - origin_latency:1912.3449869155884
+2024-04-24 17:31:17,341 - train - INFO - current_latency-origin_latency:-1.0284357070922852
+2024-04-24 17:32:28,327 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 17:32:28,341 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 17:32:28,341 - train - INFO - Scheduled epochs: 11
+2024-04-24 17:32:40,915 - train - INFO - Verifying initial model in training dataset
+2024-04-24 17:32:48,213 - train - INFO - batch_idx:0
+2024-04-24 17:33:11,331 - train - INFO - batch_idx:50
+2024-04-24 17:33:38,212 - train - INFO - batch_idx:100
+2024-04-24 17:34:04,028 - train - INFO - batch_idx:150
+2024-04-24 17:34:30,118 - train - INFO - batch_idx:200
+2024-04-24 17:34:56,138 - train - INFO - batch_idx:250
+2024-04-24 17:35:22,968 - train - INFO - batch_idx:300
+2024-04-24 17:35:48,965 - train - INFO - batch_idx:350
+2024-04-24 17:36:19,653 - train - INFO - batch_idx:400
+2024-04-24 17:36:38,609 - train - INFO - batch_idx:450
+2024-04-24 17:36:58,699 - train - INFO - batch_idx:500
+2024-04-24 17:37:25,049 - train - INFO - batch_idx:550
+2024-04-24 17:37:56,907 - train - INFO - batch_idx:600
+2024-04-24 17:38:25,216 - train - INFO - batch_idx:650
+2024-04-24 17:38:53,672 - train - INFO - batch_idx:700
+2024-04-24 17:39:24,184 - train - INFO - batch_idx:750
+2024-04-24 17:39:59,111 - train - INFO - batch_idx:800
+2024-04-24 17:40:29,197 - train - INFO - batch_idx:850
+2024-04-24 17:41:00,498 - train - INFO - batch_idx:900
+2024-04-24 17:41:30,056 - train - INFO - batch_idx:950
+2024-04-24 17:42:03,601 - train - INFO - batch_idx:1000
+2024-04-24 17:42:32,690 - train - INFO - batch_idx:1050
+2024-04-24 17:43:03,275 - train - INFO - batch_idx:1100
+2024-04-24 17:43:31,424 - train - INFO - batch_idx:1150
+2024-04-24 17:44:02,420 - train - INFO - batch_idx:1200
+2024-04-24 17:44:30,677 - train - INFO - batch_idx:1250
+2024-04-24 17:44:59,525 - train - INFO - batch_idx:1300
+2024-04-24 17:45:28,008 - train - INFO - batch_idx:1350
+2024-04-24 17:45:59,996 - train - INFO - batch_idx:1400
+2024-04-24 17:46:28,240 - train - INFO - batch_idx:1450
+2024-04-24 17:46:56,145 - train - INFO - batch_idx:1500
+2024-04-24 17:47:25,227 - train - INFO - batch_idx:1550
+2024-04-24 17:47:57,156 - train - INFO - batch_idx:1600
+2024-04-24 17:48:26,947 - train - INFO - batch_idx:1650
+2024-04-24 17:48:55,362 - train - INFO - batch_idx:1700
+2024-04-24 17:49:22,574 - train - INFO - batch_idx:1750
+2024-04-24 17:49:53,272 - train - INFO - batch_idx:1800
+2024-04-24 17:50:21,665 - train - INFO - batch_idx:1850
+2024-04-24 17:50:49,867 - train - INFO - batch_idx:1900
+2024-04-24 17:51:17,495 - train - INFO - batch_idx:1950
+2024-04-24 17:51:48,648 - train - INFO - batch_idx:2000
+2024-04-24 17:51:48,779 - train - INFO - len loader.dataset:2000
+2024-04-24 17:51:52,925 - train - INFO - target_block_size:8
+2024-04-24 17:51:52,926 - train - INFO - use cal_delta_w
+2024-04-24 17:51:53,521 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 17:51:53,521 - train - INFO - delta_weights_b2:[64.88697814941406, 66.56153869628906, 59.67811965942383, 50.32838439941406, 94.94662475585938, 102.3807601928711, 55.457332611083984, 51.61518096923828, 50.90719985961914, 41.75838088989258, 119.40332794189453, 154.14593505859375, 85.97665405273438, 78.87311553955078, 86.31147003173828, 68.6867446899414, 88.7037582397461, 66.75613403320312, 201.692138671875, 213.17494201660156, 159.0515594482422, 135.1318817138672, 158.47213745117188, 130.61178588867188, 314.41314697265625, 391.7431945800781, 308.94073486328125, 286.07318115234375, 375.0986633300781, 293.05157470703125, 563.022705078125, 609.9931030273438]
+2024-04-24 17:51:53,521 - train - INFO - delta_weights_b4:[95.63768768310547, 95.53268432617188, 83.84856414794922, 71.73866271972656, 125.67913055419922, 147.76455688476562, 77.15005493164062, 70.01770782470703, 69.81403350830078, 58.04319381713867, 164.17030334472656, 212.76571655273438, 122.06132507324219, 109.93782043457031, 117.93656921386719, 92.94591522216797, 121.2078857421875, 92.32855987548828, 273.4149169921875, 294.29168701171875, 220.3135528564453, 186.13734436035156, 230.0445098876953, 178.9410858154297, 433.4826354980469, 527.6492309570312, 425.7696228027344, 385.5078430175781, 512.6487426757812, 400.574462890625, 764.6719360351562, 820.8084716796875]
+2024-04-24 17:51:53,521 - train - INFO - delta_weights_b8:[94.28130340576172, 100.26435852050781, 98.46318817138672, 78.33285522460938, 135.25341796875, 160.24905395507812, 85.14997863769531, 76.18460083007812, 74.19303131103516, 62.518192291259766, 176.52088928222656, 219.4965057373047, 131.92462158203125, 119.0778579711914, 125.0931625366211, 98.28080749511719, 129.8773193359375, 97.08396911621094, 287.92041015625, 310.8476867675781, 234.26510620117188, 197.61474609375, 243.0162811279297, 189.49041748046875, 460.1107177734375, 557.6954345703125, 457.9389953613281, 409.4277648925781, 546.8436279296875, 422.8789978027344, 811.6687622070312, 868.7777709960938]
+2024-04-24 17:51:53,521 - train - INFO - delta_weights_b16:[88.85718536376953, 100.26435852050781, 98.46318817138672, 78.33285522460938, 135.25341796875, 162.1970672607422, 89.47415161132812, 73.07072448730469, 73.64482879638672, 60.76926803588867, 175.70901489257812, 218.03713989257812, 130.3353271484375, 118.5368423461914, 125.37271118164062, 97.53606414794922, 128.29727172851562, 95.91357421875, 284.4528503417969, 309.021728515625, 232.79315185546875, 194.3524169921875, 244.62306213378906, 187.55210876464844, 458.6073303222656, 552.1307983398438, 452.830322265625, 406.1348571777344, 546.034912109375, 418.30169677734375, 802.3380737304688, 857.4118041992188]
+2024-04-24 17:51:54,777 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 17:51:54,777 - train - INFO - len params:32
+2024-04-24 17:51:54,777 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 17:51:54,786 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 17:51:54,786 - train - INFO - sensitivity_b2:[5.392445379115429e-10, 5.229709998388898e-10, 1.6535700586572943e-10, 1.747310907074251e-10, 5.269027436582974e-10, 4.911149265041104e-10, 8.041159405003384e-11, 7.357606190971921e-11, 6.482998859969058e-11, 5.573809469527902e-11, 3.871004905509068e-10, 3.0987185040132204e-10, 4.261311442599336e-11, 4.551865481761119e-11, 4.7467245412047276e-11, 3.500157455538222e-11, 4.8388605622395886e-11, 2.6494344912419976e-11, 2.3079108069090637e-10, 1.8758469777502285e-10, 6.783666683940481e-11, 4.9647567307298246e-11, 8.540618212649065e-11, 4.191775745954196e-11, 2.2149576617280786e-10, 2.123206055415494e-10, 8.387499028650325e-11, 6.645024114293463e-11, 9.850324722560089e-11, 5.610235886965853e-11, 1.60855731512477e-10, 8.916449523166392e-11]
+2024-04-24 17:51:54,787 - train - INFO - sensitivity_b4:[1.0011294016010197e-09, 9.812657353336363e-10, 5.608033482040753e-10, 3.5676017695607243e-10, 9.214096707843566e-10, 1.013322092902058e-09, 1.7646163696927175e-10, 1.5993661950375326e-10, 1.40928560488085e-10, 1.0951484163967962e-10, 8.020286657028919e-10, 6.382073758359752e-10, 1.0487526125313451e-10, 9.936715339442515e-11, 9.742384676769689e-11, 6.755762615995309e-11, 9.826808811119747e-11, 5.6977041140715556e-11, 4.705173473062985e-10, 3.796484238094422e-10, 1.3917063335089352e-10, 1.0252824977907693e-10, 1.4636555856206712e-10, 8.447788302223813e-11, 4.670305253640095e-10, 4.292391719840083e-10, 1.7030840626652832e-10, 1.3603652926352794e-10, 2.07292266685144e-10, 1.149356165797144e-10, 3.224551736735748e-10, 1.812643229959221e-10]
+2024-04-24 17:51:54,787 - train - INFO - sensitivity_b8:[1.7993041501185303e-09, 1.4524206282118257e-09, 7.731568718583048e-10, 5.480406684021943e-10, 1.481670786063205e-09, 1.6576848782534626e-09, 2.569494617077339e-10, 2.3163990170438353e-10, 2.1654721071850958e-10, 1.8140311475178805e-10, 1.206084121463391e-09, 9.731370154142382e-10, 1.615859668291364e-10, 1.3993606273743353e-10, 1.4060380637559433e-10, 9.821151530919892e-11, 1.4484841104334123e-10, 8.698199105428017e-11, 6.847713507340814e-10, 5.444700246215461e-10, 2.0429762048745914e-10, 1.505431890258535e-10, 2.1102214420309906e-10, 1.2388226555692938e-10, 6.772136740273993e-10, 6.084013293161661e-10, 2.512366981122227e-10, 1.9594359468300127e-10, 3.0382521498673043e-10, 1.6860621232517303e-10, 4.702879197182597e-10, 2.5696178518330726e-10]
+2024-04-24 17:51:54,787 - train - INFO - sensitivity_b16:[2.3107742386230257e-09, 1.4524206282118257e-09, 7.731568718583048e-10, 5.480406684021943e-10, 1.481670786063205e-09, 2.0838828440616908e-09, 3.3302799407053385e-10, 2.914204155768374e-10, 2.7041713313025184e-10, 2.1742975475635973e-10, 1.458268061860224e-09, 1.2046809105825673e-09, 2.0841842141017253e-10, 1.7688853160002793e-10, 1.7324676415686469e-10, 1.2124537485114217e-10, 1.7458430534578184e-10, 1.0581732712289238e-10, 8.375407589689132e-10, 6.781964989599487e-10, 2.555706202223007e-10, 1.889872425220318e-10, 2.6183416546032845e-10, 1.5574862233247444e-10, 8.397318951303134e-10, 7.41947614457672e-10, 3.165665785065386e-10, 2.3852889108333386e-10, 3.787054558834768e-10, 2.0781168452721488e-10, 5.820773307796401e-10, 3.118151847836259e-10]
+# 2000 samples
+2024-04-24 17:51:54,865 - train - INFO - result:[ 2  2  8  8  2  1 16 16 16 16  2 16 16 16 16 16 16 16  2  4 16 16 16 16
+  4  4 16 16 16 16  8 16]
+2024-04-24 17:51:54,866 - train - INFO - origin_latency:1912.3449869155884
+2024-04-24 17:51:54,866 - train - INFO - current_latency-origin_latency:-32.58718013763428
+2024-04-24 17:56:08,714 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 17:56:08,726 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 17:56:08,726 - train - INFO - Scheduled epochs: 11
+2024-04-24 17:56:30,672 - train - INFO - Verifying initial model in training dataset
+2024-04-24 17:56:37,949 - train - INFO - batch_idx:0
+2024-04-24 17:57:02,790 - train - INFO - batch_idx:50
+2024-04-24 17:57:29,893 - train - INFO - batch_idx:100
+2024-04-24 17:57:56,803 - train - INFO - batch_idx:150
+2024-04-24 17:58:26,854 - train - INFO - batch_idx:200
+2024-04-24 17:58:53,543 - train - INFO - batch_idx:250
+2024-04-24 17:59:20,237 - train - INFO - batch_idx:300
+2024-04-24 17:59:47,042 - train - INFO - batch_idx:350
+2024-04-24 18:00:17,340 - train - INFO - batch_idx:400
+2024-04-24 18:00:44,580 - train - INFO - batch_idx:450
+2024-04-24 18:01:10,874 - train - INFO - batch_idx:500
+2024-04-24 18:01:37,587 - train - INFO - batch_idx:550
+2024-04-24 18:02:07,129 - train - INFO - batch_idx:600
+2024-04-24 18:02:32,936 - train - INFO - batch_idx:650
+2024-04-24 18:02:59,488 - train - INFO - batch_idx:700
+2024-04-24 18:03:25,931 - train - INFO - batch_idx:750
+2024-04-24 18:03:55,424 - train - INFO - batch_idx:800
+2024-04-24 18:04:22,045 - train - INFO - batch_idx:850
+2024-04-24 18:04:48,711 - train - INFO - batch_idx:900
+2024-04-24 18:05:14,748 - train - INFO - batch_idx:950
+2024-04-24 18:05:45,405 - train - INFO - batch_idx:1000
+2024-04-24 18:06:11,704 - train - INFO - batch_idx:1050
+2024-04-24 18:06:38,093 - train - INFO - batch_idx:1100
+2024-04-24 18:07:04,592 - train - INFO - batch_idx:1150
+2024-04-24 18:07:34,468 - train - INFO - batch_idx:1200
+2024-04-24 18:08:01,077 - train - INFO - batch_idx:1250
+2024-04-24 18:08:27,625 - train - INFO - batch_idx:1300
+2024-04-24 18:08:53,867 - train - INFO - batch_idx:1350
+2024-04-24 18:09:23,083 - train - INFO - batch_idx:1400
+2024-04-24 18:09:49,432 - train - INFO - batch_idx:1450
+2024-04-24 18:10:16,334 - train - INFO - batch_idx:1500
+2024-04-24 18:10:44,835 - train - INFO - batch_idx:1550
+2024-04-24 18:11:12,659 - train - INFO - batch_idx:1600
+2024-04-24 18:11:39,347 - train - INFO - batch_idx:1650
+2024-04-24 18:12:06,560 - train - INFO - batch_idx:1700
+2024-04-24 18:12:35,103 - train - INFO - batch_idx:1750
+2024-04-24 18:13:03,064 - train - INFO - batch_idx:1800
+2024-04-24 18:13:29,677 - train - INFO - batch_idx:1850
+2024-04-24 18:13:56,861 - train - INFO - batch_idx:1900
+2024-04-24 18:14:26,062 - train - INFO - batch_idx:1950
+2024-04-24 18:14:53,382 - train - INFO - batch_idx:2000
+2024-04-24 18:14:53,525 - train - INFO - len loader.dataset:2000
+2024-04-24 18:14:57,225 - train - INFO - target_block_size:4
+2024-04-24 18:14:57,226 - train - INFO - use cal_delta_w
+2024-04-24 18:14:57,742 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 18:14:57,743 - train - INFO - delta_weights_b2:[65.1381607055664, 66.56535339355469, 59.307716369628906, 50.40469741821289, 94.48377990722656, 101.92079162597656, 55.405147552490234, 51.50659942626953, 51.02434539794922, 41.79654312133789, 119.31316375732422, 154.0242919921875, 85.91100311279297, 78.77735900878906, 86.29903411865234, 68.78687286376953, 88.81900024414062, 66.75564575195312, 201.96641540527344, 213.08477783203125, 159.32984924316406, 135.07659912109375, 158.41722106933594, 130.53775024414062, 314.1209411621094, 391.79779052734375, 308.60186767578125, 286.1494445800781, 374.9792785644531, 293.1747741699219, 563.52783203125, 609.9716796875]
+2024-04-24 18:14:57,743 - train - INFO - delta_weights_b4:[95.60631561279297, 96.17076110839844, 83.32781982421875, 71.54838562011719, 125.61042022705078, 147.7071075439453, 77.1761245727539, 70.02439880371094, 70.01976776123047, 57.94608688354492, 164.54798889160156, 212.30917358398438, 121.82239532470703, 109.720458984375, 117.93443298339844, 93.02503967285156, 121.25345611572266, 92.32240295410156, 273.248046875, 294.70220947265625, 220.7798309326172, 186.28219604492188, 229.68734741210938, 178.94464111328125, 433.2106628417969, 527.7213134765625, 425.6011962890625, 385.493896484375, 512.6111450195312, 400.5235595703125, 764.731201171875, 820.77392578125]
+2024-04-24 18:14:57,743 - train - INFO - delta_weights_b8:[92.63203430175781, 100.40801239013672, 97.66939544677734, 77.91846466064453, 135.01412963867188, 159.95375061035156, 84.74566650390625, 76.27020263671875, 74.2475357055664, 62.59015655517578, 176.60475158691406, 219.2936553955078, 131.80567932128906, 118.851806640625, 125.12399291992188, 98.20367431640625, 129.72525024414062, 97.18157196044922, 287.76275634765625, 310.86785888671875, 234.42642211914062, 197.7046661376953, 242.87091064453125, 189.5600128173828, 460.14556884765625, 557.8213500976562, 457.7247314453125, 409.41998291015625, 546.9127197265625, 422.80841064453125, 811.6578979492188, 868.7259521484375]
+2024-04-24 18:14:57,743 - train - INFO - delta_weights_b16:[87.61061096191406, 100.40801239013672, 97.66939544677734, 77.91846466064453, 135.01412963867188, 161.33584594726562, 89.07731628417969, 72.93341064453125, 73.8863754272461, 60.888362884521484, 176.0676727294922, 217.8819580078125, 130.3219451904297, 118.35458374023438, 125.47360229492188, 97.4449691772461, 128.1659698486328, 96.03329467773438, 284.10675048828125, 308.9874572753906, 232.7655792236328, 194.3173065185547, 244.4531707763672, 187.68392944335938, 458.5340576171875, 552.0877685546875, 452.64947509765625, 406.1365661621094, 546.0023803710938, 418.2615966796875, 802.476318359375, 857.38232421875]
+2024-04-24 18:14:58,949 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 18:14:58,949 - train - INFO - len params:32
+2024-04-24 18:14:58,950 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 18:14:58,957 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 18:14:58,957 - train - INFO - sensitivity_b2:[5.275794245918064e-10, 5.284355175660949e-10, 1.670886484728129e-10, 1.7466922352937786e-10, 5.307764783246682e-10, 4.891547722429834e-10, 8.002434132015068e-11, 7.3203616779427e-11, 6.392113921505072e-11, 5.516472695310526e-11, 3.868996512057521e-10, 3.078845234316674e-10, 4.263104799728801e-11, 4.551101509542299e-11, 4.7179565809685187e-11, 3.4895683564961644e-11, 4.8362640281407465e-11, 2.6426085278363765e-11, 2.300523382903208e-10, 1.868218774125907e-10, 6.733927304658494e-11, 4.9614992669866353e-11, 8.541459206590218e-11, 4.1981536302859723e-11, 2.217384054148397e-10, 2.1214784096112993e-10, 8.410025453819969e-11, 6.649338024633522e-11, 9.867590772261181e-11, 5.6142646087664616e-11, 1.6106949107808077e-10, 8.93850271577179e-11]
+2024-04-24 18:14:58,957 - train - INFO - sensitivity_b4:[1.002911531600148e-09, 9.775771303566216e-10, 5.513461354134108e-10, 3.608713328162594e-10, 9.245492149645429e-10, 1.0161675945141724e-09, 1.7583634548401506e-10, 1.597667137476222e-10, 1.4032947026620946e-10, 1.0846328002411809e-10, 8.020201169856023e-10, 6.345630687576431e-10, 1.0488050705692586e-10, 9.878838025390024e-11, 9.679304580068049e-11, 6.716839584530732e-11, 9.825458502366047e-11, 5.671088598724339e-11, 4.686916410534536e-10, 3.7697844845752115e-10, 1.38486694334361e-10, 1.02231965948274e-10, 1.4642007051257622e-10, 8.456396694001e-11, 4.676206089015977e-10, 4.2932718491428545e-10, 1.7054707646124712e-10, 1.361366297469857e-10, 2.0752138896185102e-10, 1.1506387509463423e-10, 3.228569078750354e-10, 1.8166937398866878e-10]
+2024-04-24 18:14:58,958 - train - INFO - sensitivity_b8:[1.7737612489909793e-09, 1.461993748286261e-09, 7.753429009937918e-10, 5.561611171600589e-10, 1.4855483509990108e-09, 1.656945913808272e-09, 2.5796892400009597e-10, 2.3149480943285283e-10, 2.1660276350310426e-10, 1.7979147337587875e-10, 1.2082117528677827e-09, 9.662569633306362e-10, 1.6089260479468237e-10, 1.389305059884549e-10, 1.3988293856570522e-10, 9.774522857775025e-11, 1.4507642309702362e-10, 8.67808325200059e-11, 6.822440390408246e-10, 5.413453019187386e-10, 2.0341946183055626e-10, 1.50065987414294e-10, 2.1074807177168253e-10, 1.2412727790067635e-10, 6.77697287176926e-10, 6.083454850980274e-10, 2.5150653781835786e-10, 1.9619431079753724e-10, 3.0422434016408317e-10, 1.6879445063899823e-10, 4.7106429867938e-10, 2.5755492183421325e-10]
+2024-04-24 18:14:58,958 - train - INFO - sensitivity_b16:[2.2496486895562384e-09, 1.461993748286261e-09, 7.753429009937918e-10, 5.561611171600589e-10, 1.4855483509990108e-09, 2.0873700545820384e-09, 3.3299779600426405e-10, 2.9091490327814995e-10, 2.713574365209581e-10, 2.1614729450725179e-10, 1.4593445341049005e-09, 1.1977190350620504e-09, 2.0767830510859397e-10, 1.7511235517186918e-10, 1.7214438208235094e-10, 1.2080317302043397e-10, 1.7501496085703394e-10, 1.0548698026191516e-10, 8.333952417061141e-10, 6.744554914561718e-10, 2.546884925180848e-10, 1.8838763882200737e-10, 2.616914462905129e-10, 1.5610632231322086e-10, 8.406014773143511e-10, 7.419855840851142e-10, 3.1689653678945717e-10, 2.3878884980454984e-10, 3.790535385572724e-10, 2.0795554167563068e-10, 5.828649785044604e-10, 3.1249847154413146e-10]
+2024-04-24 18:14:59,035 - train - INFO - result:[ 1  1  2  4  1  1  4  8  8 16  1  1 16 16 16 16 16 16  2  2  8 16  8 16
+  2  1 16 16 16 16  2 16]
+2024-04-24 18:14:59,036 - train - INFO - origin_latency:3833.6862354278564
+2024-04-24 18:14:59,036 - train - INFO - current_latency-origin_latency:-9.844900131225586
+2024-04-24 18:26:39,014 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 18:26:39,026 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 18:26:39,026 - train - INFO - Scheduled epochs: 11
+2024-04-24 18:26:58,774 - train - INFO - Verifying initial model in training dataset
+2024-04-24 18:27:05,815 - train - INFO - batch_idx:0
+2024-04-24 18:27:29,572 - train - INFO - batch_idx:50
+2024-04-24 18:27:56,332 - train - INFO - batch_idx:100
+2024-04-24 18:28:23,546 - train - INFO - batch_idx:150
+2024-04-24 18:28:50,733 - train - INFO - batch_idx:200
+2024-04-24 18:29:19,707 - train - INFO - batch_idx:250
+2024-04-24 18:29:46,038 - train - INFO - batch_idx:300
+2024-04-24 18:30:13,673 - train - INFO - batch_idx:350
+2024-04-24 18:30:40,131 - train - INFO - batch_idx:400
+2024-04-24 18:31:08,853 - train - INFO - batch_idx:450
+2024-04-24 18:31:35,209 - train - INFO - batch_idx:500
+2024-04-24 18:32:03,440 - train - INFO - batch_idx:550
+2024-04-24 18:32:30,936 - train - INFO - batch_idx:600
+2024-04-24 18:32:57,963 - train - INFO - batch_idx:650
+2024-04-24 18:33:25,283 - train - INFO - batch_idx:700
+2024-04-24 18:33:55,746 - train - INFO - batch_idx:750
+2024-04-24 18:34:22,506 - train - INFO - batch_idx:800
+2024-04-24 18:34:49,736 - train - INFO - batch_idx:850
+2024-04-24 18:35:16,879 - train - INFO - batch_idx:900
+2024-04-24 18:35:47,564 - train - INFO - batch_idx:950
+2024-04-24 18:36:14,011 - train - INFO - batch_idx:1000
+2024-04-24 18:36:40,841 - train - INFO - batch_idx:1050
+2024-04-24 18:37:08,020 - train - INFO - batch_idx:1100
+2024-04-24 18:37:37,523 - train - INFO - batch_idx:1150
+2024-04-24 18:38:03,982 - train - INFO - batch_idx:1200
+2024-04-24 18:38:30,240 - train - INFO - batch_idx:1250
+2024-04-24 18:38:54,557 - train - INFO - batch_idx:1300
+2024-04-24 18:39:22,800 - train - INFO - batch_idx:1350
+2024-04-24 18:39:48,587 - train - INFO - batch_idx:1400
+2024-04-24 18:40:15,713 - train - INFO - batch_idx:1450
+2024-04-24 18:40:43,350 - train - INFO - batch_idx:1500
+2024-04-24 18:41:13,910 - train - INFO - batch_idx:1550
+2024-04-24 18:41:39,911 - train - INFO - batch_idx:1600
+2024-04-24 18:42:04,576 - train - INFO - batch_idx:1650
+2024-04-24 18:42:28,632 - train - INFO - batch_idx:1700
+2024-04-24 18:42:55,744 - train - INFO - batch_idx:1750
+2024-04-24 18:43:19,831 - train - INFO - batch_idx:1800
+2024-04-24 18:43:43,508 - train - INFO - batch_idx:1850
+2024-04-24 18:44:08,079 - train - INFO - batch_idx:1900
+2024-04-24 18:44:35,476 - train - INFO - batch_idx:1950
+2024-04-24 18:45:00,167 - train - INFO - batch_idx:2000
+2024-04-24 18:45:00,291 - train - INFO - len loader.dataset:2000
+2024-04-24 18:45:04,262 - train - INFO - target_block_size:2
+2024-04-24 18:45:04,262 - train - INFO - use cal_delta_w
+2024-04-24 18:45:04,791 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 18:45:04,792 - train - INFO - delta_weights_b2:[64.74661254882812, 66.66171264648438, 59.355201721191406, 50.2413215637207, 94.8892593383789, 102.84419250488281, 55.40178298950195, 51.46015167236328, 50.94894027709961, 41.73484802246094, 119.5578384399414, 153.68447875976562, 85.8676986694336, 79.05325317382812, 86.3270492553711, 68.83346557617188, 88.88465881347656, 66.78133392333984, 201.43612670898438, 213.36549377441406, 159.2282257080078, 135.14208984375, 158.32347106933594, 130.6723175048828, 314.4777526855469, 391.50115966796875, 308.8384094238281, 286.1213073730469, 375.1288757324219, 293.0387268066406, 563.1343994140625, 610.0286254882812]
+2024-04-24 18:45:04,792 - train - INFO - delta_weights_b4:[95.4388198852539, 96.20465850830078, 83.8156967163086, 71.67345428466797, 125.70748901367188, 148.05963134765625, 77.30088806152344, 69.9729995727539, 70.02824401855469, 58.101173400878906, 163.9467315673828, 212.21701049804688, 121.87957763671875, 110.02767181396484, 117.92156982421875, 93.09628295898438, 121.28639221191406, 92.46456146240234, 273.60968017578125, 294.54095458984375, 220.6170654296875, 186.33694458007812, 229.93759155273438, 178.99880981445312, 433.1254577636719, 527.7084350585938, 425.734130859375, 385.5431213378906, 512.6900634765625, 400.50628662109375, 764.6426391601562, 820.7040405273438]
+2024-04-24 18:45:04,792 - train - INFO - delta_weights_b8:[93.65950012207031, 100.60502624511719, 98.41459655761719, 78.44733428955078, 135.19471740722656, 160.01776123046875, 84.8338851928711, 76.40254974365234, 74.25679016113281, 62.669063568115234, 176.54017639160156, 219.34091186523438, 132.10189819335938, 119.20098114013672, 125.13805389404297, 98.41635131835938, 129.84426879882812, 97.33731842041016, 287.6719665527344, 310.9432373046875, 234.312255859375, 197.70013427734375, 242.97756958007812, 189.62680053710938, 459.7190246582031, 557.68994140625, 457.87042236328125, 409.34063720703125, 546.9915161132812, 422.8657531738281, 811.5855102539062, 868.7525024414062]
+2024-04-24 18:45:04,792 - train - INFO - delta_weights_b16:[88.49361419677734, 100.60502624511719, 98.41459655761719, 78.44733428955078, 135.19471740722656, 161.75241088867188, 89.13048553466797, 73.10346221923828, 73.79886627197266, 60.87791442871094, 175.568115234375, 217.77366638183594, 130.2677459716797, 118.62964630126953, 125.50093078613281, 97.70269012451172, 128.259033203125, 96.07952117919922, 284.0853576660156, 309.0135498046875, 232.6964874267578, 194.5718994140625, 244.47647094726562, 187.6337890625, 458.5049743652344, 552.0142822265625, 452.68316650390625, 406.1255798339844, 546.027587890625, 418.2757873535156, 802.232177734375, 857.4096069335938]
+2024-04-24 18:45:06,033 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 18:45:06,034 - train - INFO - len params:32
+2024-04-24 18:45:06,034 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 18:45:06,048 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 18:45:06,049 - train - INFO - sensitivity_b2:[5.406186609491215e-10, 5.232915767372504e-10, 1.685530603978691e-10, 1.7487490622247748e-10, 5.274047309988816e-10, 4.918945251120022e-10, 8.036524223875574e-11, 7.349641034659626e-11, 6.48373021938653e-11, 5.5942070420478274e-11, 3.8904562904562567e-10, 3.1072772133100557e-10, 4.272272119409948e-11, 4.5467372922214366e-11, 4.7423800997314913e-11, 3.5090395866799184e-11, 4.8520430728782316e-11, 2.6594872137852832e-11, 2.3153479133952715e-10, 1.8796614265070843e-10, 6.777473721131244e-11, 4.979251039261001e-11, 8.564775277886127e-11, 4.206662795880334e-11, 2.2155804968448933e-10, 2.1254153992344982e-10, 8.37937427777824e-11, 6.649150674498117e-11, 9.871438388930898e-11, 5.627076582470636e-11, 1.6122375656735244e-10, 8.937511841722312e-11]
+2024-04-24 18:45:06,049 - train - INFO - sensitivity_b4:[1.015625028522038e-09, 9.84087589195326e-10, 5.612444953229101e-10, 3.6216080134821027e-10, 9.231664321873723e-10, 1.0202660938318786e-09, 1.7820865616524628e-10, 1.6183446249762312e-10, 1.4131247561000038e-10, 1.1011434125629549e-10, 8.076039836879545e-10, 6.383260031661564e-10, 1.0525589427823334e-10, 9.970471670506242e-11, 9.746373152985655e-11, 6.780184746979501e-11, 9.889941643415057e-11, 5.72072736404472e-11, 4.723606505940836e-10, 3.8043007632992953e-10, 1.3916628960330968e-10, 1.0267387634543823e-10, 1.468281329852772e-10, 8.470060069987184e-11, 4.67834548878443e-10, 4.2978609560151426e-10, 1.699056034754065e-10, 1.361525892029647e-10, 2.076716021370828e-10, 1.152089257328015e-10, 3.230603839998736e-10, 1.8163695547634973e-10]
+2024-04-24 18:45:06,049 - train - INFO - sensitivity_b8:[1.8339800789135552e-09, 1.4700228812003502e-09, 7.812913649374309e-10, 5.542349912346367e-10, 1.4814673932050937e-09, 1.6626162668842426e-09, 2.6197838343122726e-10, 2.340552196500312e-10, 2.1766442814818987e-10, 1.833144469554071e-10, 1.211969191672324e-09, 9.727698646599947e-10, 1.6138487768380116e-10, 1.4036251327897986e-10, 1.408660410540108e-10, 9.870068651274266e-11, 1.458121678954427e-10, 8.748156365978588e-11, 6.864203094814059e-10, 5.452094331559465e-10, 2.044289737490601e-10, 1.5068232772641466e-10, 2.1159896057554306e-10, 1.2445364183655272e-10, 6.779545813628829e-10, 6.092379933875236e-10, 2.507506147164662e-10, 1.9620835511879875e-10, 3.0447472321171176e-10, 1.6894953491775055e-10, 4.713038848080942e-10, 2.574832291823981e-10]
+2024-04-24 18:45:06,049 - train - INFO - sensitivity_b16:[2.350032612952191e-09, 1.4700228812003502e-09, 7.812913649374309e-10, 5.542349912346367e-10, 1.4814673932050937e-09, 2.0907233722056162e-09, 3.385448033021987e-10, 2.950629740539057e-10, 2.7261626289742935e-10, 2.206187038611418e-10, 1.467545862610109e-09, 1.2057035370105496e-09, 2.0900332853290848e-10, 1.7763515658408835e-10, 1.7326497181446854e-10, 1.2196850474044396e-10, 1.760877277323658e-10, 1.06527904553122e-10, 8.387607830506738e-10, 6.797070684072537e-10, 2.561740819473357e-10, 1.8904501575267574e-10, 2.6295191024594544e-10, 1.5654122442754215e-10, 8.410449003903864e-10, 7.427378712066002e-10, 3.159204009506311e-10, 2.3881635557998493e-10, 3.796306879966238e-10, 2.0829313274184358e-10, 5.832675453731895e-10, 3.124371317220209e-10]
+2024-04-24 18:45:06,135 - train - INFO - result:[1 1 2 2 1 1 2 2 2 4 1 1 4 4 4 8 4 8 1 1 2 2 2 4 1 1 4 4 2 8 1 2]
+2024-04-24 18:45:06,135 - train - INFO - origin_latency:7701.861759185791
+2024-04-24 18:45:06,135 - train - INFO - current_latency-origin_latency:-41.13534164428711
+2024-04-24 18:51:12,000 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 18:51:12,013 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 18:51:12,013 - train - INFO - Scheduled epochs: 11
+2024-04-24 18:51:26,373 - train - INFO - Verifying initial model in training dataset
+2024-04-24 18:51:33,482 - train - INFO - batch_idx:0
+2024-04-24 18:51:58,217 - train - INFO - batch_idx:50
+2024-04-24 18:52:25,869 - train - INFO - batch_idx:100
+2024-04-24 18:52:52,572 - train - INFO - batch_idx:150
+2024-04-24 18:53:20,954 - train - INFO - batch_idx:200
+2024-04-24 18:53:48,692 - train - INFO - batch_idx:250
+2024-04-24 18:54:16,838 - train - INFO - batch_idx:300
+2024-04-24 18:54:45,621 - train - INFO - batch_idx:350
+2024-04-24 18:55:13,413 - train - INFO - batch_idx:400
+2024-04-24 18:55:40,769 - train - INFO - batch_idx:450
+2024-04-24 18:56:08,357 - train - INFO - batch_idx:500
+2024-04-24 18:56:39,799 - train - INFO - batch_idx:550
+2024-04-24 18:57:07,590 - train - INFO - batch_idx:600
+2024-04-24 18:57:34,804 - train - INFO - batch_idx:650
+2024-04-24 18:58:02,405 - train - INFO - batch_idx:700
+2024-04-24 18:58:33,031 - train - INFO - batch_idx:750
+2024-04-24 18:59:00,078 - train - INFO - batch_idx:800
+2024-04-24 18:59:27,670 - train - INFO - batch_idx:850
+2024-04-24 18:59:55,243 - train - INFO - batch_idx:900
+2024-04-24 19:00:25,869 - train - INFO - batch_idx:950
+2024-04-24 19:00:52,252 - train - INFO - batch_idx:1000
+2024-04-24 19:01:19,072 - train - INFO - batch_idx:1050
+2024-04-24 19:01:46,820 - train - INFO - batch_idx:1100
+2024-04-24 19:02:16,860 - train - INFO - batch_idx:1150
+2024-04-24 19:02:42,068 - train - INFO - batch_idx:1200
+2024-04-24 19:03:06,251 - train - INFO - batch_idx:1250
+2024-04-24 19:03:29,674 - train - INFO - batch_idx:1300
+2024-04-24 19:03:56,793 - train - INFO - batch_idx:1350
+2024-04-24 19:04:20,505 - train - INFO - batch_idx:1400
+2024-04-24 19:04:45,282 - train - INFO - batch_idx:1450
+2024-04-24 19:05:09,240 - train - INFO - batch_idx:1500
+2024-04-24 19:05:35,795 - train - INFO - batch_idx:1550
+2024-04-24 19:06:00,116 - train - INFO - batch_idx:1600
+2024-04-24 19:06:24,590 - train - INFO - batch_idx:1650
+2024-04-24 19:06:48,327 - train - INFO - batch_idx:1700
+2024-04-24 19:07:15,748 - train - INFO - batch_idx:1750
+2024-04-24 19:07:39,716 - train - INFO - batch_idx:1800
+2024-04-24 19:08:04,223 - train - INFO - batch_idx:1850
+2024-04-24 19:08:28,571 - train - INFO - batch_idx:1900
+2024-04-24 19:08:55,880 - train - INFO - batch_idx:1950
+2024-04-24 19:09:20,323 - train - INFO - batch_idx:2000
+2024-04-24 19:09:20,461 - train - INFO - len loader.dataset:2000
+2024-04-24 19:09:24,533 - train - INFO - target_block_size:8
+2024-04-24 19:09:24,533 - train - INFO - use cal_delta_w
+2024-04-24 19:09:24,966 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 19:09:24,966 - train - INFO - delta_weights_b2:[42.287227630615234, 44.39520263671875, 37.615806579589844, 33.34174346923828, 61.25531768798828, 67.24816131591797, 35.973419189453125, 33.88731384277344, 33.056880950927734, 26.994428634643555, 78.59440612792969, 99.97539520263672, 55.09699630737305, 51.99420928955078, 56.719913482666016, 45.553924560546875, 58.64970397949219, 44.07438278198242, 132.9148406982422, 141.36260986328125, 103.85078430175781, 88.62371063232422, 110.58512878417969, 85.62586975097656, 206.4258270263672, 259.11151123046875, 202.8675079345703, 188.95384216308594, 245.2853546142578, 191.76046752929688, 371.4418029785156, 403.900146484375]
+2024-04-24 19:09:24,966 - train - INFO - delta_weights_b4:[62.481224060058594, 69.63890075683594, 54.6755256652832, 50.01759719848633, 91.2452621459961, 101.85167694091797, 54.87289047241211, 49.30924606323242, 49.22977828979492, 40.59899139404297, 121.13496398925781, 148.36544799804688, 83.79423522949219, 78.40238952636719, 85.09834289550781, 67.48096466064453, 87.57567596435547, 66.06697845458984, 198.3082733154297, 212.74606323242188, 157.24110412597656, 133.3499298095703, 167.76026916503906, 128.1670684814453, 312.53204345703125, 388.4855651855469, 305.04315185546875, 282.711669921875, 370.4693908691406, 289.26788330078125, 555.2313232421875, 605.7600708007812]
+2024-04-24 19:09:24,967 - train - INFO - delta_weights_b8:[70.31665802001953, 79.14164733886719, 64.04936981201172, 57.9778938293457, 108.0523681640625, 121.24614715576172, 63.47903060913086, 58.06957244873047, 56.8067512512207, 47.537357330322266, 141.94102478027344, 171.22393798828125, 98.0853271484375, 91.25856018066406, 99.0179672241211, 79.0243911743164, 102.10298156738281, 77.22869110107422, 231.42466735839844, 247.40267944335938, 183.23963928222656, 155.31851196289062, 194.91139221191406, 149.00830078125, 365.6454772949219, 453.60943603515625, 357.04388427734375, 330.366943359375, 432.6831359863281, 337.2693786621094, 646.884765625, 706.9960327148438]
+2024-04-24 19:09:24,967 - train - INFO - delta_weights_b16:[74.31847381591797, 79.14164733886719, 64.04936981201172, 57.9778938293457, 108.0523681640625, 129.8108673095703, 68.53572082519531, 61.214996337890625, 60.23182678222656, 50.50952911376953, 152.51339721679688, 184.28274536132812, 104.94312286376953, 97.82270812988281, 105.9434585571289, 84.68876647949219, 108.91807556152344, 82.5929946899414, 248.29188537597656, 266.4906921386719, 196.4473876953125, 166.4683380126953, 210.2433319091797, 159.96726989746094, 392.4289855957031, 485.8009948730469, 382.4173583984375, 353.8833923339844, 463.28118896484375, 361.37518310546875, 692.9661865234375, 757.04296875]
+2024-04-24 19:09:26,204 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 19:09:26,204 - train - INFO - len params:32
+2024-04-24 19:09:26,205 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 19:09:26,221 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 19:09:26,221 - train - INFO - sensitivity_b2:[1.438546615162295e-09, 1.191443832482264e-09, 9.745813045469731e-10, 4.466741976294486e-10, 1.251730830098552e-09, 1.1807652633422094e-09, 2.4520663277627364e-10, 1.7612331038030504e-10, 1.9060036882123654e-10, 1.4360293509874111e-10, 9.150517010780845e-10, 7.21362025668526e-10, 1.2342016297850478e-10, 1.079296305106503e-10, 1.13246356736596e-10, 7.490284781308532e-11, 1.1213283773736649e-10, 6.257368234674487e-11, 5.160138427662275e-10, 4.046998292039916e-10, 1.6483295284253074e-10, 1.1398529342621089e-10, 1.581465791655745e-10, 9.659037458753517e-11, 5.002424585676124e-10, 4.5164297302058287e-10, 1.9697241060434578e-10, 1.4583650953525762e-10, 2.476450433608335e-10, 1.2961567930069862e-10, 3.68591296373566e-10, 1.8976414883908888e-10]
+2024-04-24 19:09:26,222 - train - INFO - sensitivity_b4:[2.4704593926117013e-09, 1.693924778223277e-09, 1.8800685452902144e-09, 7.359455822530947e-10, 1.57190305216659e-09, 1.989769682353426e-09, 4.244390949814658e-10, 2.894292860933234e-10, 2.9024127545795864e-10, 2.1018768670000298e-10, 1.3314072067061034e-09, 1.1035593550090539e-09, 2.0896986918650384e-10, 1.740738247990592e-10, 1.7690895970368103e-10, 1.1306624386753228e-10, 1.7563975274192956e-10, 9.926991173525579e-11, 7.783526045912481e-10, 6.30777374777125e-10, 2.5680185755661e-10, 1.7699958165806606e-10, 2.4688401323302855e-10, 1.4769667433522926e-10, 7.87510834321381e-10, 6.819573794558664e-10, 3.061975950569007e-10, 2.2243182296044495e-10, 3.809821902400756e-10, 1.980614283692006e-10, 5.55536561197556e-10, 2.878478289058961e-10]
+2024-04-24 19:09:26,222 - train - INFO - sensitivity_b8:[2.716173730377136e-09, 2.0468788886063294e-09, 2.2648660724655656e-09, 8.717527255619473e-10, 2.0097461472801115e-09, 2.417325006831561e-09, 4.844604717391121e-10, 3.3968250434668334e-10, 3.5345276705456286e-10, 2.619402472703314e-10, 1.6073320452392181e-09, 1.3269265686233211e-09, 2.491237216517561e-10, 2.0378118636976694e-10, 2.027455980879722e-10, 1.3318227076730693e-10, 2.0879142859087096e-10, 1.1850881387331924e-10, 9.149083712856054e-10, 7.346780961370314e-10, 3.0064173373034464e-10, 2.1007737216471867e-10, 2.907926677231387e-10, 1.7436690979977243e-10, 9.249465637850562e-10, 7.96967936089743e-10, 3.615558130665164e-10, 2.619250094593184e-10, 4.496289729427616e-10, 2.3297097584418225e-10, 6.52409293255829e-10, 3.362911060733609e-10]
+2024-04-24 19:09:26,222 - train - INFO - sensitivity_b16:[2.9294946468638727e-09, 2.0468788886063294e-09, 2.2648660724655656e-09, 8.717527255619473e-10, 2.0097461472801115e-09, 2.6458670809859086e-09, 5.559961380185996e-10, 3.625018618613751e-10, 3.8299696747401413e-10, 2.72316613703083e-10, 1.7330730184283993e-09, 1.4477544718616286e-09, 2.717071012625638e-10, 2.2193408222292987e-10, 2.1892701540515702e-10, 1.4619797039649995e-10, 2.1804952288206891e-10, 1.275944627732173e-10, 9.805010137142744e-10, 8.016216024309131e-10, 3.236649281923576e-10, 2.2782621622585708e-10, 3.18627069173516e-10, 1.8982233840336704e-10, 1.0093046398651495e-09, 8.606082513296087e-10, 3.9096714754549566e-10, 2.819052768998631e-10, 4.848742518603899e-10, 2.499468687577888e-10, 7.038192251229702e-10, 3.611544396875388e-10]
+2024-04-24 19:09:26,309 - train - INFO - result:[ 2  1  8  8  4 16 16 16 16 16  1  1 16 16 16 16 16 16  2 16 16 16 16 16
+ 16 16 16 16 16 16 16 16]
+2024-04-24 19:09:26,309 - train - INFO - origin_latency:1912.3449869155884
+2024-04-24 19:09:26,310 - train - INFO - current_latency-origin_latency:-64.79283857345581
+2024-04-24 19:32:56,389 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 19:32:56,403 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 19:32:56,403 - train - INFO - Scheduled epochs: 11
+2024-04-24 19:33:10,949 - train - INFO - Verifying initial model in training dataset
+2024-04-24 19:33:19,927 - train - INFO - batch_idx:0
+2024-04-24 19:33:44,295 - train - INFO - batch_idx:50
+2024-04-24 19:34:11,315 - train - INFO - batch_idx:100
+2024-04-24 19:34:37,781 - train - INFO - batch_idx:150
+2024-04-24 19:35:04,632 - train - INFO - batch_idx:200
+2024-04-24 19:35:34,806 - train - INFO - batch_idx:250
+2024-04-24 19:36:03,018 - train - INFO - batch_idx:300
+2024-04-24 19:36:29,774 - train - INFO - batch_idx:350
+2024-04-24 19:36:56,656 - train - INFO - batch_idx:400
+2024-04-24 19:37:26,532 - train - INFO - batch_idx:450
+2024-04-24 19:37:53,281 - train - INFO - batch_idx:500
+2024-04-24 19:38:20,587 - train - INFO - batch_idx:550
+2024-04-24 19:38:47,410 - train - INFO - batch_idx:600
+2024-04-24 19:39:17,753 - train - INFO - batch_idx:650
+2024-04-24 19:39:44,624 - train - INFO - batch_idx:700
+2024-04-24 19:40:11,915 - train - INFO - batch_idx:750
+2024-04-24 19:40:39,310 - train - INFO - batch_idx:800
+2024-04-24 19:41:10,254 - train - INFO - batch_idx:850
+2024-04-24 19:41:37,398 - train - INFO - batch_idx:900
+2024-04-24 19:42:04,324 - train - INFO - batch_idx:950
+2024-04-24 19:42:32,013 - train - INFO - batch_idx:1000
+2024-04-24 19:43:02,378 - train - INFO - batch_idx:1050
+2024-04-24 19:43:28,695 - train - INFO - batch_idx:1100
+2024-04-24 19:43:55,463 - train - INFO - batch_idx:1150
+2024-04-24 19:44:23,163 - train - INFO - batch_idx:1200
+2024-04-24 19:44:53,351 - train - INFO - batch_idx:1250
+2024-04-24 19:45:20,978 - train - INFO - batch_idx:1300
+2024-04-24 19:45:48,098 - train - INFO - batch_idx:1350
+2024-04-24 19:46:15,451 - train - INFO - batch_idx:1400
+2024-04-24 19:46:45,672 - train - INFO - batch_idx:1450
+2024-04-24 19:47:12,459 - train - INFO - batch_idx:1500
+2024-04-24 19:47:39,574 - train - INFO - batch_idx:1550
+2024-04-24 19:48:06,633 - train - INFO - batch_idx:1600
+2024-04-24 19:48:35,856 - train - INFO - batch_idx:1650
+2024-04-24 19:49:03,390 - train - INFO - batch_idx:1700
+2024-04-24 19:49:30,907 - train - INFO - batch_idx:1750
+2024-04-24 19:49:57,781 - train - INFO - batch_idx:1800
+2024-04-24 19:50:25,922 - train - INFO - batch_idx:1850
+2024-04-24 19:50:54,836 - train - INFO - batch_idx:1900
+2024-04-24 19:51:23,776 - train - INFO - batch_idx:1950
+2024-04-24 19:51:51,202 - train - INFO - batch_idx:2000
+2024-04-24 19:51:51,334 - train - INFO - len loader.dataset:2000
+2024-04-24 19:51:55,801 - train - INFO - target_block_size:4
+2024-04-24 19:51:55,801 - train - INFO - use cal_delta_w
+2024-04-24 19:51:56,240 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 19:51:56,240 - train - INFO - delta_weights_b2:[42.2872314453125, 44.39519500732422, 37.615806579589844, 33.34174346923828, 61.25531005859375, 67.24816131591797, 35.973419189453125, 33.887306213378906, 33.056880950927734, 26.99443244934082, 78.59442901611328, 99.97539520263672, 55.09699630737305, 51.99420928955078, 56.719905853271484, 45.553932189941406, 58.64970397949219, 44.07437515258789, 132.9148406982422, 141.36260986328125, 103.85076904296875, 88.62371063232422, 110.58512878417969, 85.62586975097656, 206.4258270263672, 259.11151123046875, 202.8675079345703, 188.95384216308594, 245.2853240966797, 191.76046752929688, 371.4418029785156, 403.900146484375]
+2024-04-24 19:51:56,240 - train - INFO - delta_weights_b4:[62.481231689453125, 69.63890075683594, 54.6755256652832, 50.01759719848633, 91.2452621459961, 101.85167694091797, 54.87289810180664, 49.30923843383789, 49.22977828979492, 40.59899139404297, 121.13496398925781, 148.36544799804688, 83.79421997070312, 78.40238952636719, 85.09834289550781, 67.48096466064453, 87.57567596435547, 66.06697845458984, 198.3082733154297, 212.74606323242188, 157.24110412597656, 133.3499298095703, 167.76026916503906, 128.1670684814453, 312.53204345703125, 388.4855651855469, 305.04315185546875, 282.711669921875, 370.4693908691406, 289.26788330078125, 555.2313232421875, 605.7600708007812]
+2024-04-24 19:51:56,241 - train - INFO - delta_weights_b8:[70.31665802001953, 79.14164733886719, 64.04936981201172, 57.9778938293457, 108.0523681640625, 121.24617004394531, 63.47903823852539, 58.06957244873047, 56.8067512512207, 47.53736114501953, 141.9410400390625, 171.22393798828125, 98.0853271484375, 91.258544921875, 99.0179672241211, 79.0243911743164, 102.10299682617188, 77.22867584228516, 231.42466735839844, 247.40267944335938, 183.23963928222656, 155.31851196289062, 194.91139221191406, 149.00830078125, 365.6454772949219, 453.60943603515625, 357.04388427734375, 330.366943359375, 432.6831359863281, 337.2693786621094, 646.884765625, 706.9960327148438]
+2024-04-24 19:51:56,241 - train - INFO - delta_weights_b16:[74.31848907470703, 79.14164733886719, 64.04936981201172, 57.9778938293457, 108.0523681640625, 129.8108673095703, 68.53572082519531, 61.214996337890625, 60.231834411621094, 50.50952911376953, 152.51339721679688, 184.28277587890625, 104.94312286376953, 97.82270812988281, 105.9434585571289, 84.68876647949219, 108.91807556152344, 82.5929946899414, 248.29188537597656, 266.4906921386719, 196.4473876953125, 166.4683380126953, 210.24339294433594, 159.96726989746094, 392.4289855957031, 485.80108642578125, 382.4173583984375, 353.8833923339844, 463.28118896484375, 361.375244140625, 692.9661865234375, 757.04296875]
+2024-04-24 19:51:57,444 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 19:51:57,445 - train - INFO - len params:32
+2024-04-24 19:51:57,445 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 19:51:57,455 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 19:51:57,456 - train - INFO - sensitivity_b2:[1.4012300209031991e-09, 1.19403242848648e-09, 8.964470832317772e-10, 4.496779615337232e-10, 1.2548935224288016e-09, 1.1859507820233262e-09, 2.4471263904146667e-10, 1.7578075106605695e-10, 1.9571998188805395e-10, 1.4374999801614052e-10, 9.20597931219902e-10, 7.241148236580841e-10, 1.229233242971972e-10, 1.0779293430074333e-10, 1.1324807758228417e-10, 7.46147657548768e-11, 1.1193087429139936e-10, 6.24506557578286e-11, 5.178322215471098e-10, 4.0581218940793917e-10, 1.6528212132271847e-10, 1.1378226139058256e-10, 1.5850729062627522e-10, 9.652115218194979e-11, 5.00595453978292e-10, 4.51763626507784e-10, 1.977762120741744e-10, 1.4581683083214614e-10, 2.4742125015464467e-10, 1.294519214045664e-10, 3.687471439306478e-10, 1.8969287252090794e-10]
+2024-04-24 19:51:57,456 - train - INFO - sensitivity_b4:[2.47884557325051e-09, 1.6975998384793911e-09, 1.7278445341162296e-09, 7.369835297588168e-10, 1.5771732808644856e-09, 1.99819893964559e-09, 4.1934619665617845e-10, 2.8835669962923305e-10, 2.9702595938374543e-10, 2.0995251370781176e-10, 1.3423583355987034e-09, 1.1083034490155796e-09, 2.0909450559880582e-10, 1.733913290724587e-10, 1.7715526268169413e-10, 1.1261548638064056e-10, 1.7518415884598681e-10, 9.887048124657127e-11, 7.803373502923705e-10, 6.318209289091214e-10, 2.573887769585781e-10, 1.7683511599475565e-10, 2.4737392689822e-10, 1.474914634869151e-10, 7.880617269862e-10, 6.822655773675024e-10, 3.0763122604859916e-10, 2.223427553182944e-10, 3.809645376939841e-10, 1.9780899140897645e-10, 5.557685978097027e-10, 2.877723337402216e-10]
+2024-04-24 19:51:57,456 - train - INFO - sensitivity_b8:[2.706808777119818e-09, 2.0438815084844464e-09, 2.0739578943107517e-09, 8.747825241961493e-10, 2.0215911167298373e-09, 2.427401613047664e-09, 4.789466601096137e-10, 3.387337077498387e-10, 3.620560518058369e-10, 2.619544581250466e-10, 1.6219940945916278e-09, 1.3311333146859283e-09, 2.492455686287087e-10, 2.0282020507522702e-10, 2.031050327921946e-10, 1.3274689680820018e-10, 2.0820518920050546e-10, 1.1804260346970352e-10, 9.172810844226831e-10, 7.360366760522652e-10, 3.0185076660416144e-10, 2.0985960191843844e-10, 2.912923791065225e-10, 1.7397340512648185e-10, 9.258312450022288e-10, 7.970040183380434e-10, 3.6335670583476087e-10, 2.618729399994635e-10, 4.4966017020975357e-10, 2.3268627302730494e-10, 6.525736617746247e-10, 3.3619229622416924e-10]
+2024-04-24 19:51:57,456 - train - INFO - sensitivity_b16:[2.9249227484484663e-09, 2.0438815084844464e-09, 2.0739578943107517e-09, 8.747825241961493e-10, 2.0215911167298373e-09, 2.657924103033338e-09, 5.495532917620949e-10, 3.6190694885362973e-10, 3.95005417264116e-10, 2.7254323797798463e-10, 1.7476737834698497e-09, 1.4507517409612092e-09, 2.717533975626907e-10, 2.208172533713082e-10, 2.191319070643516e-10, 1.4579376594880955e-10, 2.1750153067490174e-10, 1.2712259023217598e-10, 9.83754411265636e-10, 8.031709741729287e-10, 3.246456437011602e-10, 2.2763101126255236e-10, 3.1906027819772476e-10, 1.8950821467633716e-10, 1.0098224478838347e-09, 8.605030576980255e-10, 3.9288333697484745e-10, 2.8175192734458676e-10, 4.849676216167609e-10, 2.4966045897301115e-10, 7.039459570812312e-10, 3.6105823886245503e-10]
+2024-04-24 19:51:57,552 - train - INFO - result:[ 1  1  2  8  1 16  4 16 16 16  1  1 16 16 16 16 16 16  1  2 16 16 16 16
+  2  1 16 16 16 16  1 16]
+2024-04-24 19:51:57,552 - train - INFO - origin_latency:3833.6862354278564
+2024-04-24 19:51:57,553 - train - INFO - current_latency-origin_latency:-37.41522455215454
+2024-04-24 19:52:15,843 - train - INFO - Model image_nas_mobilenetv2 created, param count:3505063
+2024-04-24 19:52:15,856 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-24 19:52:15,857 - train - INFO - Scheduled epochs: 11
+2024-04-24 19:52:31,722 - train - INFO - Verifying initial model in training dataset
+2024-04-24 19:52:39,060 - train - INFO - batch_idx:0
+2024-04-24 19:53:03,100 - train - INFO - batch_idx:50
+2024-04-24 19:53:30,664 - train - INFO - batch_idx:100
+2024-04-24 19:53:57,771 - train - INFO - batch_idx:150
+2024-04-24 19:54:29,204 - train - INFO - batch_idx:200
+2024-04-24 19:54:57,106 - train - INFO - batch_idx:250
+2024-04-24 19:55:24,103 - train - INFO - batch_idx:300
+2024-04-24 19:55:51,257 - train - INFO - batch_idx:350
+2024-04-24 19:56:20,477 - train - INFO - batch_idx:400
+2024-04-24 19:56:49,876 - train - INFO - batch_idx:450
+2024-04-24 19:57:16,727 - train - INFO - batch_idx:500
+2024-04-24 19:57:44,279 - train - INFO - batch_idx:550
+2024-04-24 19:58:13,765 - train - INFO - batch_idx:600
+2024-04-24 19:58:41,014 - train - INFO - batch_idx:650
+2024-04-24 19:59:08,201 - train - INFO - batch_idx:700
+2024-04-24 19:59:35,033 - train - INFO - batch_idx:750
+2024-04-24 20:00:05,126 - train - INFO - batch_idx:800
+2024-04-24 20:00:32,463 - train - INFO - batch_idx:850
+2024-04-24 20:00:56,823 - train - INFO - batch_idx:900
+2024-04-24 20:01:23,037 - train - INFO - batch_idx:950
+2024-04-24 20:01:52,362 - train - INFO - batch_idx:1000
+2024-04-24 20:02:20,746 - train - INFO - batch_idx:1050
+2024-04-24 20:02:47,109 - train - INFO - batch_idx:1100
+2024-04-24 20:03:14,679 - train - INFO - batch_idx:1150
+2024-04-24 20:03:44,048 - train - INFO - batch_idx:1200
+2024-04-24 20:04:11,803 - train - INFO - batch_idx:1250
+2024-04-24 20:04:38,568 - train - INFO - batch_idx:1300
+2024-04-24 20:05:05,437 - train - INFO - batch_idx:1350
+2024-04-24 20:05:33,960 - train - INFO - batch_idx:1400
+2024-04-24 20:06:03,029 - train - INFO - batch_idx:1450
+2024-04-24 20:06:29,522 - train - INFO - batch_idx:1500
+2024-04-24 20:06:55,894 - train - INFO - batch_idx:1550
+2024-04-24 20:07:26,415 - train - INFO - batch_idx:1600
+2024-04-24 20:07:54,882 - train - INFO - batch_idx:1650
+2024-04-24 20:08:20,198 - train - INFO - batch_idx:1700
+2024-04-24 20:08:45,543 - train - INFO - batch_idx:1750
+2024-04-24 20:09:12,593 - train - INFO - batch_idx:1800
+2024-04-24 20:09:39,048 - train - INFO - batch_idx:1850
+2024-04-24 20:10:04,720 - train - INFO - batch_idx:1900
+2024-04-24 20:10:30,682 - train - INFO - batch_idx:1950
+2024-04-24 20:10:59,627 - train - INFO - batch_idx:2000
+2024-04-24 20:10:59,764 - train - INFO - len loader.dataset:2000
+2024-04-24 20:11:03,455 - train - INFO - target_block_size:2
+2024-04-24 20:11:03,455 - train - INFO - use cal_delta_w
+2024-04-24 20:11:03,907 - train - INFO - delta_weights_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 20:11:03,908 - train - INFO - delta_weights_b2:[42.287227630615234, 44.39519500732422, 37.615806579589844, 33.34174346923828, 61.25531005859375, 67.24816131591797, 35.973419189453125, 33.88731384277344, 33.0568733215332, 26.994428634643555, 78.59440612792969, 99.97539520263672, 55.09699630737305, 51.99420928955078, 56.719913482666016, 45.553924560546875, 58.64970397949219, 44.07437515258789, 132.91485595703125, 141.36260986328125, 103.85076904296875, 88.62372589111328, 110.58512878417969, 85.62586975097656, 206.4258270263672, 259.11151123046875, 202.8675079345703, 188.95384216308594, 245.2853546142578, 191.76046752929688, 371.4418029785156, 403.900146484375]
+2024-04-24 20:11:03,908 - train - INFO - delta_weights_b4:[62.481224060058594, 69.63890075683594, 54.6755256652832, 50.01759719848633, 91.2452621459961, 101.85169982910156, 54.87289047241211, 49.30924606323242, 49.22977828979492, 40.59899139404297, 121.13496398925781, 148.36544799804688, 83.79423522949219, 78.40238952636719, 85.09834289550781, 67.48096466064453, 87.57567596435547, 66.06697845458984, 198.3082733154297, 212.74606323242188, 157.24110412597656, 133.3499298095703, 167.76026916503906, 128.1670684814453, 312.53204345703125, 388.4855651855469, 305.04315185546875, 282.711669921875, 370.4693908691406, 289.26788330078125, 555.2313232421875, 605.7600708007812]
+2024-04-24 20:11:03,908 - train - INFO - delta_weights_b8:[70.31665802001953, 79.14164733886719, 64.04936981201172, 57.9778938293457, 108.0523681640625, 121.24617004394531, 63.47903060913086, 58.06957244873047, 56.8067512512207, 47.53736114501953, 141.94102478027344, 171.22393798828125, 98.0853271484375, 91.25856018066406, 99.0179672241211, 79.0243911743164, 102.10299682617188, 77.22869110107422, 231.42466735839844, 247.40267944335938, 183.23963928222656, 155.31851196289062, 194.91139221191406, 149.00830078125, 365.6454772949219, 453.60943603515625, 357.04388427734375, 330.366943359375, 432.6831359863281, 337.2693786621094, 646.8846435546875, 706.9960327148438]
+2024-04-24 20:11:03,908 - train - INFO - delta_weights_b16:[74.31847381591797, 79.14164733886719, 64.04936981201172, 57.9778938293457, 108.0523681640625, 129.8108673095703, 68.53572082519531, 61.214996337890625, 60.23182678222656, 50.50953674316406, 152.51339721679688, 184.28277587890625, 104.94312286376953, 97.82270812988281, 105.9434585571289, 84.68876647949219, 108.91809844970703, 82.5929946899414, 248.29188537597656, 266.4906921386719, 196.4473876953125, 166.4683380126953, 210.2433624267578, 159.96726989746094, 392.4289855957031, 485.8009948730469, 382.4173583984375, 353.8833923339844, 463.28118896484375, 361.37518310546875, 692.9661865234375, 757.04296875]
+2024-04-24 20:11:05,128 - train - INFO - cir_idx:[3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27, 29, 30, 32, 33, 35, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50]
+2024-04-24 20:11:05,128 - train - INFO - len params:32
+2024-04-24 20:11:05,129 - train - INFO - params[0].shape:torch.Size([96, 16, 1, 1])
+2024-04-24 20:11:05,144 - train - INFO - sensitivity_b1:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2024-04-24 20:11:05,145 - train - INFO - sensitivity_b2:[1.4373464640726752e-09, 1.1810692424063518e-09, 9.590659377778366e-10, 4.428398203693007e-10, 1.2472624044690406e-09, 1.1728238380470657e-09, 2.438080293210021e-10, 1.7423068543465092e-10, 1.8827664427512047e-10, 1.4171644413529805e-10, 9.140942447416478e-10, 7.21721848950807e-10, 1.2265191640103978e-10, 1.0769921066078325e-10, 1.1287759615896675e-10, 7.448325289871605e-11, 1.113551958975556e-10, 6.216236553280297e-11, 5.162321681240201e-10, 4.03590577624513e-10, 1.6470705355153825e-10, 1.1365255958573073e-10, 1.5769119343644888e-10, 9.613680684861237e-11, 4.995442948185769e-10, 4.5146586469257954e-10, 1.9718958410575027e-10, 1.4563764083597164e-10, 2.469799642579318e-10, 1.2926693049308824e-10, 3.681494276097652e-10, 1.8934290246797048e-10]
+2024-04-24 20:11:05,145 - train - INFO - sensitivity_b4:[2.4614839055914217e-09, 1.6714882811186271e-09, 1.8511622235095615e-09, 7.275813285190225e-10, 1.5683108145481128e-09, 1.983603281630053e-09, 4.2051512272323066e-10, 2.859542047595198e-10, 2.8649568828420513e-10, 2.073037991268123e-10, 1.3259530140530273e-09, 1.105749491969732e-09, 2.0788012977668302e-10, 1.7323653622725033e-10, 1.7655685247142117e-10, 1.1231381102927429e-10, 1.7432502663616845e-10, 9.849859816668527e-11, 7.785495581558166e-10, 6.289447851415275e-10, 2.5627677757711353e-10, 1.763521273456803e-10, 2.4623558747549623e-10, 1.4693335437243604e-10, 7.863183437706311e-10, 6.8141381426301e-10, 3.0681199247872826e-10, 2.2212903738605405e-10, 3.802078096803996e-10, 1.9760107439203978e-10, 5.548387305154279e-10, 2.872690418875834e-10]
+2024-04-24 20:11:05,145 - train - INFO - sensitivity_b8:[2.69162292454439e-09, 2.0189341309873043e-09, 2.2232520269227507e-09, 8.614557400754563e-10, 2.0099233388748416e-09, 2.411155053394509e-09, 4.791129160075513e-10, 3.358326394753419e-10, 3.4901170842260854e-10, 2.581363178766338e-10, 1.6017722703765003e-09, 1.3279863875226283e-09, 2.4793023190028407e-10, 2.0273992207275882e-10, 2.0226809116508093e-10, 1.3232064055568316e-10, 2.0709030323917688e-10, 1.1745304728805195e-10, 9.139267120872319e-10, 7.328792017702312e-10, 3.0041333309860363e-10, 2.093658163504486e-10, 2.898485340629975e-10, 1.733700266681737e-10, 9.242385745622528e-10, 7.961923342847399e-10, 3.6239039546970275e-10, 2.615819227891336e-10, 4.486341298459706e-10, 2.3242134605805376e-10, 6.514079275987683e-10, 3.355931643689303e-10]
+2024-04-24 20:11:05,145 - train - INFO - sensitivity_b16:[2.8975015720078545e-09, 2.0189341309873043e-09, 2.2232520269227507e-09, 8.614557400754563e-10, 2.0099233388748416e-09, 2.641890706200911e-09, 5.509230849298774e-10, 3.5827951716527195e-10, 3.7809461117532805e-10, 2.679000354888217e-10, 1.7245627148554377e-09, 1.4478396259676174e-09, 2.703762214117944e-10, 2.2061716342669513e-10, 2.1845313058488358e-10, 1.4519778435140296e-10, 2.1609290745683296e-10, 1.2648868064069063e-10, 9.805205536395079e-10, 7.994401807209783e-10, 3.232133449770913e-10, 2.272080718013214e-10, 3.1746980044822237e-10, 1.8880960683809178e-10, 1.0080900558762096e-09, 8.598013412353112e-10, 3.918004809477793e-10, 2.815120636601165e-10, 4.839670886269687e-10, 2.493305839568194e-10, 7.026318971092849e-10, 3.604110621058254e-10]
+2024-04-24 20:11:05,224 - train - INFO - result:[ 1  1  1  1  1  1  1  2  2  4  1  1  2 16 16 16 16 16  1  1  2  2  2 16
+  1  1 16 16 16 16  1 16]
+2024-04-24 20:11:05,224 - train - INFO - origin_latency:7701.861759185791
+2024-04-24 20:11:05,224 - train - INFO - current_latency-origin_latency:-166.1792755126953

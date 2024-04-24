@@ -352,11 +352,13 @@ def cal_rot(n,m,d1,d2,b):
     mul = math.ceil(1.0*m/final_mp)*math.ceil(1.0*d1/b/final_d)*math.ceil(1.0*d2/b/final_d)*final_d
     return min_rot, mul
 
-def comm(HW,C,K,b):
+def comm(HW,C,K,b,args):
     # print("H,W,C,K,b:",H,W,C,K,b)
     # _logger.info("HWCKb:%d,%d,%d,%d",HW,C,K,b)
     N=8192
     rot, mul = cal_rot(N,HW,C,K,b)
+    if "vit" in args.model:
+        mul = HW*C*K/(N*b)
     return torch.tensor(rot+0.135*mul)
 
 def set_rotate_mat():
@@ -418,7 +420,7 @@ def trans_to_cir(weight: nn.Parameter,block_size):
         weights_cir=weights_cir.permute(0,2,1,3).reshape(out_features,in_features)
     return weights_cir
 
-def cal_mse(layer,block_size,space):
+def cal_delta_w(layer,block_size,space):
     if space[-1]<block_size:
         block_size = space[-1]
     cir_weight = trans_to_cir(layer.weight,block_size)
@@ -449,10 +451,10 @@ def cal_delta_z(layer, block_size,space):
     return delta.item()
     
 
-def cal_latency(HW,C,K,b,space):
+def cal_latency(HW,C,K,b,space,args):
     if space[-1]<b:
         b = space[-1]
-    latency = comm(HW,C,K,b)
+    latency = comm(HW,C,K,b,args)
     return latency.item()
 
 def main():
@@ -740,27 +742,28 @@ def ILP(args,test_loader,model,loss_fn):
     params = hessian_comp.params
     idx = 0
     origin_latency = 0
+    _logger.info("target block size:",target_block_size)
     for layer in model.modules():
         if isinstance(layer, CirLinear) or isinstance(layer, CirConv2d):
             space = layer.search_space
-            origin_latency += cal_latency(layer.d1,layer.in_features,layer.out_features,target_block_size,space)
+            origin_latency += cal_latency(layer.d1,layer.in_features,layer.out_features,target_block_size,space,args)
             cir_idx.append(idx)
             # _logger.info("d1:"+str(layer.d1))
             delta_weights_b1.append(0)
-            # delta_weights_b2.append(cal_delta_z(layer,2,space))
-            # delta_weights_b4.append(cal_delta_z(layer,4,space))
-            # delta_weights_b8.append(cal_delta_z(layer,8,space))
+            delta_weights_b2.append(cal_delta_z(layer,2,space))
+            delta_weights_b4.append(cal_delta_z(layer,4,space))
+            delta_weights_b8.append(cal_delta_z(layer,8,space))
             # delta_weights_b16.append(cal_delta_z(layer,16,space))
             
-            delta_weights_b2.append(cal_mse(layer,2,space))
-            delta_weights_b4.append(cal_mse(layer,4,space))
-            delta_weights_b8.append(cal_mse(layer,8,space))
+            # delta_weights_b2.append(cal_mse(layer,2,space))
+            # delta_weights_b4.append(cal_mse(layer,4,space))
+            # delta_weights_b8.append(cal_mse(layer,8,space))
             # delta_weights_b16.append(cal_mse(layer,16,space))
             # delta_weights_b32.append(cal_mse(layer,32,space))
-            latency_weights_b1.append(cal_latency(layer.d1,layer.in_features,layer.out_features,1,space))
-            latency_weights_b2.append(cal_latency(layer.d1,layer.in_features,layer.out_features,2,space))
-            latency_weights_b4.append(cal_latency(layer.d1,layer.in_features,layer.out_features,4,space))
-            latency_weights_b8.append(cal_latency(layer.d1,layer.in_features,layer.out_features,8,space))
+            latency_weights_b1.append(cal_latency(layer.d1,layer.in_features,layer.out_features,1,space,args))
+            latency_weights_b2.append(cal_latency(layer.d1,layer.in_features,layer.out_features,2,space,args))
+            latency_weights_b4.append(cal_latency(layer.d1,layer.in_features,layer.out_features,4,space,args))
+            latency_weights_b8.append(cal_latency(layer.d1,layer.in_features,layer.out_features,8,space,args))
             # latency_weights_b16.append(cal_latency(layer.d1,layer.in_features,layer.out_features,16,space))
             # latency_weights_b32.append(cal_latency(layer.d1,layer.in_features,layer.out_features,32,space))
             idx+=1
@@ -794,7 +797,7 @@ def ILP(args,test_loader,model,loss_fn):
     prob += sum(variable[f"b1_{i}"]*latency_weights_b1[i] +variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] +variable[f"b8_{i}"]*latency_weights_b8[i] for i in range(num_variable))-origin_latency <= 0.01
     # prob += sum(variable[f"b2_{i}"]*latency_weights_b2[i] + variable[f"b4_{i}"]*latency_weights_b4[i] +variable[f"b8_{i}"]*latency_weights_b8[i] +variable[f"b16_{i}"]*latency_weights_b16[i] for i in range(num_variable))-origin_latency <= 0
 
-    # prob += sum(variable[f"b4_{i}"] for i in range(num_variable)) <= num_variable/4
+    prob += sum(variable[f"b2_{i}"] for i in range(num_variable)) >= 3*num_variable/4
     
     #one layer only have one blocksize
     for i in range(num_variable):
@@ -913,10 +916,10 @@ def train_one_epoch(
                     alphas = layer.alphas_after
                     idx = torch.argmax(alphas)
                     if not origin:
-                        origin_latency += comm(layer.d1,layer.in_features,layer.out_features,1)
+                        origin_latency += comm(layer.d1,layer.in_features,layer.out_features,1,args)
                     # reg_loss += alphas[idx]*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
                     for i,alpha in enumerate(alphas):
-                        reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[i])
+                        reg_loss += alpha*comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[i],args)
             global lasso_beta
             if lasso_beta == 0:
                 lasso_beta = 1/(torch.pow(torch.log2(reg_loss.detach()),args.lasso_alpha))
@@ -1016,7 +1019,7 @@ def train_one_epoch(
                 _logger.info("alphas after:"+str(alphas))
                 # print("alphas:",alphas)
                 # print("tau:",layer.tau)
-                current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx])
+                current_latency+=comm(layer.d1,layer.in_features,layer.out_features,layer.search_space[idx],args)
                 
                 if epoch > 10 and layer.tau > 1e-5:
                     layer.tau=(layer.tau*args.tau)

@@ -151,6 +151,11 @@ def cir_nas_mobilenet(n_class, input_size, width_mult,fix_block_size=-1) -> CirM
     return model
 
 @register_model
+def image_nas_mobilenetv2(fix_block_size=-1,**kwargs):
+    model=cir_nas_mobilenet(1000,224,1,fix_block_size=fix_block_size)
+    return model
+
+@register_model
 def tiny_nas_mobilenetv2(fix_block_size=-1,**kwargs):
     model=cir_nas_mobilenet(200,64,1,fix_block_size=fix_block_size)
     return model

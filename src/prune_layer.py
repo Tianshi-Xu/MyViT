@@ -4,6 +4,16 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn import init
 
+# def fc_mask_grouping(fc_layer_weight_matrix, slots_per_ciphertext):
+#     group_list=[]
+#     n=slots_per_ciphertext
+#     group0=fc_layer_weight_matrix[0:n-1][0:n-1]
+#     group00=group0[diagonal_selection] e.g. [0,0] [1,1] [2,2]..[n-1,n-1]
+#     # Define other diaonal groups
+#     group_list.append(group00)
+#     return group_list
+
+
 class PruneConv2d(nn.Module):
     # (feature_size*feature_size,in_features) * (in_features,out_features)-->(m,n)*(n,k)
     # feature_size*feature_size*block_size<=4096
