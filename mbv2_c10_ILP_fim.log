@@ -74,3 +74,6 @@
   1  2 16 16 16 16  4 16]
 2024-04-23 19:24:50,512 - train - INFO - origin_latency:2383.899984359741
 2024-04-23 19:24:50,512 - train - INFO - current_latency-origin_latency:-15.460033416748047
+2024-04-23 21:53:45,719 - train - INFO - Model c10_nas_mobilenetv2 created, param count:2236873
+2024-04-23 21:53:45,774 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-23 21:53:45,774 - train - INFO - Scheduled epochs: 11

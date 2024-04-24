@@ -39,11 +39,11 @@ smoothing: 0.1
 workers: 8
 seed: 3407
 checkpoint_hist: 1
-budget: 2
+budget: 8
 fix_blocksize: 1
 delta_w: True
 use_fim: True
-log_name: mbv2_c10_ILP_fim
+log_name: mbv2_c10_ILP_baseline
 use_kd: true
 kd_alpha: 4
 teacher: c10_mobilenetv2

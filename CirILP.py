@@ -457,7 +457,7 @@ def cal_delta_fim_w(layer,block_size,space,device):
     # _logger.info("cir_weight_gradient_mean*1e5:{0}".format(torch.mean((layer.weight.grad*1e5))))
     # _logger.info("cir_weight_gradient_mean*1e5^2:{0}".format(torch.mean((layer.weight.grad*1e5)**2)))
     layer.fix_block_size = 1
-    
+    # the grad need to be computed beforehand in training set
     delta_fim_w = torch.sum(((layer.weight-cir_weight)**2) * (layer.weight.grad **2))
     # exit(0)
     return delta_fim_w.item()
