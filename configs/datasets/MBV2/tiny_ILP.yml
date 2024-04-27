@@ -43,7 +43,7 @@ seed: 3407
 checkpoint_hist: 1
 budget: 2
 fix_blocksize: 1
-log_name: mbv2_tiny_ILP_baseline2
+log_name: mbv2_tiny_ILP_fim2
 delta_w: True
 use_fim: True
 use_kd: true
