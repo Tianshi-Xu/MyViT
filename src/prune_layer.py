@@ -17,7 +17,7 @@ import numpy as np
 class PruneConv2d(nn.Module):
     # (feature_size*feature_size,in_features) * (in_features,out_features)-->(m,n)*(n,k)
     # feature_size*feature_size*block_size<=4096
-    def __init__(self, in_features, out_features, kernel_size, stride,feature_size,prune_ratio=0):
+    def __init__(self, in_features, out_features, kernel_size, stride,prune_ratio=0):
         super(PruneConv2d, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
@@ -29,11 +29,11 @@ class PruneConv2d(nn.Module):
         self.mask = torch.ones_like(self.weight.data)
         self.prune_diags ={}
         init.kaiming_uniform_(self.weight)
-        self.feature_size = feature_size
+        self.feature_size = None
         self.rot_ratio = 0
         self.mul  = None
         self.rot = None
-        self.he_data = self.cal_d()
+        self.he_data = None
         
         
     
@@ -65,6 +65,7 @@ class PruneConv2d(nn.Module):
         return prune_idx    
     
     def prune_weight(self):
+        self.he_data = self.cal_d()
         d = self.he_data[0]
         K = self.weight.size(0)
         C = self.weight.size(1)
@@ -85,6 +86,9 @@ class PruneConv2d(nn.Module):
         self.mul = self.mul * (1-current_ratio)
         
     def forward(self, x):
+        if self.feature_size is None:
+            assert x.size(2) == x.size(3)
+            self.feature_size = x.size(2)
         weight=self.weight*self.mask.to(x.device)
         x = F.conv2d(x,weight,None,self.stride,self.padding)
         return x

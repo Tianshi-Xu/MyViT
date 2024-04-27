@@ -632,11 +632,10 @@ def main():
         if isinstance(layer, PruneConv2d):
             layer.prune_ratio = args.prune_ratio
             layer.prune_weight()
-            _logger.info("feature size:{}".format(layer.feature_size))
+            # _logger.info("feature size:{}".format(layer.feature_size))
             total_mul += layer.mul
             total_rot += layer.rot
     _logger.info("Total Mul: {}, Total Rot: {}".format(total_mul,total_rot))
-    exit(0)
     # setup checkpoint saver and eval metric tracking
     eval_metric = args.eval_metric
     best_metric = None
