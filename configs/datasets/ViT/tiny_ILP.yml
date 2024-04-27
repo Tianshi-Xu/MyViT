@@ -47,7 +47,7 @@ checkpoint_hist: 5
 finetune: False
 lasso_alpha: 0
 tau: 1.0
-budget: 4
+budget: 2
 fix_blocksize: 1
 log_name: vit_tiny_ILP_baseline
 delta_w: True

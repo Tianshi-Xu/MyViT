@@ -1,14 +1,14 @@
-dataset: torch/cifar100
-num_classes: 100
+dataset: torch/cifar10
+num_classes: 10
 img_size: 32
 mean:
-    - 0.5071
-    - 0.4867
-    - 0.4408
+    - 0.4914
+    - 0.4822
+    - 0.4465
 std:
-    - 0.2675
-    - 0.2565
-    - 0.2761
+    - 0.2470
+    - 0.2435
+    - 0.2616
 crop_pct: 1.0
 scale:
     - 0.8
@@ -30,23 +30,20 @@ lr: 55e-5
 min_lr: 1e-5
 sched: cosine
 weight_decay: 6e-2
-epochs: 1
+epochs: 300
 cooldown_epochs: 10
 warmup_epochs: 10
 warmup_lr: 0.00001
 opt: adamw
 smoothing: 0.1
-workers: 8
-seed: 3407
-checkpoint_hist: 1
-budget: 2
-fix_blocksize: 1
-log_name: mbv2_c100_ILP_baseline
-delta_w: True
-use_fim: True
+workers: 4
 use_kd: true
 kd_alpha: 4
-teacher: c100_mobilenetv2
-teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c100.pth.tar
+seed: 3407
+checkpoint_hist: 3
+prune_ratio: 88
+log_name: mbv2_c10_prune_b8_test
+teacher: c10_mobilenetv2
+teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c10.pth.tar
 # resume: "/home/xts/code/njeans/MySparsity/Ternary-ViT/output/train/20240130-204808-cifar_cir_nas_mobilenetv2-32/model_best.pth.tar"
-initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c100.pth.tar
+initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_c10.pth.tar

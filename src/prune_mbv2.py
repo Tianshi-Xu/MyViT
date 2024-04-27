@@ -23,13 +23,13 @@ def conv_1x1_bn(inp, oup):
     )
 
 class PruneInvertedResidual(nn.Module):
-    def __init__(self, inp, oup, stride, expand_ratio,prune_ratio=0):
+    def __init__(self, inp, oup, stride, expand_ratio,feature_size,prune_ratio=0):
         super(PruneInvertedResidual, self).__init__()
         self.stride = stride
         assert stride in [1, 2]
         hidden_dim = round(inp * expand_ratio)
         self.use_res_connect = self.stride == 1 and inp == oup
-
+        self.feature_size = feature_size
         if expand_ratio == 1:
             self.conv = nn.Sequential(
                 # dw
@@ -37,13 +37,13 @@ class PruneInvertedResidual(nn.Module):
                 nn.BatchNorm2d(hidden_dim),
                 nn.ReLU6(inplace=True),
                 # pw-linear
-                PruneConv2d(hidden_dim, oup, 1, 1, prune_ratio=prune_ratio),
+                nn.Conv2d(hidden_dim, oup, 1, 1,bias=False),
                 nn.BatchNorm2d(oup),
             )
         else:
             self.conv = nn.Sequential(
                 # pw
-                PruneConv2d(inp, hidden_dim, 1, 1, prune_ratio=prune_ratio),
+                PruneConv2d(inp, hidden_dim, 1, 1, feature_size=feature_size,prune_ratio=prune_ratio),
                 nn.BatchNorm2d(hidden_dim),
                 nn.ReLU6(inplace=True),
                 # dw
@@ -51,7 +51,7 @@ class PruneInvertedResidual(nn.Module):
                 nn.BatchNorm2d(hidden_dim),
                 nn.ReLU6(inplace=True),
                 # pw-linear
-                PruneConv2d(hidden_dim, oup, 1, 1, prune_ratio=prune_ratio),
+                PruneConv2d(hidden_dim, oup, 1, 1, feature_size=feature_size, prune_ratio=prune_ratio),
                 nn.BatchNorm2d(oup),
             )
 
@@ -70,7 +70,6 @@ class PruneMobileNetV2(nn.Module):
         last_channel = 1280
         self.feature_size = input_size
         if input_size == 224:
-            self.feature_size = input_size/2
             interverted_residual_setting = [
                 # t, c, n, s
                 [1, 16, 1, 1],
@@ -98,6 +97,7 @@ class PruneMobileNetV2(nn.Module):
         input_channel = int(input_channel * width_mult)
         self.last_channel = int(last_channel * width_mult) if width_mult > 1.0 else last_channel
         if n_class != 10 and n_class != 100:
+            self.feature_size = input_size/2
             self.features = [conv_bn(3, input_channel, 2)]
         else:
             self.features = [conv_bn(3, input_channel, 1)]
@@ -107,9 +107,9 @@ class PruneMobileNetV2(nn.Module):
             output_channel = int(c * width_mult)
             for i in range(n):
                 if i == 0:
-                    self.features.append(block(input_channel, output_channel, s, expand_ratio=t,prune_ratio=prune_ratio))
+                    self.features.append(block(input_channel, output_channel, s, expand_ratio=t,prune_ratio=prune_ratio,feature_size=self.feature_size))
                 else:
-                    self.features.append(block(input_channel, output_channel, 1, expand_ratio=t,prune_ratio=prune_ratio))
+                    self.features.append(block(input_channel, output_channel, 1, expand_ratio=t,prune_ratio=prune_ratio,feature_size=self.feature_size))
                 input_channel = output_channel
             self.feature_size = self.feature_size//s
             idx+=1
