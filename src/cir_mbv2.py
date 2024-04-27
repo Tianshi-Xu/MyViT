@@ -23,11 +23,10 @@ def conv_1x1_bn(inp, oup):
     )
 
 class CirInvertedResidual(nn.Module):
-    def __init__(self, inp, oup, stride, expand_ratio,feature_size,fix_block_size=-1):
+    def __init__(self, inp, oup, stride, expand_ratio,fix_block_size=-1):
         super(CirInvertedResidual, self).__init__()
         self.stride = stride
         assert stride in [1, 2]
-        self.feature_size = feature_size
         self.fix_block_size = fix_block_size
         hidden_dim = round(inp * expand_ratio)
         self.use_res_connect = self.stride == 1 and inp == oup
@@ -45,7 +44,7 @@ class CirInvertedResidual(nn.Module):
         else:
             self.conv = nn.Sequential(
                 # pw
-                CirConv2d(inp, hidden_dim, 1, 1,feature_size,fix_block_size=fix_block_size),
+                CirConv2d(inp, hidden_dim, 1, 1,fix_block_size=fix_block_size),
                 CirBatchNorm2d(hidden_dim,block_size=fix_block_size),
                 nn.ReLU6(inplace=True),
                 # dw
@@ -53,7 +52,7 @@ class CirInvertedResidual(nn.Module):
                 nn.BatchNorm2d(hidden_dim),
                 nn.ReLU6(inplace=True),
                 # pw-linear
-                CirConv2d(hidden_dim, oup, 1, 1,feature_size//stride,fix_block_size=fix_block_size),
+                CirConv2d(hidden_dim, oup, 1, 1,fix_block_size=fix_block_size),
                 CirBatchNorm2d(oup,block_size=fix_block_size),
             )
 
@@ -70,7 +69,6 @@ class CirMobileNetV2(nn.Module):
         block = CirInvertedResidual
         input_channel = 32
         last_channel = 1280
-        self.feature_size = input_size
         if input_size == 224:
             interverted_residual_setting = [
                 # t, c, n, s
@@ -99,7 +97,6 @@ class CirMobileNetV2(nn.Module):
         input_channel = int(input_channel * width_mult)
         self.last_channel = int(last_channel * width_mult) if width_mult > 1.0 else last_channel
         if n_class != 10 and n_class != 100:
-            self.feature_size = input_size/2
             self.features = [conv_bn(3, input_channel, 2)]
         else:
             self.features = [conv_bn(3, input_channel, 1)]
@@ -109,11 +106,10 @@ class CirMobileNetV2(nn.Module):
             output_channel = int(c * width_mult)
             for i in range(n):
                 if i == 0:
-                    self.features.append(block(input_channel, output_channel, s, expand_ratio=t,feature_size=self.feature_size,fix_block_size=fix_block_size))
+                    self.features.append(block(input_channel, output_channel, s, expand_ratio=t,fix_block_size=fix_block_size))
                 else:
-                    self.features.append(block(input_channel, output_channel, 1, expand_ratio=t,feature_size=self.feature_size,fix_block_size=fix_block_size))
+                    self.features.append(block(input_channel, output_channel, 1, expand_ratio=t,fix_block_size=fix_block_size))
                 input_channel = output_channel
-            self.feature_size = self.feature_size//s
             idx+=1
         # building last several layers
         self.features = nn.Sequential(*self.features)

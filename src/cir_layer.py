@@ -172,14 +172,14 @@ class CirLinear(nn.Module):
 class CirConv2d(nn.Module):
     # (feature_size*feature_size,in_features) * (in_features,out_features)-->(m,n)*(n,k)
     # feature_size*feature_size*block_size<=4096
-    def __init__(self, in_features, out_features, kernel_size, stride,feature_size,fix_block_size=-1):
+    def __init__(self, in_features, out_features, kernel_size, stride,fix_block_size=-1):
         super(CirConv2d, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
         self.kernel_size = kernel_size
         self.stride = stride
-        self.feature_size = feature_size
-        self.d1 = feature_size * feature_size
+        self.feature_size = None
+        self.d1 = None
         self.fix_block_size = fix_block_size
         # print("finetune:",self.finetune)
         self.padding = kernel_size//2
@@ -361,6 +361,10 @@ class CirConv2d(nn.Module):
         return F.softmax(logits/self.tau, dim=dim)
     
     def forward(self, x):
+        if self.feature_size is None:
+            assert x.size(2) == x.size(3)
+            self.feature_size = x.size(2)
+            self.d1 = self.feature_size ** 2
         self.input = x.detach()
         weight=self.trans_to_cir_meng(x.device)
         x = F.conv2d(x,weight,None,self.stride,self.padding)

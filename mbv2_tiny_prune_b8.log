@@ -1,0 +1,417 @@
+2024-04-27 21:59:52,883 - train - INFO - aa: rand-m9-mstd0.5-inc1
+amp: true
+apex_amp: false
+aug_splits: 0
+batch_size: 128
+bn_eps: null
+bn_momentum: null
+bn_tf: false
+channels_last: false
+checkpoint_hist: 3
+clip_grad: null
+clip_mode: norm
+color_jitter: 0.4
+cooldown_epochs: 10
+crop_pct: 0.9
+cutmix: 1.0
+cutmix_minmax: null
+data_dir: /home/xts/code/dataset/tiny-imagenet-200/
+dataset: torch/image_folder
+decay_epochs: 30
+decay_rate: 0.1
+dist_bn: ''
+drop: 0.0
+drop_block: null
+drop_connect: null
+drop_path: null
+epoch_repeats: 0.0
+epochs: 300
+eval_metric: top1
+experiment: ''
+gp: null
+hflip: 0.5
+img_size: 64
+initial_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_tiny.pth.tar
+input_size: null
+interpolation: bicubic
+jsd: false
+kd_alpha: 4
+local_rank: 0
+log_interval: 50
+log_name: mbv2_tiny_prune_b8
+log_wandb: false
+lr: 0.00055
+lr_cycle_limit: 1
+lr_cycle_mul: 1.0
+lr_noise: null
+lr_noise_pct: 0.67
+lr_noise_std: 1.0
+mean:
+- 0.485
+- 0.456
+- 0.406
+min_lr: 1.0e-05
+mixup: 0.8
+mixup_mode: batch
+mixup_off_epoch: 0
+mixup_prob: 1.0
+mixup_switch_prob: 0.5
+model: tiny_prune_mobilenetv2
+model_ema: false
+model_ema_decay: 0.9998
+model_ema_force_cpu: false
+momentum: 0.9
+native_amp: false
+no_aug: false
+no_prefetcher: false
+no_resume_opt: false
+num_classes: 200
+opt: adamw
+opt_betas: null
+opt_eps: null
+output: ''
+patience_epochs: 10
+pin_mem: false
+pretrained: false
+prune_ratio: 88
+ratio:
+- 0.75
+- 1.3333333333333333
+recount: 1
+recovery_interval: 0
+remode: pixel
+reprob: 0.25
+resplit: false
+resume: ''
+save_images: false
+scale:
+- 0.8
+- 1.0
+sched: cosine
+seed: 3407
+smoothing: 0.1
+split_bn: false
+start_epoch: null
+std:
+- 0.229
+- 0.224
+- 0.225
+sync_bn: false
+teacher: tiny_mobilenetv2
+teacher_checkpoint: /home/xts/code/njeans/MyViT/pretrained/mbv2_tiny.pth.tar
+torchscript: false
+train_interpolation: random
+train_split: train
+tta: 0
+use_kd: true
+use_multi_epochs_loader: false
+val_split: valid
+validation_batch_size_multiplier: 1
+vflip: 0.0
+warmup_epochs: 10
+warmup_lr: 1.0e-05
+weight_decay: 0.06
+workers: 4
+
+2024-04-27 21:59:52,883 - train - INFO - Training with a single process on 1 GPUs.
+2024-04-27 21:59:54,528 - train - INFO - MobileNetV2(
+  (features): Sequential(
+    (0): Sequential(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU6(inplace=True)
+    )
+    (1): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+        (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(32, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (4): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (2): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(16, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+        (4): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (3): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(24, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(144, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=144, bias=False)
+        (4): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(144, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (4): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(24, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(144, 144, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=144, bias=False)
+        (4): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(144, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (5): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(32, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(192, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (6): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(32, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(192, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (7): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(32, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(192, 192, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=192, bias=False)
+        (4): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(192, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (8): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(64, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(384, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (9): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(64, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(384, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (10): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(64, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(384, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (11): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(64, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+        (4): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (12): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(96, 576, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(576, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (13): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(96, 576, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(576, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (14): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(96, 576, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(576, 576, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=576, bias=False)
+        (4): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(576, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (15): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (16): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (17): InvertedResidual(
+      (conv): Sequential(
+        (0): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU6(inplace=True)
+        (3): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+        (4): BatchNorm2d(960, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU6(inplace=True)
+        (6): Conv2d(960, 320, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (7): BatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv): Sequential(
+    (0): Conv2d(320, 1280, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (1): BatchNorm2d(1280, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU6(inplace=True)
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (classifier): Linear(in_features=1280, out_features=200, bias=True)
+)
+2024-04-27 21:59:55,030 - train - INFO - Model tiny_prune_mobilenetv2 created, param count:2480072
+2024-04-27 21:59:55,041 - train - INFO - Using native Torch AMP. Training in mixed precision.
+2024-04-27 21:59:55,042 - train - INFO - Scheduled epochs: 310
+2024-04-27 21:59:55,302 - train - INFO - Verifying teacher model
+2024-04-27 21:59:57,539 - train - INFO - Test: [   0/78]  Time: 2.236 (2.236)  Loss:  0.9253 (0.9253)  Acc@1: 82.8125 (82.8125)  Acc@5: 93.7500 (93.7500)
+2024-04-27 21:59:58,324 - train - INFO - Test: [  50/78]  Time: 0.048 (0.059)  Loss:  1.4883 (1.5407)  Acc@1: 69.5312 (66.5901)  Acc@5: 89.8438 (86.7341)
+2024-04-27 21:59:59,302 - train - INFO - Test: [  78/78]  Time: 0.524 (0.051)  Loss:  1.7324 (1.5639)  Acc@1: 68.7500 (66.1100)  Acc@5: 100.0000 (86.4500)
+2024-04-27 21:59:59,302 - train - INFO - Verifying initial model
+2024-04-27 21:59:59,424 - train - INFO - Test: [   0/78]  Time: 0.120 (0.120)  Loss:  0.9253 (0.9253)  Acc@1: 82.8125 (82.8125)  Acc@5: 93.7500 (93.7500)
+2024-04-27 22:00:00,277 - train - INFO - Test: [  50/78]  Time: 0.014 (0.019)  Loss:  1.4883 (1.5407)  Acc@1: 69.5312 (66.5901)  Acc@5: 89.8438 (86.7341)
+2024-04-27 22:00:00,685 - train - INFO - Test: [  78/78]  Time: 0.012 (0.017)  Loss:  1.7324 (1.5639)  Acc@1: 68.7500 (66.1100)  Acc@5: 100.0000 (86.4500)
+2024-04-27 22:00:04,989 - train - INFO - Total Mul: 2035.888888888889, Total Rot: 1022.7
+2024-04-27 22:00:06,909 - train - INFO - Train: 0 [   0/781 (  0%)]  Loss:  5.653018 (5.6530)  Time: 1.916s,   66.81/s  (1.916s,   66.81/s)  LR: 1.000e-05  Data: 0.338 (0.338)
+2024-04-27 22:00:10,938 - train - INFO - Train: 0 [  50/781 (  6%)]  Loss:  5.554707 (5.6266)  Time: 0.076s, 1689.63/s  (0.117s, 1098.15/s)  LR: 1.000e-05  Data: 0.004 (0.013)
+2024-04-27 22:00:15,332 - train - INFO - Train: 0 [ 100/781 ( 13%)]  Loss:  5.564471 (5.6011)  Time: 0.099s, 1294.66/s  (0.102s, 1250.72/s)  LR: 1.000e-05  Data: 0.009 (0.010)
+2024-04-27 22:00:19,661 - train - INFO - Train: 0 [ 150/781 ( 19%)]  Loss:  5.523788 (5.5852)  Time: 0.086s, 1490.61/s  (0.097s, 1318.03/s)  LR: 1.000e-05  Data: 0.006 (0.009)
+2024-04-27 22:00:23,966 - train - INFO - Train: 0 [ 200/781 ( 26%)]  Loss:  5.503890 (5.5682)  Time: 0.086s, 1489.84/s  (0.094s, 1356.44/s)  LR: 1.000e-05  Data: 0.005 (0.008)
+2024-04-27 22:00:28,546 - train - INFO - Train: 0 [ 250/781 ( 32%)]  Loss:  5.492590 (5.5551)  Time: 0.095s, 1349.68/s  (0.094s, 1364.45/s)  LR: 1.000e-05  Data: 0.008 (0.008)
+2024-04-27 22:00:32,811 - train - INFO - Train: 0 [ 300/781 ( 38%)]  Loss:  5.457878 (5.5401)  Time: 0.100s, 1283.25/s  (0.092s, 1385.41/s)  LR: 1.000e-05  Data: 0.011 (0.008)
+2024-04-27 22:00:37,294 - train - INFO - Train: 0 [ 350/781 ( 45%)]  Loss:  5.420312 (5.5265)  Time: 0.100s, 1278.02/s  (0.092s, 1391.33/s)  LR: 1.000e-05  Data: 0.008 (0.008)
+2024-04-27 22:00:41,131 - train - INFO - Train: 0 [ 400/781 ( 51%)]  Loss:  5.386070 (5.5141)  Time: 0.075s, 1701.03/s  (0.090s, 1420.79/s)  LR: 1.000e-05  Data: 0.004 (0.007)
+2024-04-27 22:00:44,900 - train - INFO - Train: 0 [ 450/781 ( 58%)]  Loss:  5.380306 (5.5025)  Time: 0.080s, 1609.91/s  (0.088s, 1447.03/s)  LR: 1.000e-05  Data: 0.005 (0.007)
+2024-04-27 22:00:49,493 - train - INFO - Train: 0 [ 500/781 ( 64%)]  Loss:  5.399195 (5.4915)  Time: 0.078s, 1632.04/s  (0.089s, 1441.52/s)  LR: 1.000e-05  Data: 0.005 (0.007)
+2024-04-27 22:00:53,581 - train - INFO - Train: 0 [ 550/781 ( 71%)]  Loss:  5.367675 (5.4810)  Time: 0.099s, 1293.99/s  (0.088s, 1451.97/s)  LR: 1.000e-05  Data: 0.009 (0.007)
+2024-04-27 22:00:57,906 - train - INFO - Train: 0 [ 600/781 ( 77%)]  Loss:  5.338630 (5.4702)  Time: 0.071s, 1815.54/s  (0.088s, 1454.29/s)  LR: 1.000e-05  Data: 0.005 (0.007)
+2024-04-27 22:01:02,442 - train - INFO - Train: 0 [ 650/781 ( 83%)]  Loss:  5.375216 (5.4612)  Time: 0.099s, 1292.91/s  (0.088s, 1450.90/s)  LR: 1.000e-05  Data: 0.008 (0.007)
+2024-04-27 22:01:06,843 - train - INFO - Train: 0 [ 700/781 ( 90%)]  Loss:  5.292227 (5.4527)  Time: 0.083s, 1546.11/s  (0.088s, 1451.16/s)  LR: 1.000e-05  Data: 0.005 (0.007)
+2024-04-27 22:01:10,756 - train - INFO - Train: 0 [ 750/781 ( 96%)]  Loss:  5.352780 (5.4441)  Time: 0.075s, 1711.36/s  (0.088s, 1462.16/s)  LR: 1.000e-05  Data: 0.005 (0.007)
+2024-04-27 22:01:13,364 - train - INFO - Train: 0 [ 780/781 (100%)]  Loss:  5.373727 (5.4396)  Time: 0.090s, 1421.81/s  (0.088s, 1462.58/s)  LR: 1.000e-05  Data: 0.000 (0.007)
+2024-04-27 22:01:13,481 - train - INFO - Test: [   0/78]  Time: 0.115 (0.115)  Loss:  4.8164 (4.8164)  Acc@1:  0.7812 ( 0.7812)  Acc@5: 10.1562 (10.1562)
+2024-04-27 22:01:14,380 - train - INFO - Test: [  50/78]  Time: 0.025 (0.020)  Loss:  5.1953 (5.1316)  Acc@1:  0.7812 ( 1.6238)  Acc@5:  2.3438 ( 7.5827)
+2024-04-27 22:01:14,880 - train - INFO - Test: [  78/78]  Time: 0.013 (0.019)  Loss:  4.8438 (5.1444)  Acc@1:  6.2500 ( 1.7100)  Acc@5: 12.5000 ( 7.5500)
+2024-04-27 22:01:15,169 - train - INFO - Train: 1 [   0/781 (  0%)]  Loss:  5.369031 (5.3690)  Time: 0.203s,  632.07/s  (0.203s,  632.07/s)  LR: 6.400e-05  Data: 0.133 (0.133)
+2024-04-27 22:01:19,103 - train - INFO - Train: 1 [  50/781 (  6%)]  Loss:  5.284815 (5.2972)  Time: 0.097s, 1315.55/s  (0.081s, 1578.66/s)  LR: 6.400e-05  Data: 0.010 (0.009)
+2024-04-27 22:01:23,840 - train - INFO - Train: 1 [ 100/781 ( 13%)]  Loss:  5.209080 (5.2691)  Time: 0.065s, 1971.18/s  (0.088s, 1457.31/s)  LR: 6.400e-05  Data: 0.005 (0.008)
+2024-04-27 22:01:28,012 - train - INFO - Train: 1 [ 150/781 ( 19%)]  Loss:  5.174610 (5.2497)  Time: 0.077s, 1666.28/s  (0.086s, 1482.07/s)  LR: 6.400e-05  Data: 0.005 (0.007)
+2024-04-27 22:01:31,815 - train - INFO - Train: 1 [ 200/781 ( 26%)]  Loss:  5.163191 (5.2357)  Time: 0.093s, 1383.68/s  (0.084s, 1527.47/s)  LR: 6.400e-05  Data: 0.007 (0.007)
+2024-04-27 22:01:35,924 - train - INFO - Train: 1 [ 250/781 ( 32%)]  Loss:  5.102101 (5.2247)  Time: 0.075s, 1700.29/s  (0.083s, 1533.46/s)  LR: 6.400e-05  Data: 0.004 (0.007)
+2024-04-27 22:01:41,781 - train - INFO - Train: 1 [ 300/781 ( 38%)]  Loss:  5.164268 (5.2125)  Time: 0.099s, 1286.65/s  (0.089s, 1437.23/s)  LR: 6.400e-05  Data: 0.004 (0.007)
+2024-04-27 22:01:48,067 - train - INFO - Train: 1 [ 350/781 ( 45%)]  Loss:  5.189013 (5.2024)  Time: 0.137s,  931.18/s  (0.094s, 1357.69/s)  LR: 6.400e-05  Data: 0.005 (0.006)
+2024-04-27 22:01:54,546 - train - INFO - Train: 1 [ 400/781 ( 51%)]  Loss:  5.247153 (5.1925)  Time: 0.135s,  950.10/s  (0.099s, 1297.16/s)  LR: 6.400e-05  Data: 0.005 (0.006)
+2024-04-27 22:02:00,436 - train - INFO - Train: 1 [ 450/781 ( 58%)]  Loss:  5.054053 (5.1810)  Time: 0.110s, 1159.94/s  (0.101s, 1269.92/s)  LR: 6.400e-05  Data: 0.009 (0.006)
+2024-04-27 22:02:04,978 - train - INFO - Train: 1 [ 500/781 ( 64%)]  Loss:  5.110789 (5.1718)  Time: 0.099s, 1287.92/s  (0.100s, 1282.58/s)  LR: 6.400e-05  Data: 0.009 (0.006)
+2024-04-27 22:02:09,368 - train - INFO - Train: 1 [ 550/781 ( 71%)]  Loss:  4.982896 (5.1623)  Time: 0.082s, 1557.59/s  (0.099s, 1296.77/s)  LR: 6.400e-05  Data: 0.006 (0.006)
+2024-04-27 22:02:13,658 - train - INFO - Train: 1 [ 600/781 ( 77%)]  Loss:  5.180980 (5.1558)  Time: 0.073s, 1758.28/s  (0.098s, 1311.07/s)  LR: 6.400e-05  Data: 0.005 (0.006)
+2024-04-27 22:02:18,105 - train - INFO - Train: 1 [ 650/781 ( 83%)]  Loss:  5.057366 (5.1480)  Time: 0.080s, 1609.69/s  (0.097s, 1320.13/s)  LR: 6.400e-05  Data: 0.005 (0.006)
+2024-04-27 22:02:22,478 - train - INFO - Train: 1 [ 700/781 ( 90%)]  Loss:  4.930621 (5.1391)  Time: 0.079s, 1624.31/s  (0.096s, 1329.44/s)  LR: 6.400e-05  Data: 0.005 (0.006)
+2024-04-27 22:02:26,788 - train - INFO - Train: 1 [ 750/781 ( 96%)]  Loss:  5.117655 (5.1323)  Time: 0.079s, 1616.85/s  (0.096s, 1338.80/s)  LR: 6.400e-05  Data: 0.005 (0.006)
+2024-04-27 22:02:29,362 - train - INFO - Train: 1 [ 780/781 (100%)]  Loss:  5.046588 (5.1282)  Time: 0.079s, 1624.92/s  (0.095s, 1344.12/s)  LR: 6.400e-05  Data: 0.000 (0.006)
+2024-04-27 22:02:29,519 - train - INFO - Test: [   0/78]  Time: 0.154 (0.154)  Loss:  4.1289 (4.1289)  Acc@1: 11.7188 (11.7188)  Acc@5: 41.4062 (41.4062)
+2024-04-27 22:02:30,400 - train - INFO - Test: [  50/78]  Time: 0.017 (0.020)  Loss:  3.9219 (4.5365)  Acc@1: 28.1250 ( 7.0312)  Acc@5: 50.0000 (22.7482)
+2024-04-27 22:02:30,889 - train - INFO - Test: [  78/78]  Time: 0.012 (0.019)  Loss:  4.5625 (4.4830)  Acc@1:  6.2500 ( 8.1900)  Acc@5:  6.2500 (24.4600)
+2024-04-27 22:02:31,242 - train - INFO - Train: 2 [   0/781 (  0%)]  Loss:  4.885719 (4.8857)  Time: 0.259s,  494.84/s  (0.259s,  494.84/s)  LR: 1.180e-04  Data: 0.178 (0.178)
+2024-04-27 22:02:35,851 - train - INFO - Train: 2 [  50/781 (  6%)]  Loss:  5.018905 (5.0521)  Time: 0.102s, 1260.49/s  (0.095s, 1341.51/s)  LR: 1.180e-04  Data: 0.008 (0.011)
+2024-04-27 22:02:40,313 - train - INFO - Train: 2 [ 100/781 ( 13%)]  Loss:  4.975240 (5.0367)  Time: 0.093s, 1382.16/s  (0.092s, 1386.20/s)  LR: 1.180e-04  Data: 0.008 (0.009)
+2024-04-27 22:02:44,779 - train - INFO - Train: 2 [ 150/781 ( 19%)]  Loss:  4.953529 (5.0261)  Time: 0.085s, 1497.68/s  (0.091s, 1401.51/s)  LR: 1.180e-04  Data: 0.005 (0.008)
+2024-04-27 22:02:48,285 - train - INFO - Train: 2 [ 200/781 ( 26%)]  Loss:  5.111567 (5.0198)  Time: 0.073s, 1746.67/s  (0.086s, 1487.56/s)  LR: 1.180e-04  Data: 0.004 (0.008)
+2024-04-27 22:02:52,789 - train - INFO - Train: 2 [ 250/781 ( 32%)]  Loss:  4.983680 (5.0129)  Time: 0.075s, 1695.85/s  (0.087s, 1473.93/s)  LR: 1.180e-04  Data: 0.005 (0.008)
+2024-04-27 22:02:56,933 - train - INFO - Train: 2 [ 300/781 ( 38%)]  Loss:  5.166690 (5.0062)  Time: 0.092s, 1384.81/s  (0.086s, 1485.25/s)  LR: 1.180e-04  Data: 0.009 (0.007)
+2024-04-27 22:03:01,392 - train - INFO - Train: 2 [ 350/781 ( 45%)]  Loss:  4.922740 (5.0004)  Time: 0.100s, 1285.56/s  (0.087s, 1478.03/s)  LR: 1.180e-04  Data: 0.008 (0.007)
+2024-04-27 22:03:05,732 - train - INFO - Train: 2 [ 400/781 ( 51%)]  Loss:  5.094346 (4.9938)  Time: 0.089s, 1444.16/s  (0.087s, 1477.68/s)  LR: 1.180e-04  Data: 0.006 (0.007)
+2024-04-27 22:03:10,165 - train - INFO - Train: 2 [ 450/781 ( 58%)]  Loss:  4.872301 (4.9866)  Time: 0.101s, 1269.47/s  (0.087s, 1473.88/s)  LR: 1.180e-04  Data: 0.010 (0.007)
+2024-04-27 22:03:14,078 - train - INFO - Train: 2 [ 500/781 ( 64%)]  Loss:  4.903023 (4.9786)  Time: 0.057s, 2228.94/s  (0.086s, 1488.65/s)  LR: 1.180e-04  Data: 0.005 (0.007)
+2024-04-27 22:03:18,827 - train - INFO - Train: 2 [ 550/781 ( 71%)]  Loss:  4.995946 (4.9723)  Time: 0.112s, 1140.26/s  (0.087s, 1474.68/s)  LR: 1.180e-04  Data: 0.008 (0.007)
+2024-04-27 22:03:23,182 - train - INFO - Train: 2 [ 600/781 ( 77%)]  Loss:  4.955644 (4.9666)  Time: 0.085s, 1506.26/s  (0.087s, 1474.30/s)  LR: 1.180e-04  Data: 0.006 (0.007)
+2024-04-27 22:03:27,272 - train - INFO - Train: 2 [ 650/781 ( 83%)]  Loss:  5.143875 (4.9621)  Time: 0.061s, 2090.81/s  (0.086s, 1480.92/s)  LR: 1.180e-04  Data: 0.004 (0.007)
+2024-04-27 22:03:31,373 - train - INFO - Train: 2 [ 700/781 ( 90%)]  Loss:  5.063701 (4.9563)  Time: 0.096s, 1328.16/s  (0.086s, 1486.36/s)  LR: 1.180e-04  Data: 0.004 (0.007)
+2024-04-27 22:03:37,065 - train - INFO - Train: 2 [ 750/781 ( 96%)]  Loss:  5.065456 (4.9516)  Time: 0.109s, 1177.83/s  (0.088s, 1455.21/s)  LR: 1.180e-04  Data: 0.004 (0.007)
+2024-04-27 22:03:40,512 - train - INFO - Train: 2 [ 780/781 (100%)]  Loss:  4.762834 (4.9489)  Time: 0.116s, 1101.71/s  (0.089s, 1438.31/s)  LR: 1.180e-04  Data: 0.000 (0.007)
+2024-04-27 22:03:40,619 - train - INFO - Test: [   0/78]  Time: 0.106 (0.106)  Loss:  3.6211 (3.6211)  Acc@1: 24.2188 (24.2188)  Acc@5: 49.2188 (49.2188)
+2024-04-27 22:03:42,364 - train - INFO - Test: [  50/78]  Time: 0.026 (0.036)  Loss:  3.7324 (4.1574)  Acc@1: 22.6562 (12.1017)  Acc@5: 45.3125 (33.2261)
+2024-04-27 22:03:43,327 - train - INFO - Test: [  78/78]  Time: 0.013 (0.036)  Loss:  4.1016 (4.1076)  Acc@1:  6.2500 (13.0100)  Acc@5: 37.5000 (34.2900)
+2024-04-27 22:03:43,714 - train - INFO - Train: 3 [   0/781 (  0%)]  Loss:  4.913668 (4.9137)  Time: 0.283s,  452.91/s  (0.283s,  452.91/s)  LR: 1.720e-04  Data: 0.162 (0.162)
+2024-04-27 22:03:49,900 - train - INFO - Train: 3 [  50/781 (  6%)]  Loss:  4.995478 (4.8848)  Time: 0.138s,  927.67/s  (0.127s, 1009.35/s)  LR: 1.720e-04  Data: 0.009 (0.009)
+2024-04-27 22:03:55,850 - train - INFO - Train: 3 [ 100/781 ( 13%)]  Loss:  5.042302 (4.8605)  Time: 0.109s, 1178.69/s  (0.123s, 1041.21/s)  LR: 1.720e-04  Data: 0.004 (0.007)
+2024-04-27 22:04:01,732 - train - INFO - Train: 3 [ 150/781 ( 19%)]  Loss:  5.067782 (4.8446)  Time: 0.095s, 1351.11/s  (0.121s, 1056.37/s)  LR: 1.720e-04  Data: 0.005 (0.007)
+2024-04-27 22:04:07,370 - train - INFO - Train: 3 [ 200/781 ( 26%)]  Loss:  4.823198 (4.8323)  Time: 0.127s, 1004.55/s  (0.119s, 1075.00/s)  LR: 1.720e-04  Data: 0.005 (0.007)
+2024-04-27 22:04:13,232 - train - INFO - Train: 3 [ 250/781 ( 32%)]  Loss:  4.594481 (4.8339)  Time: 0.124s, 1028.84/s  (0.119s, 1078.36/s)  LR: 1.720e-04  Data: 0.005 (0.006)
+2024-04-27 22:04:19,362 - train - INFO - Train: 3 [ 300/781 ( 38%)]  Loss:  5.021716 (4.8319)  Time: 0.123s, 1040.38/s  (0.119s, 1072.54/s)  LR: 1.720e-04  Data: 0.005 (0.006)
+2024-04-27 22:04:25,475 - train - INFO - Train: 3 [ 350/781 ( 45%)]  Loss:  4.948328 (4.8291)  Time: 0.126s, 1019.90/s  (0.120s, 1068.91/s)  LR: 1.720e-04  Data: 0.005 (0.006)
+2024-04-27 22:04:31,509 - train - INFO - Train: 3 [ 400/781 ( 51%)]  Loss:  4.738593 (4.8241)  Time: 0.123s, 1037.30/s  (0.120s, 1067.90/s)  LR: 1.720e-04  Data: 0.008 (0.006)
+2024-04-27 22:04:37,124 - train - INFO - Train: 3 [ 450/781 ( 58%)]  Loss:  4.956781 (4.8202)  Time: 0.121s, 1062.15/s  (0.119s, 1075.48/s)  LR: 1.720e-04  Data: 0.005 (0.006)
+2024-04-27 22:04:43,277 - train - INFO - Train: 3 [ 500/781 ( 64%)]  Loss:  4.478828 (4.8144)  Time: 0.080s, 1609.63/s  (0.119s, 1071.87/s)  LR: 1.720e-04  Data: 0.005 (0.006)
+2024-04-27 22:04:49,083 - train - INFO - Train: 3 [ 550/781 ( 71%)]  Loss:  4.824639 (4.8077)  Time: 0.141s,  906.50/s  (0.119s, 1074.58/s)  LR: 1.720e-04  Data: 0.008 (0.006)
