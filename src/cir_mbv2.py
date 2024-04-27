@@ -72,7 +72,6 @@ class CirMobileNetV2(nn.Module):
         last_channel = 1280
         self.feature_size = input_size
         if input_size == 224:
-            self.feature_size = input_size/2
             interverted_residual_setting = [
                 # t, c, n, s
                 [1, 16, 1, 1],
@@ -100,6 +99,7 @@ class CirMobileNetV2(nn.Module):
         input_channel = int(input_channel * width_mult)
         self.last_channel = int(last_channel * width_mult) if width_mult > 1.0 else last_channel
         if n_class != 10 and n_class != 100:
+            self.feature_size = input_size/2
             self.features = [conv_bn(3, input_channel, 2)]
         else:
             self.features = [conv_bn(3, input_channel, 1)]

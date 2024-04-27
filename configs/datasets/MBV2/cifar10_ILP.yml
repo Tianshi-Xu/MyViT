@@ -39,7 +39,7 @@ smoothing: 0.1
 workers: 8
 seed: 3407
 checkpoint_hist: 1
-budget: 4
+budget: 2
 fix_blocksize: 1
 delta_w: True
 use_fim: True
