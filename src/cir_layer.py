@@ -205,7 +205,7 @@ class CirConv2d(nn.Module):
         self.alphas_after = None
         init.kaiming_uniform_(self.weight)
         self.set_rotate_mat()
-        self.ILP = False
+        self.ILP = True
     
     def set_rotate_mat(self):
         for block_size in self.search_space:
@@ -365,6 +365,7 @@ class CirConv2d(nn.Module):
             assert x.size(2) == x.size(3)
             self.feature_size = x.size(2)
             self.d1 = self.feature_size ** 2
+            print("feature_size:",self.feature_size)
         self.input = x.detach()
         weight=self.trans_to_cir_meng(x.device)
         x = F.conv2d(x,weight,None,self.stride,self.padding)

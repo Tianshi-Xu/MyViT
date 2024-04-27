@@ -43,7 +43,7 @@ budget: 2
 fix_blocksize: 1
 delta_w: True
 use_fim: True
-log_name: mbv2_c10_ILP_baseline
+log_name: mbv2_c10_ILP_fim2
 use_kd: true
 kd_alpha: 4
 teacher: c10_mobilenetv2
